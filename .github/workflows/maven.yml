@@ -31,7 +31,7 @@ jobs:
       run: mvn clean package 
 
     - name: Docker Compose Build
-      working-directory: ../Tropical
+      working-directory: ./
       run: docker compose build
       
     - name: Docker Compose Build
