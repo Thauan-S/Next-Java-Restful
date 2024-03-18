@@ -1,0 +1,22 @@
+.login{
+    position: relative;
+    top: 30%;
+    bottom: 20px !important;
+    padding-left: 40%;
+    
+
+   
+}
+.degrade {
+    background: linear-gradient(to bottom, #ff9900, rgb(59, 128, 207));
+    width: 100%; /* ou a largura desejada */
+    height: 500px; /* ou a altura desejada */
+    
+}
+.btn{
+    position: relative;
+    margin-right: 60%;
+    margin-top: 5px;
+    width: 70px;
+    
+}

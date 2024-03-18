@@ -1,0 +1,9 @@
+.img{
+    height: 170px;
+} 
+
+.btnpromo{
+    border-radius: 20px !important;
+   border-top-left-radius: 0px !important;
+   border-bottom-right-radius: 0px !important;
+}

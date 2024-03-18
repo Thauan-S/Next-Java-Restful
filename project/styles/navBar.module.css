@@ -1,0 +1,13 @@
+.logo img{
+    width: 15vh; 
+   height: 14vh;
+} 
+.navBar{
+  width: 100%;
+}
+.btnHeader{
+      margin-left: 2px !important; 
+    margin-right: 2px !important ; 
+}
+
+

@@ -1,0 +1,8 @@
+.alinharr{
+    min-height: 100vh;
+}
+.main{
+    background-image: url(../public/img/tropical.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

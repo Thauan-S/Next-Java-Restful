@@ -1,0 +1,24 @@
+.min{
+    min-height: 100vh;
+    background-color: rgb(85, 107, 116);
+}
+.list{
+    list-style: none;
+}
+.canvas{
+    background-color: rgba(3, 131, 252, 0.486);
+}
+.li {
+    margin-top: 2px;
+}
+.divbtn{
+    height: 100%;
+   display: flex;
+    position: relative;
+    left: 0px;
+   justify-content: center;
+  
+}
+.titulo{
+    color:rgba(248, 249, 250, 0.486) ;
+}
