@@ -5,26 +5,19 @@ import axios from "axios";
 import { headers } from "@/next.config";
 import { useRouter } from "next/router";
 const Login = () => {
-  const [cliente, setCliente] = useState({
-    nome: "",
-    senha: "",
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
   });
   const router=useRouter()
-  const handleLogin=()=>{
+  const handleLogin= () => {
     axios
-    .post("http://localhost:8080/api/authenticate/v1", {
-      nome: cliente.nome,
-      senha: cliente.senha,
-    }, {
-      headers: {
-        'Authorization': `Basic ${btoa(`${cliente.nome}:${cliente.senha}`)}`,
-        'Content-Type': 'application/json', // Adicione o tipo de conteúdo se necessário
-        ...headers, 
-      },
-    })
+    .post("http://localhost:80/auth/signin",user )
     .then((response) => {
-     // router.push("/login");
-     window.localStorage.setItem('token',response.data)
+     
+     window.localStorage.setItem('username',user.username)
+     window.localStorage.setItem('token',response.data.accessToken)
+     router.push("/clientes/lista");
       console.log(response)
     })
     .catch((error) => {
@@ -32,9 +25,9 @@ const Login = () => {
     });
   }
   const handleInputChange = (e) => {
-    setCliente({...cliente ,[e.target.name]:e.target.value})
+    setUser({...user ,[e.target.name]:e.target.value})
   };
-  console.log(cliente)
+  console.log(user)
   return (
     <>
       <HeadComponent title={"Tropical | Login"} />
@@ -50,8 +43,8 @@ const Login = () => {
                 placeholder="Insira seu nome"
                 className="form-control text-center "
                 id="nome"
-                name="nome"
-                value={cliente.nome}
+                name="username"
+                value={user.username}
                 onChange={handleInputChange}
                 aria-describedby="emailHelp"
                 required=""
@@ -68,8 +61,8 @@ const Login = () => {
                 placeholder="Insira sua senha"
                 className="form-control  text-center"
                 id="senha"
-                name="senha"
-                value={cliente.senha}
+                name="password"
+                value={user.password}
                 onChange={handleInputChange}
                 required=""
               />
