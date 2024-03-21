@@ -18,8 +18,10 @@ import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.mapper.Mapper;
 import com.tropical.model.Cliente;
 import com.tropical.model.Contato;
+import com.tropical.model.Reserva;
 import com.tropical.repository.ClienteRepository;
 import com.tropical.repository.ContatoRepository;
+import com.tropical.repository.ReservaRepository;
 
 @Service
 public class ClienteServices {
@@ -29,7 +31,8 @@ public class ClienteServices {
 	
 	@Autowired
 	ContatoRepository contatoRepository;
-	
+	@Autowired
+	ReservaRepository reservaRepository;
 	@Autowired 
 	PagedResourcesAssembler<ClienteVO>assembler;
 	
@@ -93,6 +96,11 @@ public class ClienteServices {
 		for (Contato contato : contatoRepository.findAll()) {
 			if(contato.getCliente().getId()==id) {
 				contatoRepository.delete(contato);
+			}
+		}
+		for(Reserva reserva :reservaRepository.findAll() ) {
+			if(reserva.getCliente().getId()==id) {
+				reservaRepository.delete(reserva);
 			}
 		}
 	 repository.deleteById(id);
