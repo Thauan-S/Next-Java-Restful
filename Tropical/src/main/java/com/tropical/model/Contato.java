@@ -2,6 +2,7 @@ package com.tropical.model;
 
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,8 +30,8 @@ public class Contato {
 	@Column(nullable = false)
 	private String mensagem;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "cliente_id_fk",nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "cliente_id_fk",nullable = false,referencedColumnName = "id_cliente")
 	private Cliente cliente;
 
 	public Long getId() {
