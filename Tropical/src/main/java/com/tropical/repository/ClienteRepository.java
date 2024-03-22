@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.tropical.model.Cliente;
 
-
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	
 	@Query("SELECT c  FROM Cliente c WHERE c.nome LIKE LOWER(CONCAT ('%',:nome,'%'))")
