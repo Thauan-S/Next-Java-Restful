@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "../styles/navBar.module.css";
+import { useRouter } from "next/router";
 const NavBar = () => {
+  const [hidden,setHidden]=useState(false)
+  const router=useRouter()
+
+  const handleLogout=()=>{
+    window.localStorage.clear()
+    router.push("/login")
+    setHidden(true)
+  }
   return (
     <header className="">
       <nav
@@ -60,6 +69,9 @@ const NavBar = () => {
               <Link href={"/login"} className="btn  btn-primary active ">
                 Login
               </Link>
+              <button hidden={hidden} onClick={handleLogout} className="btn  btn-primary">
+                <i className="bi bi-power"></i>
+                </button>
             </div>
           </div>
         </div>
