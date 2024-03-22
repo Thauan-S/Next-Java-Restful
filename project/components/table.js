@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import moment from "moment";
+import axios from "axios";
+import { headers } from "@/next.config";
+import { useRouter } from "next/router";
+import Modal from "./modal";
 const Table = ({ clientes, reservas, contatos, destinos }) => {
-  console.log(reservas)
+  const [id, setId] = useState();
+  const [token, setToken] = useState();
+  const router =useRouter()
+  useEffect(() => {
+    setToken(window.localStorage.getItem("token"));
+  });
+  const handleShowModal=()=>{
+    
+  }
+  const handleDeleteClient = (id) => {
+    
+    const response = confirm(`deseja excluir o cliente de id ${id}`);
+
+    if (response == true) {
+      setId(id)
+      axios
+        .delete("http://localhost:80/api/clientes/v1/" + id, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          router.reload()
+        })
+        .catch((error) => {
+          console.error("erro ao excluir um cliente", error);
+        });
+    }
+  };
   if (clientes) {
     return (
       <div className="table-responsive">
@@ -36,20 +68,22 @@ const Table = ({ clientes, reservas, contatos, destinos }) => {
                     <i className="bi bi-gear-fill" />
                   </Link>
 
-                  <Link
+                  <button
+                    onClick={() => handleDeleteClient(i.id)}
                     href={`/clientes/delete-cliente/${i.id}`}
                     type="button"
                     className="btn btn-primary"
                   >
                     <i className="bi bi-trash"></i>
-                  </Link>
-                  <Link
+                  </button>
+                  <Modal
+                    onClick={handleShowModal}
                     href={`/contato/criar/${i.id}`}
                     type="button"
                     className="btn btn-primary"
                   >
-                    <i className="bi bi-chat-dots"></i>
-                  </Link>
+                    
+                  </Modal>
                 </td>
               </tr>
             ))}
@@ -57,157 +91,157 @@ const Table = ({ clientes, reservas, contatos, destinos }) => {
         </table>
       </div>
     );
-  } else if (reservas) {
-    return (
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Cliente</th>
-              <th scope="col">Data Reserva</th>
-              <th scope="col">Data Viagem</th>
-              <th scope="col">Pacote</th>
-              <th scope="col">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reservas.map((i, index) => (
-              <tr key={index}>
-                <td>{i.id}</td>
-                <td>{i.clienteId}</td>
-                <td>{moment(i.dataReserva).format("DD/MM/YYYY")}</td>
-                <td>{moment(i.dataViagem).format("DD/MM/YYYY")}</td>
-                <td>{i.pacoteDeViagemId}</td>
-                <td>
-                  <Link
-                    href={`/reserva/update-reserva/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-gear-fill" />
-                  </Link>
+  } //else if (reservas) {
+  //   return (
+  //     <div className="table-responsive">
+  //       <table className="table">
+  //         <thead>
+  //           <tr>
+  //             <th scope="col">ID</th>
+  //             <th scope="col">Cliente</th>
+  //             <th scope="col">Data Reserva</th>
+  //             <th scope="col">Data Viagem</th>
+  //             <th scope="col">Pacote</th>
+  //             <th scope="col">Ações</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           {reservas.map((i, index) => (
+  //             <tr key={index}>
+  //               <td>{i.id}</td>
+  //               <td>{i.clienteId}</td>
+  //               <td>{moment(i.dataReserva).format("DD/MM/YYYY")}</td>
+  //               <td>{moment(i.dataViagem).format("DD/MM/YYYY")}</td>
+  //               <td>{i.pacoteDeViagemId}</td>
+  //               <td>
+  //                 <Link
+  //                   href={`/reserva/update-reserva/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-gear-fill" />
+  //                 </Link>
 
-                  <Link
-                    href={`/reserva/delete-reserva/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  } else if (contatos) {
-    return (
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col"># ID</th>
-              <th scope="col">Cliente</th>
-              <th scope="col">Assunto</th>
-              <th scope="col">Mensagem</th>
+  //                 <Link
+  //                   href={`/reserva/delete-reserva/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-trash"></i>
+  //                 </Link>
+  //               </td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // } else if (contatos) {
+  //   return (
+  //     <div className="table-responsive">
+  //       <table className="table">
+  //         <thead>
+  //           <tr>
+  //             <th scope="col"># ID</th>
+  //             <th scope="col">Cliente</th>
+  //             <th scope="col">Assunto</th>
+  //             <th scope="col">Mensagem</th>
 
-              <th scope="col">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contatos.map((i, index) => (
-              <tr key={index}>
-                <td>{i.id}</td>
-                <td>{i.clienteId}</td>
-                <td>{i.assunto}</td>
-                <td>{i.mensagem}</td>
+  //             <th scope="col">Ações</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           {contatos.map((i, index) => (
+  //             <tr key={index}>
+  //               <td>{i.id}</td>
+  //               <td>{i.clienteId}</td>
+  //               <td>{i.assunto}</td>
+  //               <td>{i.mensagem}</td>
 
-                <td>
-                  <Link
-                    href={`/contato/update-contato/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-gear-fill" />
-                  </Link>
+  //               <td>
+  //                 <Link
+  //                   href={`/contato/update-contato/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-gear-fill" />
+  //                 </Link>
 
-                  <Link
-                    href={`/contato/delete-contato/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  } else if (destinos) {
-    return (
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col"># ID</th>
-              <th scope="col">Destino</th>
-              <th scope="col">Descrição</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Duração em dias</th>
-              <th scope="col">imagem</th>
-              <th scope="col">Preço</th>
-              <th scope="col">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {destinos.map((i, index) => (
-              <tr key={index}>
-                <td>{i.id}</td>
-                <td>{i.destino}</td>
-                <td>{i.descricao}</td>
-                <td>{i.categoria}</td>
-                <td>{i.duracaoEmDias}</td>
-                <td>{i.imagem}</td>
-                <td>{i.preco}</td>
+  //                 <Link
+  //                   href={`/contato/delete-contato/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-trash"></i>
+  //                 </Link>
+  //               </td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // } else if (destinos) {
+  //   return (
+  //     <div className="table-responsive">
+  //       <table className="table">
+  //         <thead>
+  //           <tr>
+  //             <th scope="col"># ID</th>
+  //             <th scope="col">Destino</th>
+  //             <th scope="col">Descrição</th>
+  //             <th scope="col">Categoria</th>
+  //             <th scope="col">Duração em dias</th>
+  //             <th scope="col">imagem</th>
+  //             <th scope="col">Preço</th>
+  //             <th scope="col">Ações</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           {destinos.map((i, index) => (
+  //             <tr key={index}>
+  //               <td>{i.id}</td>
+  //               <td>{i.destino}</td>
+  //               <td>{i.descricao}</td>
+  //               <td>{i.categoria}</td>
+  //               <td>{i.duracaoEmDias}</td>
+  //               <td>{i.imagem}</td>
+  //               <td>{i.preco}</td>
 
-                <td>
-                  <Link
-                    href={`/destinos/update-destino/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-gear-fill" />
-                  </Link>
+  //               <td>
+  //                 <Link
+  //                   href={`/destinos/update-destino/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-gear-fill" />
+  //                 </Link>
 
-                  <Link
-                    href={`/destinos/delete-destino/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </Link>
+  //                 <Link
+  //                   href={`/destinos/delete-destino/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   <i className="bi bi-trash"></i>
+  //                 </Link>
 
-                  <Link
-                    href={`/reserva/criar/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    {" "}
-                    Reservar
-                    <i className="bi bi-cart2"></i>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+  //                 <Link
+  //                   href={`/reserva/criar/${i.id}`}
+  //                   type="button"
+  //                   className="btn btn-primary"
+  //                 >
+  //                   {" "}
+  //                   Reservar
+  //                   <i className="bi bi-cart2"></i>
+  //                 </Link>
+  //               </td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // }
 };
 
 export default Table;
