@@ -2,16 +2,20 @@ package com.tropical.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,8 +41,18 @@ public class Cliente implements Serializable {
 	@Column(name = "data_nascimento", length = 50)
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dataNascimento;
-	@Column(nullable = false)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	   private List<Contato> contatos;
+	@OneToMany(mappedBy = "cliente",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Reserva>reservas;
 
+	public List<Contato> getContatos() {
+		return contatos;
+	}
+
+	public void setContatos(List<Contato> contatos) {
+		this.contatos = contatos;
+	}
 
 	public String getNome() {
 		return nome;
@@ -46,14 +60,6 @@ public class Cliente implements Serializable {
 
 	public Cliente() {
 
-	}
-
-	
-
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", telefone="
-				+ telefone + ", cep=" + cep + ", dataNascimento=" + dataNascimento + "]";
 	}
 
 	public Long getId() {
@@ -108,9 +114,17 @@ public class Cliente implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cep, dataNascimento, email, id, nome, senha, telefone);
+		return Objects.hash(cep, contatos, dataNascimento, email, id, nome, reservas, senha, telefone);
 	}
 
 	@Override
@@ -122,10 +136,16 @@ public class Cliente implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Cliente other = (Cliente) obj;
-		return Objects.equals(cep, other.cep) && Objects.equals(dataNascimento, other.dataNascimento)
-				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome) && Objects.equals(senha, other.senha)
+		return Objects.equals(cep, other.cep) && Objects.equals(contatos, other.contatos)
+				&& Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(email, other.email)
+				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
+				&& Objects.equals(reservas, other.reservas) && Objects.equals(senha, other.senha)
 				&& Objects.equals(telefone, other.telefone);
 	}
+
+
+
+
+	
 	
 }
