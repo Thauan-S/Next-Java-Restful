@@ -2,11 +2,6 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/dropDown.module.css";
 const DropDown = ({ title, create, list, icon }) => {
-  // {
-  //   title:"Home",
-  //   href:"/",
-  //   icon:<i className="bi bi-house"></i>}
-  //   ,}
   return (
     <div className="dropdown mt-1">
       <button
