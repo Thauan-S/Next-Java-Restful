@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
 const UpdateClientes = () => {
   const route = useRouter();
   const { codigo } = route.query;
+  
   const [cliente, setCliente] = useState({
     id: "",
     nome: "",
@@ -14,24 +14,33 @@ const UpdateClientes = () => {
     cep: "",
     dataNascimento: ""
   });
+  const [token,setToken]=useState()
   const router = useRouter();
   useEffect(() => {
+    setToken(window.localStorage.getItem('token'))
     axios
-      .get("https://localhost:7250/api/Clientes/" + cliente.id)
+      .get("http://localhost:80/api/clientes/v1/" +cliente.id,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
       .then((response) => {
         setCliente(response.data);
       })
       .catch((error) => {
         console.error("erro ao buscar o cliente de codigo", codigo);
       });
-  }, []);
+  }, [codigo,cliente.id,token]);
 
   const handleInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
   };
   const handleUpdateClient = () => {
     axios
-      .put("https://localhost:7250/api/Clientes/" + cliente.id, cliente)
+      .put("http://localhost:80/api/clientes/v1",cliente,{
+  headers:{
+    Authorization:`Bearer ${token}`
+  }})
       .then((response) => {
         router.push("/clientes/lista");
       })
@@ -39,7 +48,6 @@ const UpdateClientes = () => {
         console.error("erro ao editar o cliente de id", codigo);
       });
   };
-  console.log(moment(cliente.dataNascimento).format("DD/MM/YYYY"))
   return (
     <main>
       <div className="container formulario">
@@ -102,7 +110,7 @@ const UpdateClientes = () => {
               className="form-control"
               id="Data de Nascimento"
               name="dataNascimento"
-              value={moment(cliente.dataNascimento).format("DD/MM/YYYY")}
+              value={cliente.dataNascimento}
               onChange={handleInputChange}
               required=""
             />
