@@ -19,9 +19,13 @@ const Cadastro = () => {
 
   const handleAddClient = () => {
     axios
-      .post("http://localhost:8080/api/Clientes",cliente)
+      .post("http://localhost:80/api/clientes/v1",cliente,{
+        headers:{
+          Authorization:`Bearer ${window.localStorage.getItem('token')}` 
+        }
+      })
       .then((response) => {
-        router.push("/login");
+        router.push("/clientes/lista");
       })
       .catch((error) => {
         console.error("erro ao cadastrar Usuário" + error);
