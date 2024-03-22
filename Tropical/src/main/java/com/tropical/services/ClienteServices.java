@@ -91,18 +91,8 @@ public class ClienteServices {
 		Link link=linkTo(methodOn(ClienteController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(),"asc")).withSelfRel();
 		return assembler.toModel(clientesVosPage, link);
 	}
+	
 	public void delete(Long id) {
-		
-		for (Contato contato : contatoRepository.findAll()) {
-			if(contato.getCliente().getId()==id) {
-				contatoRepository.delete(contato);
-			}
-		}
-		for(Reserva reserva :reservaRepository.findAll() ) {
-			if(reserva.getCliente().getId()==id) {
-				reservaRepository.delete(reserva);
-			}
-		}
 	 repository.deleteById(id);
 	}
 }
