@@ -5,38 +5,41 @@ import axios from "axios";
 import { headers } from "@/next.config";
 import { useRouter } from "next/router";
 const Login = () => {
+  const [hidden, setHidden] = useState(true);
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-  const router=useRouter()
-  const handleLogin= () => {
+  const router = useRouter();
+  const handleLogin = () => {
     axios
-    .post("http://localhost:80/auth/signin",user )
-    .then((response) => {
-     
-     window.localStorage.setItem('username',user.username)
-     window.localStorage.setItem('token',response.data.accessToken)
-     router.push("/clientes/lista");
-      console.log(response)
-    })
-    .catch((error) => {
-      console.error("Erro ao fazer login: " + error);
-    });
-  }
-  const handleInputChange = (e) => {
-    setUser({...user ,[e.target.name]:e.target.value})
+      .post("http://localhost:80/auth/signin", user)
+      .then((response) => {
+        window.localStorage.setItem("username", user.username);
+        window.localStorage.setItem("token", response.data.accessToken);
+        router.push("/clientes/lista");
+        console.log(response);
+      })
+      .catch((error) => {
+        setHidden(!hidden);
+        console.error("Erro ao fazer login: " + error);
+      });
   };
-  console.log(user)
+  const handleInputChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    setHidden(true)
+  };
+
   return (
     <>
       <HeadComponent title={"Tropical | Login"} />
       <div className={`${styles.degrade}`}>
-        <div className={` container-fluid ${styles.login} text-center align-items`}>
-          <div className="row">
-            <div className="mb-3  col-10 col-md-5 ">
-              <label htmlFor="nome" className="form-label ">
-                Nome
+        <div className={`container-fluid ${styles.login}  text-center`}>
+          <div className={`row ${styles.input}`}> 
+            <div className="mb-3  col-10 col-md-5">
+              <p hidden={hidden}>Login ou senha informados inválidos, digite novamente</p>
+              <label htmlFor="nome" className="form-label  ">
+                <p> Nome</p>
               </label>
               <input
                 type="text"
@@ -51,7 +54,7 @@ const Login = () => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className={`row ${styles.input}`}>
             <div className="col-10 col-md-5">
               <label htmlFor="senha" className="form-label ">
                 Senha
@@ -66,12 +69,17 @@ const Login = () => {
                 onChange={handleInputChange}
                 required=""
               />
-            </div>
-          </div>
-          <button onClick={handleLogin} type="button"  className={`${styles.btn} btn btn-primary `}>
-               Login
+              <button
+            onClick={handleLogin}
+            type="button"
+            className={`${styles.btn} btn btn-primary `}
+          >
+            Login
           </button>
-
+            </div>
+           
+          </div>
+          
         </div>
       </div>
     </>
