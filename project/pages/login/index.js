@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/login.module.css";
 import HeadComponent from "@/components/head";
 import axios from "axios";
@@ -11,6 +11,7 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
+  
   const handleLogin = () => {
     axios
       .post("http://localhost:80/auth/signin", user)
@@ -18,7 +19,7 @@ const Login = () => {
         window.localStorage.setItem("username", user.username);
         window.localStorage.setItem("token", response.data.accessToken);
         router.push("/clientes/lista");
-        console.log(response);
+        
       })
       .catch((error) => {
         setHidden(!hidden);
