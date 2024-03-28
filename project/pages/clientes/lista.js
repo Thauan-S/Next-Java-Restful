@@ -2,19 +2,64 @@ import { useEffect, useState } from "react";
 
 import Table from "@/components/table";
 import HeadComponent from "@/components/head";
-import { headers } from "@/next.config";
 import useGetClients from "@/hooks/useGetClients";
+import Link from "next/link";
 const Clientes = () => {
-  
-  
-  const {username,clientes}=useGetClients()
+  const { username, clientes, setClientes, setPage, page, getClients } =
+    useGetClients();
+  useEffect(() => {
+    getClients(page);
+  }, [page]);
 
   return (
-    <main>
+    <>
       <HeadComponent title={" Clientes | Lista"} />
-      <h1 className="text-center">Bem vindo ,{username}</h1>
-      <Table clientes={clientes} />
-    </main>
+      <main>
+        <div className="row">
+          <Link
+            href={"/clientes"}
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "25px",
+            }}
+            className="col-1 btn btn-primary"
+          >
+            <i className="bi bi-person-add" />
+          </Link>
+          <h1 className="text-center col ">Bem vindo ,{username}</h1>
+          <button
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "25px",
+            }}
+            className="btn col-1 btn-primary"
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+          >
+            <i className="bi bi-arrow-left" />
+             
+          </button>
+          <button
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "5px",
+            }}
+            className="btn col-1 btn-primary"
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+          >
+            <i className="bi bi-arrow-right" />
+            
+          </button>
+        </div>
+
+        <Table clientes={clientes} setClientes={setClientes} />
+      </main>
+    </>
   );
 };
 
