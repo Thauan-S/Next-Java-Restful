@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../styles/navBar.module.css";
 import { useRouter } from "next/router";
 const NavBar = () => {
-  const [hidden,setHidden]=useState(false)
+  const [hidden,setHidden]=useState(true)
   const router=useRouter()
+  const[token,setToken]=useState()
+  
+  useEffect(()=>{
+  
+    setToken(window.localStorage.getItem('token'))
+    if(token!==null){
+      setHidden(false)
+    }
 
+  })
   const handleLogout=()=>{
     window.localStorage.clear()
+    setToken(window.localStorage.getItem('token'))
     router.push("/login")
     setHidden(true)
   }
