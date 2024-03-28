@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import moment from "moment";
 import axios from "axios";
 import { headers } from "@/next.config";
 import { useRouter } from "next/router";
-import Modal from "./modal";
-const Table = ({ clientes, reservas, contatos, destinos }) => {
-  const [id, setId] = useState();
-  const [token, setToken] = useState();
-  const router =useRouter()
+import MessageModal from "@/components/messageModal";
+import EditClientModal from "./editClientModal";
+import Modal from "@/components/modal";
+const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
+  const [id, setId] = useState('');
+  const[showModal,setShowModal]=useState(false)
+  const [token, setToken] = useState('');
+  const router = useRouter();
   useEffect(() => {
     setToken(window.localStorage.getItem("token"));
   });
-  const handleShowModal=()=>{
+  
+  const [clienteSelecionado, setClienteSelecionado] = useState("");
+
+  const handleClienteSelecionado = (clienteId) => {
     
-  }
+    const cliente = clientes.find((cliente) => cliente.id === clienteId);
+    setClienteSelecionado(cliente);
+    setShowModal(true)
+  };
   const handleDeleteClient = (id) => {
-    
     const response = confirm(`deseja excluir o cliente de id ${id}`);
 
     if (response == true) {
-      setId(id)
+      setId(id);
       axios
         .delete("http://localhost:80/api/clientes/v1/" + id, {
           headers: {
@@ -28,13 +35,14 @@ const Table = ({ clientes, reservas, contatos, destinos }) => {
           },
         })
         .then((response) => {
-          router.reload()
+          router.reload();
         })
         .catch((error) => {
           console.error("erro ao excluir um cliente", error);
         });
     }
   };
+
   if (clientes) {
     return (
       <div className="table-responsive">
@@ -60,35 +68,27 @@ const Table = ({ clientes, reservas, contatos, destinos }) => {
                 <td>{i.cep}</td>
                 <td>{moment(i.dataNascimento).format("DD/MM/YYYY")}</td>
                 <td>
-                  <Link
-                    href={`/clientes/update-clientes/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
+                  <button
+                     type="button"
+                     className="btn btn-primary"
+                    onClick={() => handleClienteSelecionado(i.id) }
                   >
                     <i className="bi bi-gear-fill" />
-                  </Link>
-
+                  </button>
+                 
                   <button
                     onClick={() => handleDeleteClient(i.id)}
-                    href={`/clientes/delete-cliente/${i.id}`}
                     type="button"
                     className="btn btn-primary"
                   >
                     <i className="bi bi-trash"></i>
                   </button>
-                  <Modal
-                    onClick={handleShowModal}
-                    href={`/contato/criar/${i.id}`}
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    
-                  </Modal>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {clienteSelecionado && <EditClientModal cli={clienteSelecionado} token={token} showModal={showModal} setShowModal={setShowModal} setClientes={setClientes} />}
       </div>
     );
   } //else if (reservas) {
