@@ -8,7 +8,11 @@ const Destinos = () => {
 
   useEffect(() => {
     axios
-      .get("https://localhost:7250/api/PacoteDeViagens")
+      .get("http://localhost:80//api/pacotes/v1",{
+        headers:{
+          Authorization:`Bearer `
+        }
+      })
       .then((response) => {
         setPacotes(response.data);
         console.log(pacotes);
