@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tropical.data.vo.v1.ClienteVO;
+import com.tropical.data.dto.ClienteDTO;
 import com.tropical.model.Cliente;
 
 
@@ -15,7 +15,7 @@ public class MockCliente {
         return mockEntity(0);
     }
     
-    public ClienteVO mockVO()   {
+    public ClienteDTO mockVO()   {
         return mockVO(0);
     }
     
@@ -27,8 +27,8 @@ public class MockCliente {
         return persons;
     }
 
-    public List<ClienteVO> mockVOList()   {
-        List<ClienteVO> persons = new ArrayList<>();
+    public List<ClienteDTO> mockVOList()   {
+        List<ClienteDTO> persons = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             persons.add(mockVO(i));
         }
@@ -49,8 +49,8 @@ public class MockCliente {
         return cliente;
     }
 
-    public ClienteVO mockVO(Integer number)   {
-    	ClienteVO cliente = new ClienteVO();
+    public ClienteDTO mockVO(Integer number)   {
+    	ClienteDTO cliente = new ClienteDTO();
     	 cliente.setKey(number.longValue());
          cliente.setNome( "Name Test" + number);
          cliente.setEmail("Email Test"+number);

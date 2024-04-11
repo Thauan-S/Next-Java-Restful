@@ -14,6 +14,7 @@ import com.tropical.exceptions.ExceptionResponse;
 import com.tropical.exceptions.InvalidJwtAuthenticationException;
 import com.tropical.exceptions.RequiredObjectIsNullException;
 import com.tropical.exceptions.ResourceNotFoundException;
+import com.tropical.exceptions.UserAlreadyExistsException;
 
 @ControllerAdvice
 @RestController
@@ -49,6 +50,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 				request.getDescription(false));
 
 		return new ResponseEntity<>(exeptionResponse, HttpStatus.FORBIDDEN);
+	}
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	public final ResponseEntity<ExceptionResponse> handleUserAlreadyExistsException(Exception ex,
+			WebRequest request) {
+		ExceptionResponse exeptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(exeptionResponse, HttpStatus.BAD_REQUEST);
 	}
 
 }

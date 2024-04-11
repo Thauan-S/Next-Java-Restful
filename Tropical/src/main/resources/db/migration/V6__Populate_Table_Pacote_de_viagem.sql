@@ -1,1 +1,0 @@
-INSERT INTO `pacote_de_viagem` VALUES (1,'categoria','descricao','destino',3,'imagem',2000.00),(2,'categoria2','descricao2','destino2',5,'imagem2',2002.00);

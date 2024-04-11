@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tropical.data.vo.v1.ClienteVO;
-import com.tropical.data.vo.v1.ContatoVO;
+import com.tropical.data.dto.ClienteDTO;
+import com.tropical.data.dto.ContatoDTO;
 import com.tropical.model.Cliente;
 import com.tropical.model.Contato;
 
@@ -17,7 +17,7 @@ public class MockContato {
         return mockEntity(0);
     }
     
-    public ContatoVO mockVO() throws ParseException {
+    public ContatoDTO mockVO() throws ParseException {
         return mockVO(0);
     }
     
@@ -29,8 +29,8 @@ public class MockContato {
         return contatos;
     }
 
-    public List<ContatoVO> mockVOList() throws ParseException {
-        List<ContatoVO> contatos = new ArrayList<>();
+    public List<ContatoDTO> mockVOList() throws ParseException {
+        List<ContatoDTO> contatos = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             contatos.add(mockVO(i));
         }
@@ -58,13 +58,13 @@ public class MockContato {
         return contato;
     }
 
-    public ContatoVO mockVO(Integer number) throws ParseException {
-    	ContatoVO contato = new ContatoVO();
+    public ContatoDTO mockVO(Integer number) throws ParseException {
+    	ContatoDTO contato = new ContatoDTO();
     	 contato.setKey(number.longValue());
     	 contato.setAssunto( "Assunto Test" + number);
          contato.setMensagem("Mensagem Test"+number);
          
-         ClienteVO cliente=new ClienteVO();
+         ClienteDTO cliente=new ClienteDTO();
          cliente.setNome("Nome Test"+number);
          cliente.setEmail("Email Test"+number);
          cliente.setSenha("Senha Test"+number);

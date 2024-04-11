@@ -1,77 +1,71 @@
 package com.tropical.config;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.tropical.security.jwt.JwtTokenFilter;
-import com.tropical.security.jwt.JwtTokenProvider;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private JwtTokenProvider tokenProvider;
-	
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		Map<String, PasswordEncoder> encoders = new HashMap<>();
-				
-		Pbkdf2PasswordEncoder pbkdf2Encoder = new Pbkdf2PasswordEncoder("", 8, 185000,
-                SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256);
-		encoders.put("pbkdf2", pbkdf2Encoder);
-		DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
-		passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder);
-		return passwordEncoder;
-	}
-	
+    @Value("${jwt.public.key}")
+    private RSAPublicKey publicKey;
+    @Value("${jwt.private.key}")
+    private RSAPrivateKey privateKey;
+
     @Bean
-    AuthenticationManager authenticationManagerBean(
-    		AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/login" ).permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/register/user" ).permitAll()
+                        .requestMatchers(HttpMethod.POST,"/admin" ).permitAll()
+                        .anyRequest().authenticated())
+                .csrf(csrf -> csrf.disable())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        
-        JwtTokenFilter customFilter = new JwtTokenFilter(tokenProvider);
-        
-        //@formatter:off
-        return http
-            .httpBasic(basic -> basic.disable())
-            .csrf(csrf -> csrf.disable())
-            .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(
-            		session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                    authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(
-							"/auth/signin",
-							"/auth/refresh/**",
-                    		"/swagger-ui/**",
-                    		"/v3/api-docs/**"
-                		).permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .requestMatchers("/users").denyAll()
-                )
-            .cors(cors -> {})
-                .build();
-        //@formatter:on
+     JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withPublicKey(publicKey).build();
     }
+
+    @Bean
+     JwtEncoder jwtEncoder() {
+        JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(privateKey).build();
+        var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+        return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+     BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
