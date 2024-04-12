@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.tropical.exceptions.ExceptionResponse;
+import com.tropical.exceptions.ForbiddenAccesException;
 import com.tropical.exceptions.InvalidJwtAuthenticationException;
 import com.tropical.exceptions.RequiredObjectIsNullException;
 import com.tropical.exceptions.ResourceNotFoundException;
@@ -58,6 +59,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 				request.getDescription(false));
 
 		return new ResponseEntity<>(exeptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(ForbiddenAccesException.class)
+	public final ResponseEntity<ExceptionResponse> handleForbiddenAccesException(Exception ex,
+			WebRequest request) {
+		ExceptionResponse exeptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(exeptionResponse, HttpStatus.FORBIDDEN);
 	}
 
 }
