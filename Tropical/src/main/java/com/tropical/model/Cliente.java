@@ -19,20 +19,21 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cliente_id")
-	Long clienteId;
+	private Long clienteId;
 	
-	String nome;
+	private String nome;
 	
-	String telefone;
+	private String telefone;
 	
-	Date dataNascimento;
+	private Date dataNascimento;
 	
-	String cep;
+	private String cep;
 	
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	User user;
-
+	private User user;
+	
+	
 
 	public String getNome() {
 		return nome;
