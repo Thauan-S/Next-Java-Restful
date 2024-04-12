@@ -1,14 +1,8 @@
 package com.tropical.controller;
 
-import java.time.Instant;
 import java.util.UUID;
 
-import javax.security.auth.login.AccountNotFoundException;
-
-import org.hibernate.query.SortDirection;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +37,8 @@ public class TweetController {
 	public ResponseEntity<FeedDto>feed(@RequestParam(name="page",defaultValue = "0" )int page,@RequestParam(name="size",defaultValue = "10" )int size){
 	var tweets=	tweetRepository.findAll(PageRequest.of(page, size,Sort.Direction.DESC,"instant"))
 			.map(tweet->  new FeedItemDto(tweet.getTweetId(),tweet.getContent(),tweet.getUser().getUsername()));
-		return ResponseEntity.ok(new FeedDto(
+		
+	return ResponseEntity.ok(new FeedDto(
 				tweets.getContent(),page,size, tweets.getTotalPages(),tweets.getTotalElements()));
 	}
 	@PostMapping("/tweet")
