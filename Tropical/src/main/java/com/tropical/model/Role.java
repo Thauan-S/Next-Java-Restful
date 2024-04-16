@@ -30,7 +30,7 @@ public class Role implements  Serializable {
 	private String name;
 
 	public enum Values {
-		 ADMIN(1L),BASIC(2L);
+		 ADMIN(1L),BASIC(2L),EMPRESA(3L);
 
 		long roleId;
 
