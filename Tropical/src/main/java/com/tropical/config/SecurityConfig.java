@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/login" ).permitAll()
-//                        .requestMatchers(HttpMethod.POST,"/register/user" ).permitAll()
+                        .requestMatchers(HttpMethod.POST,"/register/empresa" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin" ).permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
