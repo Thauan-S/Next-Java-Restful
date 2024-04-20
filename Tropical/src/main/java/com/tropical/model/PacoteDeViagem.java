@@ -1,6 +1,7 @@
 package com.tropical.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "pacote_de_viagem")
 public class PacoteDeViagem {
@@ -43,7 +45,8 @@ public class PacoteDeViagem {
 	@JoinColumn(name="empresa_id")
 	private Empresa empresa;
 	
-	
+	@OneToMany
+	private List<Reserva>reservas;
 	
 
 	public PacoteDeViagem() {
