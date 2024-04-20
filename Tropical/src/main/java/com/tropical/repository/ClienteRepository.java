@@ -11,11 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tropical.model.Cliente;
+import com.tropical.model.User;
 
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-	Optional<Cliente> findByUser_UserId(UUID user);
+	Optional<Cliente> findByUser(User user);
 	
-	@Query("SELECT c  FROM Cliente c WHERE c.nome LIKE LOWER(CONCAT ('%',:nome,'%'))")
-	Page<Cliente> findClientesByName(@Param("nome")String nome,Pageable pageable);
+
 }
