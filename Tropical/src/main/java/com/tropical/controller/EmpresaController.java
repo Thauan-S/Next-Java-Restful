@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import org.webjars.NotFoundException;
 
 import com.tropical.data.dto.EmpresaDTO;
 import com.tropical.exceptions.ForbiddenAccesException;
+import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.model.Empresa;
 import com.tropical.model.Role;
 import com.tropical.repository.EmpresaRepository;
@@ -196,11 +198,13 @@ public EmpresaController(EmpresaRepository empresaRepository,UserRepository user
 	public EmpresaDTO update(@RequestBody EmpresaDTO empresaDTO,JwtAuthenticationToken token) {
 		var user= userRepository.findById(UUID.fromString(token.getName()));
 		System.out.println(user.get().getUsername());
+	
 		var empresabd=empresaRepository.findById(empresaDTO.getEmpresaId()).orElseThrow(()-> new NotFoundException("Empresa não encontrada na base de dados"));
+		System.out.println(token.getName() +"==="+ empresabd.getUser().getUserId());
 		var isAdmin=user.get().getRoles()
 			.stream()
 			.anyMatch(role-> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-		if(isAdmin || empresabd.getUser().getUserId().equals( UUID.fromString(token.getName())) ) {
+		if(isAdmin || empresabd.getUser().getUserId().equals(UUID.fromString(token.getName())) ) {
 		
 			empresabd.setNomeEmpresa(empresaDTO.getNomeEmpresa());
 			empresabd.setEndereco(empresaDTO.getEndereco());
@@ -216,34 +220,35 @@ public EmpresaController(EmpresaRepository empresaRepository,UserRepository user
 		}
 			
 	}
-//	@DeleteMapping("/{id}")
-//	@Operation(
-//			summary = "Deleta um cliente",
-//			description = "Deleta um cliente",
-//			tags = {"Clientes"},
-//			responses = {
-//				@ApiResponse(description="No Content",responseCode ="204",
-//					content=@Content
-//				),
-//				@ApiResponse(description="Bad Request",responseCode ="400",content = @Content ),
-//				@ApiResponse(description="Unauthorized ",responseCode ="401",content = @Content ),
-//				@ApiResponse(description="Not Found",responseCode ="404",content = @Content),
-//				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
-//				}
-//			)
-//	public ResponseEntity<?> delete(@PathVariable Long id,JwtAuthenticationToken token ) {
-//		
-//		var user= userRepository.findById( UUID.fromString(token.getName()));
-//		System.out.println("usuário"+user.get().getUserId());
-//		var isAdmin= user.get().getRoles()
-//				.stream()
-//				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-//		var cliBd= clienteRepository.findById(id);
-//		if(isAdmin ||cliBd.get().getUser().getUserId().equals(user.get().getUserId())) {
-//			clienteRepository.deleteById(id);
-//		}else {
-//			throw new ForbiddenAccesException("O usuário " +user.get().getUsername()+" Não tem permissão para realizar esta operação");
-//		}
-//		return ResponseEntity.noContent().build();
-//	}
+	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
+	@DeleteMapping("/{id}")
+	@Operation(
+			summary = "Deleta uma empresa",
+			description = "Deleta uma empresa",
+			tags = {"Empresas"},
+			responses = {
+				@ApiResponse(description="No Content",responseCode ="204",
+					content=@Content
+				),
+				@ApiResponse(description="Bad Request",responseCode ="400",content = @Content ),
+				@ApiResponse(description="Unauthorized ",responseCode ="401",content = @Content ),
+				@ApiResponse(description="Not Found",responseCode ="404",content = @Content),
+				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
+				}
+			)
+	public ResponseEntity<?> delete(@PathVariable Long id,JwtAuthenticationToken token ) {
+		
+		var user= userRepository.findById( UUID.fromString(token.getName()));
+		System.out.println("usuário"+user.get().getUserId());
+		var isAdmin= user.get().getRoles()
+				.stream()
+				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
+		var empresaBd= empresaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("a empresa não se encontra  no banco de dados"));
+		if(isAdmin ||empresaBd.getUser().getUserId().equals(user.get().getUserId())) {
+			empresaRepository.deleteById(id);
+		}else {
+			throw new ForbiddenAccesException("O usuário " +user.get().getUsername()+" Não tem permissão para realizar esta operação");
+		}
+		return ResponseEntity.noContent().build();
+	}
 }
