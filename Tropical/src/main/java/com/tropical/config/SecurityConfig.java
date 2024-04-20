@@ -42,6 +42,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/login" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/register/empresa" ).permitAll()
+                        .requestMatchers(HttpMethod.POST,"/register/cliente" ).permitAll()
+                        .requestMatchers("/swagger-ui/**",
+                    		"/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin" ).permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
