@@ -18,7 +18,7 @@ public class EmpresaDTO {
 	private String cnpj;
 	
 	private String endereco;
-	@JsonIgnore
+	
 	private User user;
 	
 	private List<PacoteDeViagem> pacoteDeViagem;
