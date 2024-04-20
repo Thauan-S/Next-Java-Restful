@@ -19,8 +19,15 @@ import com.tropical.data.dto.LoginResponse;
 import com.tropical.model.Role;
 import com.tropical.repository.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
+@Tag(name= "Login",description = "Endpoint para Fazer login")
 public class TokenController {
 	private final UserRepository userRepository;
 	private final JwtEncoder jwtEncoder;
@@ -32,6 +39,19 @@ public class TokenController {
 		this.passwordEncoder=passwordEncoder;
 	}
 	@PostMapping("/login")
+	@Operation(
+			summary = "Login",
+			description = "Login",
+			tags = {"Login"},
+			responses = {
+					@ApiResponse(description="Success",responseCode = "200"
+							,content = @Content(schema = @Schema(implementation = LoginResponse.class))),
+					@ApiResponse(description="No Content",responseCode = "204",content = @Content),
+					@ApiResponse(description="Bad Request",responseCode = "400",content = @Content),
+					@ApiResponse(description="Not Found",responseCode = "404",content = @Content),
+					@ApiResponse(description="Internal Server Error",responseCode = "204",content = @Content)
+			}
+			)
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
 		
 		var user =userRepository.findByUsername(loginRequest.username());
