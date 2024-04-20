@@ -5,7 +5,7 @@ import java.util.Date;
 import com.tropical.model.Cliente;
 import com.tropical.model.User;
 
-public class ClienteDTOO {
+public class ClienteDto {
 	
 	Long clienteId;
 	
@@ -31,7 +31,7 @@ public class ClienteDTOO {
 //		this.user = cliente.getUser();
 //	}
 
-	public ClienteDTOO(Cliente cliente) {
+	public ClienteDto(Cliente cliente) {
 		this.clienteId = cliente.getClienteId();
 		this.nome = cliente.getNome();
 		this.telefone = cliente.getTelefone();
@@ -40,7 +40,7 @@ public class ClienteDTOO {
 		this.user = cliente.getUser();
 	}
 
-	public ClienteDTOO() {
+	public ClienteDto() {
 		
 	}
 
