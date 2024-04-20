@@ -12,31 +12,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tropical.data.dto.ClienteDto;
 import com.tropical.data.dto.CreateUserDto;
 import com.tropical.data.dto.EmpresaDTO;
 import com.tropical.exceptions.UserAlreadyExistsException;
 import com.tropical.exceptions.UserAlreadyUsedException;
+import com.tropical.model.Cliente;
 import com.tropical.model.Empresa;
 import com.tropical.model.Role;
 import com.tropical.model.User;
+import com.tropical.repository.ClienteRepository;
 import com.tropical.repository.EmpresaRepository;
 import com.tropical.repository.RoleRepository;
 import com.tropical.repository.UserRepository;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
+@Tag(name = "Usuários" ,description = "Endpoint para criação de usuários")
 public class UserController {
 
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final EmpresaRepository empresaRepository;
+	private final ClienteRepository clienteRepository;
 
 	public UserController(UserRepository userRepository, RoleRepository roleRepository,
-			BCryptPasswordEncoder bCryptPasswordEncoder,EmpresaRepository empresaRepository) {
+			BCryptPasswordEncoder bCryptPasswordEncoder,EmpresaRepository empresaRepository,ClienteRepository clienteRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.empresaRepository = empresaRepository;
+		this.clienteRepository = clienteRepository;
 	}
 
 	@PostMapping("/register/user")
@@ -70,7 +78,7 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 	@PostMapping("/register/empresa")
-	public ResponseEntity<Void> newempresa(@RequestBody EmpresaDTO empresaDTO) {
+	public ResponseEntity<Void> newEmpresa(@RequestBody EmpresaDTO empresaDTO) {
 		var companyRole=roleRepository.findByName(Role.Values.EMPRESA.name());
 		var userDB= userRepository.findByUsername(empresaDTO.getUser().getUsername());
 		if(userDB.isPresent()) {
@@ -90,6 +98,35 @@ public class UserController {
 			empresa.setCnpj(empresaDTO.getCnpj());
 			empresa.setEndereco(empresaDTO.getEndereco());
 			empresaRepository.save(empresa);
+		}
+		else {
+			throw new UserAlreadyUsedException();
+		}
+		return ResponseEntity.ok().build();
+	}
+	@PostMapping("/register/cliente")
+	
+	public ResponseEntity<Void> newCliente(@RequestBody ClienteDto clienteDto) {
+		var basicRole=roleRepository.findByName(Role.Values.BASIC.name());
+		var userDB= userRepository.findByUsername(clienteDto.getUser().getUsername());
+		if(userDB.isPresent()) {
+			throw new UserAlreadyExistsException();
+		}
+		var user= new User();
+		user.setUsername(clienteDto.getUser().getUsername());
+		user.setPassword(bCryptPasswordEncoder.encode(clienteDto.getUser().getPassword()));
+		user.setRoles(Set.of(basicRole));
+		userRepository.save(user);
+		
+	Cliente cliente= new Cliente();
+		
+		if(clienteRepository.findByUser(user).isEmpty()) {
+			cliente.setUser(user);
+			cliente.setNome(clienteDto.getNome());
+			cliente.setDataNascimento(clienteDto.getDataNascimento());
+			cliente.setTelefone(clienteDto.getTelefone());
+			cliente.setCep(clienteDto.getCep());
+			clienteRepository.save(cliente);
 		}
 		else {
 			throw new UserAlreadyUsedException();
