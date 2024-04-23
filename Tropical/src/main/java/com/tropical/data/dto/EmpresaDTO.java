@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tropical.model.Empresa;
 import com.tropical.model.PacoteDeViagem;
 import com.tropical.model.User;
@@ -91,7 +92,7 @@ public class EmpresaDTO {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
 	public List<PacoteDeViagem> getPacoteDeViagem() {
 		return pacoteDeViagem;
 	}
