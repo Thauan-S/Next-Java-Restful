@@ -2,8 +2,11 @@ package com.tropical.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,13 +33,10 @@ public class Empresa {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "empresa")
+	@JsonManagedReference
+	@OneToMany(mappedBy = "empresa" ,fetch = FetchType.LAZY)
 	private List<PacoteDeViagem> pacoteDeViagem;
 
-	
-	
-	
-	
 	
 	public Empresa(Long empresaId, String nomeEmpresa, String cnpj, String endereco, User user,
 			List<PacoteDeViagem> pacoteDeViagem) {
@@ -91,7 +91,7 @@ public class Empresa {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
 	public List<PacoteDeViagem> getPacoteDeViagem() {
 		return pacoteDeViagem;
 	}
