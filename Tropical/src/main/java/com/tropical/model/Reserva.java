@@ -1,20 +1,15 @@
 package com.tropical.model;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Date;
-
-import com.tropical.data.dto.ReservaDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +21,7 @@ public class Reserva {
 	@Column(name = "reserva_id")
 	private Long reservaId;
 	@Column(name="data_reserva")
-	private Instant dataReserva;
+	private ZonedDateTime dataReserva;
 	@Column(name="data_viagem")
 	private Date dataViagem;
 	
@@ -40,7 +35,7 @@ public class Reserva {
 	
 	
 	
-	public Reserva(Long reservaId, Instant dataReserva, Date dataViagem, Cliente cliente, PacoteDeViagem pacote) {
+	public Reserva(Long reservaId, ZonedDateTime dataReserva, Date dataViagem, Cliente cliente, PacoteDeViagem pacote) {
 		this.reservaId = reservaId;
 		this.dataReserva = dataReserva;
 		this.dataViagem = dataViagem;
@@ -58,12 +53,15 @@ public class Reserva {
 	public void setReservaId(Long reservaId) {
 		this.reservaId = reservaId;
 	}
-	public Instant getDataReserva() {
+
+	public ZonedDateTime getDataReserva() {
 		return dataReserva;
 	}
-	public void setDataReserva(Instant dataReserva) {
+
+	public void setDataReserva(ZonedDateTime dataReserva) {
 		this.dataReserva = dataReserva;
 	}
+
 	public Date getDataViagem() {
 		return dataViagem;
 	}
