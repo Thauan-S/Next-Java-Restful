@@ -79,7 +79,8 @@ public class UserController {
 	}
 	@PostMapping("/register/empresa")
 	public ResponseEntity<Void> newEmpresa(@RequestBody EmpresaDTO empresaDTO) {
-		var companyRole=roleRepository.findByName(Role.Values.EMPRESA.name());
+		
+				var companyRole=roleRepository.findByName(Role.Values.EMPRESA.name());
 		var userDB= userRepository.findByUsername(empresaDTO.getUser().getUsername());
 		if(userDB.isPresent()) {
 			throw new UserAlreadyExistsException();
