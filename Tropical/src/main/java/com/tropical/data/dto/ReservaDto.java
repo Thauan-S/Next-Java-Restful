@@ -1,6 +1,7 @@
 package com.tropical.data.dto;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -26,13 +27,13 @@ import jakarta.persistence.Table;
 public class ReservaDto {
 	
 	private Long reservaId;
-	private Instant dataReserva;
+	private ZonedDateTime dataReserva;
 	private Date dataViagem;
 	
 	private Cliente cliente;
 	private PacoteDeViagem pacote;
 	
-	public ReservaDto(Long reservaId, Instant dataReserva, Date dataViagem, Cliente cliente, PacoteDeViagem pacote) {
+	public ReservaDto(Long reservaId, ZonedDateTime dataReserva, Date dataViagem, Cliente cliente, PacoteDeViagem pacote) {
 		this.reservaId = reservaId;
 		this.dataReserva = dataReserva;
 		this.dataViagem = dataViagem;
@@ -55,10 +56,10 @@ public class ReservaDto {
 	public void setReservaId(Long reservaId) {
 		this.reservaId = reservaId;
 	}
-	public Instant getDataReserva() {
+	public ZonedDateTime getDataReserva() {
 		return dataReserva;
 	}
-	public void setDataReserva(Instant dataReserva) {
+	public void setDataReserva(ZonedDateTime dataReserva) {
 		this.dataReserva = dataReserva;
 	}
 	public Date getDataViagem() {
