@@ -107,8 +107,6 @@ public EmpresaController(EmpresaRepository empresaRepository,UserRepository user
 						empresa.getUser(),
 						empresa.getPacoteDeViagem()
 						));
-						
-		
 		return EmpresaDTO.listaEmpresas(empresas);
 	}
 //	@GetMapping(
