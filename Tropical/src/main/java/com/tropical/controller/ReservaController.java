@@ -185,7 +185,7 @@ public class ReservaController {
 		}
 
 	}
-
+	
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Deleta uma reserva", description = "Deleta uma reserva", tags = { "Reservas" }, responses = {
 			@ApiResponse(description = "No Content", responseCode = "204", content = @Content),
@@ -193,22 +193,18 @@ public class ReservaController {
 			@ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),
 			@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
 			@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
+	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_BASIC')")
 	public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
-//		var user = userRepository.findById(UUID.fromString(token.getName()));
-//		var isAdmin = user.get().getRoles().stream()
-//				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-//		var cliBd = clienteRepository.findById(id);
-//		if (isAdmin || cliBd.get().getUser().getUserId().equals(user.get().getUserId())) {
-//			reservaRepository.deleteById(id);
-//		} else {
-//			throw new ForbiddenAccesException(
-//					"O usuário " + user.get().getUsername() + " Não tem permissão para realizar esta operação");
-//		}
-		// Para visualizar no fuso horário do sistema:
-		Instant now= Instant.now();
-		ZonedDateTime zdt = now.atZone(ZoneId.systemDefault());
-		System.out.println("Local system time zone: " + zdt);
-		System.out.println(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")));
+		var user = userRepository.findById(UUID.fromString(token.getName()));
+		var isAdmin = user.get().getRoles().stream()
+				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
+		var reservaBd=reservaRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("A reserva de id "+id+" não se encontra na base de dados "));
+		if (isAdmin || reservaBd.getCliente().getUser().getUserId().equals((user.get().getUserId()))) {
+			reservaRepository.deleteById(id);
+		} else {
+			throw new ForbiddenAccesException(
+					"O usuário " + user.get().getUsername() + " Não tem permissão para realizar esta operação");
+		}
 		return ResponseEntity.noContent().build();
 	}
 }
