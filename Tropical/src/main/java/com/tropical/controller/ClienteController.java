@@ -67,8 +67,10 @@ this.userRepository = userRepository;
 				}
 			)
 	@PreAuthorize(value ="hasAuthority('SCOPE_ADMIN')")
-	public ResponseEntity<ClienteDto> findById(@PathVariable Long id) {
+	public ResponseEntity<ClienteDto> findById(@PathVariable Long id ) {
+		System.out.println("esse é o id"+id);
 		var cliente= clienteRepository.findById(id).orElseThrow(()-> new NotFoundException("O cliente de id"+id+"não existe na base de dados"));
+		
 		return ResponseEntity.ok(new ClienteDto(cliente));
 		
 	}
@@ -91,6 +93,7 @@ this.userRepository = userRepository;
 				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
 				}
 			)
+	
 	@PreAuthorize(value ="hasAuthority('SCOPE_ADMIN')")
 	public ResponseEntity<ClientListDto> findAll(
 			@RequestParam (value="page",defaultValue="0")int page,
@@ -165,6 +168,8 @@ this.userRepository = userRepository;
 					.stream()
 					.anyMatch(role-> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
 		if(isAdmin||clibd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
+			user.get().setUsername(clientedto.getUser().getUsername());
+			user.get().setPassword(clientedto.getUser().getPassword());
 			clibd.setNome(clientedto.getNome());
 			clibd.setDataNascimento(clientedto.getDataNascimento());
 			clibd.setTelefone(clientedto.getTelefone());
