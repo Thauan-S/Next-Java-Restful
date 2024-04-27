@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import MessageModal from "@/components/messageModal";
 import EditClientModal from "./editClientModal";
 import Modal from "@/components/modal";
-const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
+const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) => {
   const [id, setId] = useState('');
   const[showModal,setShowModal]=useState(false)
   const [token, setToken] = useState('');
@@ -18,8 +18,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
   const [clienteSelecionado, setClienteSelecionado] = useState("");
 
   const handleClienteSelecionado = (clienteId) => {
-    
-    const cliente = clientes.find((cliente) => cliente.id === clienteId);
+    const cliente = clientes.find((cliente) => cliente.clienteId === clienteId);
     setClienteSelecionado(cliente);
     setShowModal(true)
   };
@@ -52,7 +51,6 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
               <th scope="col"># ID</th>
               <th scope="col">Nome</th>
               <th scope="col">Telefone</th>
-              <th scope="col">Email</th>
               <th scope="col">Cep</th>
               <th scope="col">Data de Nascimento</th>
               <th scope="col">Ações</th>
@@ -61,23 +59,22 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
           <tbody>
             {clientes.map((i, index) => (
               <tr key={index}>
-                <td>{i.id}</td>
+                <td>{i.clienteId}</td>
                 <td>{i.nome}</td>
                 <td>{i.telefone}</td>
-                <td>{i.email}</td>
                 <td>{i.cep}</td>
                 <td>{moment(i.dataNascimento).format("DD/MM/YYYY")}</td>
                 <td>
                   <button
                      type="button"
                      className="btn btn-primary"
-                    onClick={() => handleClienteSelecionado(i.id) }
+                    onClick={() => handleClienteSelecionado(i.clienteId) }
                   >
                     <i className="bi bi-gear-fill" />
                   </button>
                  
                   <button
-                    onClick={() => handleDeleteClient(i.id)}
+                    onClick={() => handleDeleteClient(i.clienteId)}
                     type="button"
                     className="btn btn-primary"
                   >
@@ -88,7 +85,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes }) => {
             ))}
           </tbody>
         </table>
-        {clienteSelecionado && <EditClientModal cli={clienteSelecionado} token={token} showModal={showModal} setShowModal={setShowModal} setClientes={setClientes} />}
+        {clienteSelecionado && <EditClientModal cli={clienteSelecionado} token={token} showModal={showModal} setShowModal={setShowModal} setClientes={setClientes} username={username} />}
       </div>
     );
   } //else if (reservas) {
