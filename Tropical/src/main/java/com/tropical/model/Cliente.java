@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -26,6 +25,7 @@ public class Cliente {
 	private String nome;
 	
 	private String telefone;
+	
 	
 	private Date dataNascimento;
 	
@@ -55,6 +55,7 @@ public class Cliente {
 	}
 
 	public Date getDataNascimento() {
+		
 		return dataNascimento;
 	}
 
