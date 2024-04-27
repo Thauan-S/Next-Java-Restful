@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.webjars.NotFoundException;
 
@@ -27,6 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
+@RequestMapping("/api/auth/v1")
 @Tag(name= "Login",description = "Endpoint para Fazer login")
 public class TokenController {
 	private final UserRepository userRepository;
@@ -59,7 +61,7 @@ public class TokenController {
 		
 		if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest,passwordEncoder)) throw new NotFoundException("O usuario ou senha estão inválidos");
 		var now= Instant.now();
-		var expiresIn=300L;
+		var expiresIn=3600L;
 		var scopes= user.get().getRoles()
 				.stream()
 				.map(Role::getName)
