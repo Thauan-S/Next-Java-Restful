@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-
 import Table from "@/components/table";
 import HeadComponent from "@/components/head";
 import useGetClients from "@/hooks/useGetClients";
 import Link from "next/link";
+import axios from "axios";
 const Clientes = () => {
-  const { username, clientes, setClientes, setPage, page, getClients } =
-    useGetClients();
-  useEffect(() => {
-    getClients(page);
-  }, [page]);
 
+ const { username, clientes, setClientes, setPage, page } = useGetClients();
+
+
+  
   return (
     <>
       <HeadComponent title={" Clientes | Lista"} />
@@ -57,7 +56,7 @@ const Clientes = () => {
           </button>
         </div>
 
-        <Table clientes={clientes} setClientes={setClientes} />
+         <Table clientes={clientes} setClientes={setClientes} username={username} /> 
       </main>
     </>
   );
