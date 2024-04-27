@@ -1,84 +1,95 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 import { useRouter } from "next/navigation";
-const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
-  
-  const router=useRouter()
+const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
   const [hidden, setHidden] = useState(true);
+  const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
   const [cliente, setCliente] = useState({
-    id: "",
+    clienteId: "",
     nome: "",
-    email: "",
-    senha: "",
     telefone: "",
     cep: "",
     dataNascimento: "",
+    user: {
+      username: "",
+      password: "",
+      roles: [
+        {
+          roleId: "",
+          name: "",
+        },
+      ],
+    },
   });
-  console.log("cliente", cliente);
   const handleInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
   };
+  console.log("id", cli.clienteId);
+  console.log("cliente",cliente);
   
   useEffect(() => {
     axios
-      .get("http://localhost:80/api/clientes/v1/" + cli.id, {
+      .get("http://localhost:80/api/clientes/v1/"+cli.clienteId, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
+        console.log("cliente", cliente);
         setCliente(response.data);
-      });
-  }, [cli]);
-  
-  const handleEditClient = async() => {
-    try {
-       await axios.put("http://localhost:80/api/clientes/v1",cliente, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        
-      });
-      setHidden(!hidden);
-      
-      axios
-      .get("http://localhost:80/api/clientes/v1", {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        setClientes(response.data._embedded.clienteVOList);
+       
       })
       .catch((error) => {
-        console.error("Erro ao Listar os Clientes", error);
+        console.error;
       });
-    } catch (error) {
-      console.error(error);
-    }
-    
+  }, [cli.clienteId]);
+  const handleEditClient = async () => {
+    //   try {
+    //      await axios.put("http://localhost:80/api/clientes/v1",cliente, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
+    //     setHidden(!hidden);
+    //     axios
+    //     .get("http://localhost:80/api/clientes/v1", {
+    //       headers: {
+    //         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       setClientes(response.data.clientesList);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erro ao Listar os Clientes", error);
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
   };
-  useEffect(() => {
-    axios
-      .get("http://localhost:80/api/clientes/v1", {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        console.log("Response", response.data);
-        setClientes(response.data._embedded.clienteVOList);
-      })
-      .catch((error) => {
-        console.error("Erro ao Listar os Clientes", error);
-      });
-  }, []);
+
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:80/api/clientes/v1", {
+  //       headers: {
+  //         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log("Response", response.data);
+  //       setClientes(response.data.clientesList);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao Listar os Clientes", error);
+  //     });
+  // }, []);
   if (showModal) {
     return (
       <>
         <div
           className="modal fade show"
-          style={{display:"block"}}
+          style={{ display: "block" }}
           id="exampleModal"
           tabIndex={-1}
           aria-labelledby="exampleModalLabel"
@@ -88,11 +99,11 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Editar cliente <p>id{cli.id}</p>
+                  Editar cliente <p>id {cliente.clienteId}</p>
                 </h1>
                 <button
                   type="button"
-                  onClick={()=> setShowModal(!showModal)}
+                  onClick={() => setShowModal(!showModal)}
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
@@ -108,9 +119,12 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
                 </div>
 
                 <div className="mb-3">
+                  <label htmlFor="exampleInputEmail1" className="form-label">
+                    Nome
+                  </label>
                   <input
-                    value={(cliente.id = cli.id)}
-                    name="id"
+                    value={cliente.clienteId}
+                    name="clienteId"
                     hidden={true}
                     readOnly
                     type="text"
@@ -118,9 +132,7 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
                     id="exampleInputNome"
                     aria-describedby="emailHelp"
                   />
-                  <label htmlFor="exampleInputEmail1" className="form-label">
-                    Nome
-                  </label>
+
                   <input
                     name="nome"
                     id="exampleInputEmail1"
@@ -130,17 +142,16 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="exampleInputEmail" className="form-label">
+                  <label htmlFor="exampleInputDate" className="form-label">
                     Email
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="email"
-                    value={cliente.email}
-                    placeholder="seuemail@exemplo.com"
-                    type="Email"
+                    name="user"
+                    value={cliente.user.username}
+                    type="email"
                     className="form-control"
-                    id="exampleInputEmail"
+                    id="exampleInputDate"
                   />
                 </div>
                 <div className="mb-3">
@@ -149,8 +160,8 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="senha"
-                    value={cliente.senha}
+                    name="password"
+                    value={cliente.user.password}
                     type="password"
                     className="form-control"
                     id="exampleInputPassword1"
@@ -191,12 +202,32 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
                   <input
                     onChange={handleInputChange}
                     name="dataNascimento"
-                    value={cliente.dataNascimento}
+                    value={cliente.dataNascimento.split("T")[0]}
                     type="date"
                     className="form-control"
                     id="exampleInputDate"
                   />
                 </div>
+              {username=="admin"?
+                <div className="mb-3">
+                <label htmlFor="exampleInputDate" className="form-label">
+                  Tipo de usuário
+                </label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                >
+                  <option value={'cliente.user.roles[0].name'}>
+                    {'cliente.user.roles[0].name'}
+                  </option>
+                  {papeis.map((i, index) => (
+                    <option value={i}>{i}</option>
+                  ))}
+                </select>
+              </div>  : null
+            }
+                
+
                 <button
                   type="submit"
                   onClick={handleEditClient}
@@ -208,7 +239,7 @@ const EditClientModal = ({ cli,showModal, token,setShowModal,setClientes }) => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  onClick={()=> setShowModal(!showModal)}
+                  onClick={() => setShowModal(!showModal)}
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
