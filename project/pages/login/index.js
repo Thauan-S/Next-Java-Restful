@@ -11,15 +11,18 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
-  
   const handleLogin = () => {
     axios
-      .post("http://localhost:80/auth/signin", user)
+      .post("http://localhost/api/auth/v1/login", user)
       .then((response) => {
+        console.log("username", user.username);
         window.localStorage.setItem("username", user.username);
         window.localStorage.setItem("token", response.data.accessToken);
-        router.push("/clientes/lista");
-        
+        if (user.username == "admin") {
+          router.push("/clientes/lista");
+        } else {
+          router.push("/");
+        }
       })
       .catch((error) => {
         setHidden(!hidden);
@@ -28,7 +31,7 @@ const Login = () => {
   };
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    setHidden(true)
+    setHidden(true);
   };
 
   return (
@@ -36,9 +39,11 @@ const Login = () => {
       <HeadComponent title={"Tropical | Login"} />
       <div className={`${styles.degrade}`}>
         <div className={`container-fluid ${styles.login}  text-center`}>
-          <div className={`row ${styles.input}`}> 
+          <div className={`row ${styles.input}`}>
             <div className="mb-3  col-10 col-md-5">
-              <p hidden={hidden}>Login ou senha informados inválidos, digite novamente</p>
+              <p hidden={hidden}>
+                Login ou senha informados inválidos, digite novamente
+              </p>
               <label htmlFor="nome" className="form-label  ">
                 <p> Nome</p>
               </label>
@@ -71,16 +76,14 @@ const Login = () => {
                 required=""
               />
               <button
-            onClick={handleLogin}
-            type="button"
-            className={`${styles.btn} btn btn-primary `}
-          >
-            Login
-          </button>
+                onClick={handleLogin}
+                type="button"
+                className={`${styles.btn} btn btn-primary `}
+              >
+                Login
+              </button>
             </div>
-           
           </div>
-          
         </div>
       </div>
     </>
