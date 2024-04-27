@@ -38,11 +38,13 @@ public class SecurityConfig {
      SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+        		
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/login" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/register/empresa" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/register/cliente" ).permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/auth/v1/login").permitAll()
                         .requestMatchers("/swagger-ui/**",
                     		"/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin" ).permitAll()
@@ -50,7 +52,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+        
         return http.build();
     }
 
