@@ -19,18 +19,6 @@ public class ClienteDto {
 	
 	User user;
 
-
-	
-
-//	public ClienteDTOO(Cliente cliente) {
-//		this.clienteId = cliente.getClienteId();
-//		this.nome = cliente.getNome();
-//		this.telefone = cliente.getTelefone();
-//		this.dataNascimento = cliente.getDataNascimento();
-//		this.cep = cliente.getCep();
-//		this.user = cliente.getUser();
-//	}
-
 	public ClienteDto(Cliente cliente) {
 		this.clienteId = cliente.getClienteId();
 		this.nome = cliente.getNome();
@@ -61,6 +49,7 @@ public class ClienteDto {
 	}
 
 	public Date getDataNascimento() {
+	
 		return dataNascimento;
 	}
 
