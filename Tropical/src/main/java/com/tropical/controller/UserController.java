@@ -1,5 +1,6 @@
 package com.tropical.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -106,7 +107,6 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 	@PostMapping("/register/cliente")
-	
 	public ResponseEntity<Void> newCliente(@RequestBody ClienteDto clienteDto) {
 		var basicRole=roleRepository.findByName(Role.Values.BASIC.name());
 		var userDB= userRepository.findByUsername(clienteDto.getUser().getUsername());
