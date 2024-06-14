@@ -3,10 +3,11 @@ package com.tropical.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.Instant;
+
 import java.util.*;
 
 
+import com.tropical.controller.ClienteController;
 import com.tropical.model.Role;
 import com.tropical.model.User;
 import org.junit.jupiter.api.Nested;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.webjars.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class ClienteServiceTest {
@@ -35,6 +37,7 @@ public class ClienteServiceTest {
 	private UserRepository userRepository;
 	@InjectMocks
 	 private ClienteService clienteService;
+
 	
 	@Captor
 	private ArgumentCaptor<Cliente> clienteArgumentCaptor;
@@ -76,27 +79,19 @@ public class ClienteServiceTest {
 			assertEquals(cliente.getNome(),outPut.get().getNome());
 		}	
 		@Test
-		void deveBuscarUmClienteAndThrowsException() {
-			var cliente= new Cliente(
-					1L,
-					"Thauan",
-					"73988896878",
-					new Date(2002-17-11),
-					"45330000"
-					);
+		void deveBuscarUmClienteELancarException() {
 			//Arrange
-			//doReturn(cliente).when(clienteRepository).save();
-			doReturn(cliente).when(clienteRepository).findById(1L);
-			//var input = new ClienteDto(1L,"Thauan","73988896878",new Date(2002-17-11),"45330000");
-			
-			//clienteService.save();
+			var clientId=1L;
+			doReturn(Optional.empty()).when(clienteRepository).findById(IdArgumentCaptor.capture());
 			//Act
 			 Optional<Cliente>outPut=clienteRepository.findById(1L);
-			
+
 			//Assert
 			//assertNotNull(outPut.getClienteId());
-			assertEquals("Thauan", outPut.get().getNome());
-			
+			NotFoundException exception=assertThrows(NotFoundException.class,()-> clienteService.findById(clientId));
+
+			assertThrows(NotFoundException.class,()-> clienteService.findById(1L));
+			assertEquals("O cliente de id" + clientId + "não existe na base de dados",exception.getMessage());
 		}	
 	}
 	
@@ -178,31 +173,8 @@ public class ClienteServiceTest {
 		assertEquals(clientesList.get(1).getClienteId(),cliente2.getClienteId());
 		assertEquals(clientePage.getSize(),clientesList.size());
 		}
-		@Test
-		void shouldReturnAllClientsWithSuccess(){
-			//Arrange
-			var cliente1= new Cliente(1L, "Thauan", "73988896878", new Date(2002-17-11), "45330000");
-			var cliente2= new Cliente(2L, "Thauan2", "73988896877", new Date(2002-17-12), "45330001");
-			//Page<Cliente>page=new Page.of(cliente);
-			List<Cliente>clientesList= Arrays.asList(cliente1,cliente2);
-
-			Page<Cliente>clientePage = new PageImpl<>(clientesList, PageRequest.of(0, 2), clientesList.size());
-			//doReturn(page.get().toList())
-			doReturn(clientePage)
-					.when(clienteRepository)
-					.findAll(PageRequestArgumentCaptor.capture());
-
-			//Act
-			var output=clienteService.findAll(1,2,"ASC");
 
 
-			//Assert
-			assertNotNull(output);
-			assertEquals(clientesList.size(), Objects.requireNonNull(output.getBody()).size());
-			assertEquals(clientesList.get(0).getClienteId(),cliente1.getClienteId());
-			assertEquals(clientesList.get(1).getClienteId(),cliente2.getClienteId());
-			assertEquals(clientePage.getSize(),clientesList.size());
-		}
 	}
 
 	@Nested
