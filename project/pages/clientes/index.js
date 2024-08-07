@@ -9,26 +9,33 @@ const Cadastro = () => {
     telefone: "",
     dataNascimento: "",
     cep: "",
-    email: "",
-    senha: "",
+    user:{
+      username:"",
+      password:""
+    }
+    
   });
+ 
   const router = useRouter();
   const handleInputChange = (e) => {
+    
+    if(e.target.name==="username"){
+      setCliente(cliente.user.username=e.target.value)
+    }else if(e.target.name==="password"){
+      setCliente((cliente.user.password=e.target.value))
+    }
     setCliente({ ...cliente, [e.target.name]: e.target.value });
+    
   };
 
   const handleAddClient = () => {
     axios
-      .post("http://localhost:80/api/clientes/v1",cliente,{
-        headers:{
-          Authorization:`Bearer ${window.localStorage.getItem('token')}` 
-        }
-      })
+      .post("http://localhost:80/register/cliente",cliente)
       .then((response) => {
-        router.push("/clientes/lista");
+        router.push("/login");
       })
       .catch((error) => {
-        console.error("erro ao cadastrar Usuário" + error);
+        console.error("erro ao cadastrar Usuário " + error);
       });
   };
   return (
@@ -72,7 +79,7 @@ const Cadastro = () => {
             <label htmlFor="Data de Nascimento" className="form-label">
               Data de Nascimento
             </label>
-            <div className="col-md-2">
+            <div className="col-md-2 col-sm-4">
               <input
                 type="date"
                 placeholder="Insira seu telefone"
@@ -87,9 +94,9 @@ const Cadastro = () => {
           </div>
         </div>
         <div className="mb-1 row">
-          <div className="mb-2  col-lg-2 col-sm-1">
+          <div className="mb-2  col-lg-2 col-sm-3">
             <label htmlFor="cep" className="form-label">
-              cep
+              Cep
             </label>
             <input
               type="text"
@@ -114,8 +121,8 @@ const Cadastro = () => {
               className="form-control"
               type="email"
               placeholder="seuemail@exemplo.com"
-              name="email"
-              value={cliente.email}
+              name="username"
+              value={cliente.user.username}
               onChange={handleInputChange}
             />
             <div id="emailHelp" className="form-text">
@@ -130,10 +137,10 @@ const Cadastro = () => {
               <input
                 id="senha"
                 className="form-control "
-                type="password"
+                type="text"
                 placeholder="insira sua senha"
-                name="senha"
-                value={cliente.senha}
+                name="password"
+                value={cliente.user.password}
                 onChange={handleInputChange}
                 aria-describedby="senha"
                 required

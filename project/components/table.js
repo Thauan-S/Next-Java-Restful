@@ -23,7 +23,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) 
     setShowModal(true)
   };
   const handleDeleteClient = (id) => {
-    const response = confirm(`deseja excluir o cliente de id ${id}`);
+    const response = confirm(`deseja excluir o cliente de id ${id} ?`);
 
     if (response == true) {
       setId(id);

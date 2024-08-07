@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
-import { useRouter } from "next/navigation";
-const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
+
+import useGetClients from "@/hooks/useGetClients";
+import { useRouter } from "next/router";
+const EditClientModal = ({ cli, showModal, token, setShowModal,username,setClientes }) => {
+  const {setUpdate}=useGetClients();
+  const router=useRouter();
   const [hidden, setHidden] = useState(true);
   const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
   const [cliente, setCliente] = useState({
@@ -25,9 +29,6 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
   const handleInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
   };
-  console.log("id", cli.clienteId);
-  console.log("cliente",cliente);
-  
   useEffect(() => {
     axios
       .get("http://localhost:80/api/clientes/v1/"+cli.clienteId, {
@@ -36,38 +37,27 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
         },
       })
       .then((response) => {
-        console.log("cliente", cliente);
         setCliente(response.data);
-       
       })
       .catch((error) => {
         console.error;
       });
-  }, [cli.clienteId]);
-  const handleEditClient = async () => {
-    //   try {
-    //      await axios.put("http://localhost:80/api/clientes/v1",cliente, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-    //     setHidden(!hidden);
-    //     axios
-    //     .get("http://localhost:80/api/clientes/v1", {
-    //       headers: {
-    //         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       setClientes(response.data.clientesList);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Erro ao Listar os Clientes", error);
-    //     });
-    //   } catch (error) {
-    //     console.error(error);
+  },[cli.clienteId]);
+  const handleEditClient =  () => {
+          axios.put("http://localhost:80/api/clientes/v1",cliente, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).then((response)=>{
+          console.log(response.status)
+          router.reload()
+        })
+        .catch((error)=>{
+          console.error(error)
+        })
+        setHidden(!hidden);
   };
-
+ 
   // };
   // useEffect(() => {
   //   axios
@@ -99,7 +89,7 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Editar cliente <p>id {cliente.clienteId}</p>
+                  Editar cliente <p>ID: {cliente.clienteId}</p>
                 </h1>
                 <button
                   type="button"
@@ -143,7 +133,7 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputDate" className="form-label">
-                    Email
+                    Usuário
                   </label>
                   <input
                     onChange={handleInputChange}
@@ -160,7 +150,7 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="password"
+                    name="user"
                     value={cliente.user.password}
                     type="password"
                     className="form-control"
@@ -208,25 +198,6 @@ const EditClientModal = ({ cli, showModal, token, setShowModal,username }) => {
                     id="exampleInputDate"
                   />
                 </div>
-              {username=="admin"?
-                <div className="mb-3">
-                <label htmlFor="exampleInputDate" className="form-label">
-                  Tipo de usuário
-                </label>
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                >
-                  <option value={'cliente.user.roles[0].name'}>
-                    {'cliente.user.roles[0].name'}
-                  </option>
-                  {papeis.map((i, index) => (
-                    <option value={i}>{i}</option>
-                  ))}
-                </select>
-              </div>  : null
-            }
-                
 
                 <button
                   type="submit"

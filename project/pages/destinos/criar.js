@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const criarPacote = () => {
+const CriarPacote = () => {
   const [newPackage, setNewPackage] = useState({
     destino: "",
     descricao: "",
@@ -17,14 +17,7 @@ const criarPacote = () => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
   };
   const handleAddPackage = () => {
-    axios
-      .post("https://localhost:7250/api/PacoteDeViagens/", newPackage)
-      .then((response) => {
-        router.push("/destinos");
-      })
-      .catch((error) => {
-        alert("erro ao criar um novo pacote" + error);
-      });
+  const useCreatePackage(newPackage)
   };
 
   return (
@@ -124,4 +117,4 @@ const criarPacote = () => {
   );
 };
 
-export default criarPacote;
+export default CriarPacote;

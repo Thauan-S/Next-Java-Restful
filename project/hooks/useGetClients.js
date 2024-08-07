@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 function useGetClients() {
+  const [update,setUpdate]=useState(false)
   const [username, setUsername] = useState("");
   const [clientes, setClientes] = useState(null);
   var [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [direction, setDirection] = useState("ASC");
-  
+  console.log("valor",update)
   // const [getClients, setGetClients] = useState(() => {
   //   return (p)=>{
   //   axios
@@ -44,8 +45,8 @@ function useGetClients() {
       .then(response => {
         setClientes(response.data.clientesList)
    });
-  }, [page,size,direction]);
-  return { username, clientes, setPage, page };
+  },[page,size,direction,update]);
+  return { username, clientes, setPage, page ,setUpdate};
 }
 
 export default useGetClients;

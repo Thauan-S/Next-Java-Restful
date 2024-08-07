@@ -4,14 +4,23 @@ import styles from "../styles/navBar.module.css";
 import { useRouter } from "next/router";
 const NavBar = () => {
   const [hidden,setHidden]=useState(true)
+  const [hideManagementButton,sethideManagementButton]=useState(true)
   const router=useRouter()
   const[token,setToken]=useState()
   
-  useEffect(()=>{
   
+  useEffect(()=>{
+    const username=window.localStorage.getItem("username")
     setToken(window.localStorage.getItem('token'))
-    if(token!==null){
+    if(token==null){
+      setHidden(true)
+    }else{
       setHidden(false)
+    }
+    if(username!=="admin"){
+      sethideManagementButton(true)
+    }else{
+      sethideManagementButton(false)
     }
 
   })
@@ -66,7 +75,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item active">
-              <Link href={"/gerenciamento"} className="nav-link">
+              <Link hidden={hideManagementButton} href={"/gerenciamento"} className="nav-link">
                 Gerenciamento
               </Link>
             </li>

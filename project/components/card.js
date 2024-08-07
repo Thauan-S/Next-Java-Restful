@@ -24,12 +24,12 @@ const Card = ({
         </div>
         {btnText ? (
           <div className="card-footer">
-            <a
+            <Link
               className={`btn btn-primary ${styles.btnpromo} text-end`}
-              href="Destino.html"
+              href="/destinos"
             >
               {btnText}
-            </a>
+            </Link>
           </div>
         ) : null}
       </div>

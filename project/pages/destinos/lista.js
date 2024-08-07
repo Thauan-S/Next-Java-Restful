@@ -6,7 +6,7 @@ const ListaDestinos = () => {
   const [destinos, setDestinos] = useState(null);
   useEffect(() => {
     axios
-      .get("https://localhost:7250/api/PacoteDeViagens")
+      .get("https://localhost:80/api/pacotes/v1")
       .then((response) => {
         console.log(response.data)
         setDestinos(response.data);
