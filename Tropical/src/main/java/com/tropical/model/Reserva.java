@@ -3,14 +3,7 @@ package com.tropical.model;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="tb_reservas")
@@ -25,7 +18,7 @@ public class Reserva {
 	@Column(name="data_viagem")
 	private Date dataViagem;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="cliente_id_fk",nullable = false)
 	private Cliente cliente;
 	@ManyToOne

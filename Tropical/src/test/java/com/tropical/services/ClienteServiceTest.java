@@ -1,4 +1,4 @@
-package com.tropical.service;
+package com.tropical.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import java.util.*;
 
 
-import com.tropical.controller.ClienteController;
 import com.tropical.model.Role;
 import com.tropical.model.User;
 import org.junit.jupiter.api.Nested;
@@ -22,9 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.tropical.model.Cliente;
 import com.tropical.repository.ClienteRepository;
 import com.tropical.repository.UserRepository;
-import com.tropical.services.ClienteService;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.webjars.NotFoundException;
@@ -36,7 +33,7 @@ public class ClienteServiceTest {
 	@Mock
 	private UserRepository userRepository;
 	@InjectMocks
-	 private ClienteService clienteService;
+	private ClienteService clienteService;
 
 	
 	@Captor
@@ -70,13 +67,13 @@ public class ClienteServiceTest {
 			//var input = new ClienteDto(1L,"Thauan","73988896878",new Date(2002-17-11),"45330000");
 			
 			//clienteService.save();
-			//Act
-			 var outPut=clienteRepository.findById(1L);
+			//Act deve ser o service , e não o repository
+			 var outPut=clienteService.findById(1L);
 			
 			//Assert
 			//assertNotNull(outPut.getClienteId());
-			assertEquals("Thauan", outPut.get().getNome());
-			assertEquals(cliente.getNome(),outPut.get().getNome());
+			assertEquals("Thauan", outPut.getBody().getNome());
+			assertEquals(cliente.getNome(),outPut.getBody().getNome());
 		}	
 		@Test
 		void deveBuscarUmClienteELancarException() {

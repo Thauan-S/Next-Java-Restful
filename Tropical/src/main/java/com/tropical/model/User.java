@@ -18,14 +18,14 @@ public class User {
     @Column(name = "user_id")
     private UUID userId;
 
-    @Column(unique = true)
+   // @Column(unique = true)
     private String username;
     private String password;
     
     @OneToOne(mappedBy = "user")
     private Cliente cliente;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,7 +34,23 @@ public class User {
     private Set<Role> roles;
 
 
-    public UUID getUserId() {
+   
+
+	public User() {
+	}
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+	public User(UUID userId, String username, String password, Cliente cliente, Set<Role> roles) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.cliente = cliente;
+		this.roles = roles;
+	}
+
+	public UUID getUserId() {
         return userId;
     }
 

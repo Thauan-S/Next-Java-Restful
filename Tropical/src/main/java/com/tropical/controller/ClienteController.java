@@ -3,6 +3,7 @@ package com.tropical.controller;
 import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.model.Role;
 import com.tropical.repository.ClienteRepository;
 import com.tropical.repository.UserRepository;
+import com.tropical.services.ClienteService;
 import com.tropical.utils.MediaType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,13 +42,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Clientes", description = "Endpoint para Gerenciar Clientes")
 public class ClienteController {
 
-	private final ClienteRepository clienteRepository;
-	private final UserRepository userRepository;
-
-	public ClienteController(ClienteRepository clienteRepository, UserRepository userRepository) {
-		this.clienteRepository = clienteRepository;
-		this.userRepository = userRepository;
-	}
+	@Autowired
+	ClienteService clienteService;
 
 	@GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
 			MediaType.APPLICATION_YML })
@@ -60,9 +57,8 @@ public class ClienteController {
 			@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	@PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
 	public ResponseEntity<ClienteDto> findById(@PathVariable Long id) {
-		var cliente = clienteRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("O cliente de id" + id + "não existe na base de dados"));
-		return ResponseEntity.ok(new ClienteDto(cliente));
+		
+		return clienteService.findById(id);
 	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
@@ -78,12 +74,8 @@ public class ClienteController {
 	public ResponseEntity<ClientListDto> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "12") int size,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		var clientes = clienteRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "nome"))
-				.map(cliente -> new ClienteItemDTO(cliente.getClienteId(), cliente.getNome(), cliente.getTelefone(),
-						cliente.getDataNascimento(), cliente.getCep(), cliente.getUser()));
-
-		return ResponseEntity.ok(new ClientListDto(clientes.getContent(), page, size, clientes.getTotalPages(),
-				clientes.getTotalElements()));
+		
+		return clienteService.findAll(page, size, direction);
 	}
 //	@GetMapping(
 //			value="/findClientesByName/{nome}",
@@ -130,24 +122,8 @@ public class ClienteController {
 	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_BASIC')")
 	public ClienteDto update(@RequestBody ClienteDto clientedto, JwtAuthenticationToken token)
 			throws AccessDeniedException {
-		var user = userRepository.findById(UUID.fromString(token.getName()));
-		var clibd = clienteRepository.findById(clientedto.getClienteId())
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Cliente de id " + clientedto.getClienteId() + " Não encontrado na base de dados"));
-		var isAdmin = user.get().getRoles().stream()
-				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-		if (isAdmin || clibd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
-			user.get().setUsername(clientedto.getUser().getUsername());
-			user.get().setPassword(clientedto.getUser().getPassword());
-			clibd.setNome(clientedto.getNome());
-			clibd.setDataNascimento(clientedto.getDataNascimento());
-			clibd.setTelefone(clientedto.getTelefone());
-			clibd.setCep(clientedto.getCep());
-			clienteRepository.save(clibd);
-			return new ClienteDto(clibd);
-		} else {
-			throw new ForbiddenAccesException("O usuário não tem permissão para realizar esta ação");
-		}
+		
+		return clienteService.update(clientedto, token);
 	}
 
 	@DeleteMapping("/{id}")
@@ -159,17 +135,6 @@ public class ClienteController {
 			@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_BASIC')")
 	public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
-		var user = userRepository.findById(UUID.fromString(token.getName()));
-		var clibd = clienteRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException("Cliente de id " + id + "não encontrado na base de dados"));
-		var isAdmin = user.get().getRoles().stream()
-				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-		if (isAdmin || clibd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
-			clienteRepository.deleteById(id);
-		} else {
-			throw new ForbiddenAccesException("O usuário não tem permissão para realizar esta ação");
-		}
-
-		return ResponseEntity.noContent().build();
+		return clienteService.delete(id, token);
 	}
 }

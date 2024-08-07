@@ -1,13 +1,7 @@
 package com.tropical.controller;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -20,17 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.webjars.NotFoundException;
 
 import com.tropical.data.dto.ReservaDto;
-import com.tropical.exceptions.ForbiddenAccesException;
-import com.tropical.exceptions.ResourceNotFoundException;
-import com.tropical.model.Reserva;
-import com.tropical.model.Role;
-import com.tropical.repository.ClienteRepository;
-import com.tropical.repository.PacoteRepository;
-import com.tropical.repository.ReservaRepository;
-import com.tropical.repository.UserRepository;
+import com.tropical.services.ReservaService;
 import com.tropical.utils.MediaType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,18 +31,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Reservas", description = "Endpoint para Gerenciar Clientes")
 public class ReservaController {
 
-	private final ReservaRepository reservaRepository;
-	private final UserRepository userRepository;
-	private final ClienteRepository clienteRepository;
-	private final PacoteRepository pacoteRepository;
-
-	public ReservaController(ReservaRepository reservaRepository, UserRepository userRepository,
-			PacoteRepository pacoteRepository, ClienteRepository clienteRepository) {
-		this.reservaRepository = reservaRepository;
-		this.userRepository = userRepository;
-		this.clienteRepository = clienteRepository;
-		this.pacoteRepository = pacoteRepository;
-	}
+	@Autowired
+	ReservaService reservaService;
 
 	@GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
 			MediaType.APPLICATION_YML })
@@ -70,9 +46,7 @@ public class ReservaController {
 			@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	@PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
 	public ReservaDto findById(@PathVariable Long id) {
-		var reserva = reservaRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("A reserva de id" + id + "não existe na base de dados"));
-		return new ReservaDto(reserva);
+		return reservaService.findById(id);
 	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
@@ -86,13 +60,9 @@ public class ReservaController {
 	@PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
 	public Page<ReservaDto> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "12") int size,
-			@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-		var reservas = reservaRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "reservaId"))
-				.map(reserva -> new Reserva(reserva.getReservaId(), reserva.getDataReserva(), reserva.getDataViagem(),
-						reserva.getCliente(), reserva.getPacote()));
-
-		return ReservaDto.listaReservas(reservas);
+		return reservaService.findAll(page, size, direction);
 	}
 //	@GetMapping(
 //			value="/findClientesByName/{nome}",
@@ -137,21 +107,7 @@ public class ReservaController {
 					@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	@PreAuthorize("hasAuthority('SCOPE_BASIC')")
 	public ReservaDto create(@RequestBody ReservaDto dto, JwtAuthenticationToken token) {
-		var cliente = clienteRepository.findById(dto.getCliente().getClienteId());
-
-		var pacote = pacoteRepository.findById(dto.getPacote().getId());
-
-		if (cliente.isPresent() && pacote.isPresent()) {
-			Reserva reserva = new Reserva();
-			reserva.setCliente(cliente.get());
-			reserva.setDataReserva(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")));
-			reserva.setDataViagem(dto.getDataViagem());
-			reserva.setPacote(pacote.get());
-			reservaRepository.save(reserva);
-			return new ReservaDto(reserva);
-		} else {
-			throw new ResourceNotFoundException("Cliente ou pacote não se encontram na base de dados");
-		}
+		return reservaService.create(dto, token);
 	}
 
 	@PutMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
@@ -166,23 +122,7 @@ public class ReservaController {
 					@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
 					@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	public ReservaDto update(@RequestBody ReservaDto reservaDto, JwtAuthenticationToken token) {
-		var user = userRepository.findById(UUID.fromString(token.getName()));
-		var reservaBd = reservaRepository.findById(reservaDto.getReservaId())
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Reserva de id" + reservaDto.getReservaId() + " não encontrada na base de dados"));
-		var pacote = pacoteRepository.findById(reservaDto.getPacote().getId())
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Pacote de id " + reservaDto.getPacote().getId() + " não encontrado na base de dados"));
-		var isAdmin = user.get().getRoles().stream()
-				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-		if (isAdmin || reservaBd.getCliente().getUser().getUserId().equals(UUID.fromString(token.getName()))) {
-			reservaBd.setPacote(pacote);
-			reservaBd.setDataViagem(reservaDto.getDataViagem());
-			reservaRepository.save(reservaBd);
-			return reservaDto;
-		} else {
-			throw new ForbiddenAccesException();
-		}
+		return reservaService.update(reservaDto, token);
 
 	}
 	
@@ -195,16 +135,6 @@ public class ReservaController {
 			@ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content) })
 	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_BASIC')")
 	public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
-		var user = userRepository.findById(UUID.fromString(token.getName()));
-		var isAdmin = user.get().getRoles().stream()
-				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-		var reservaBd=reservaRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("A reserva de id "+id+" não se encontra na base de dados "));
-		if (isAdmin || reservaBd.getCliente().getUser().getUserId().equals((user.get().getUserId()))) {
-			reservaRepository.deleteById(id);
-		} else {
-			throw new ForbiddenAccesException(
-					"O usuário " + user.get().getUsername() + " Não tem permissão para realizar esta operação");
-		}
-		return ResponseEntity.noContent().build();
+		return reservaService.delete(id, token);
 	}
 }

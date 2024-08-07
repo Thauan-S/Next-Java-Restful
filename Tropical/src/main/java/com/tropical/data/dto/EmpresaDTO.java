@@ -33,7 +33,9 @@ public class EmpresaDTO {
 		this.user = user;
 		this.pacoteDeViagem = pacoteDeViagem;
 	}
+	public  EmpresaDTO() {
 
+	}
 	public EmpresaDTO(Empresa empresa) {
 		this.empresaId = empresa.getEmpresaId();
 		this.nomeEmpresa = empresa.getNomeEmpresa();

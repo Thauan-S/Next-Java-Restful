@@ -3,15 +3,7 @@ package com.tropical.model;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="tb_clientes")
@@ -37,6 +29,22 @@ public class Cliente {
 	
 	@OneToMany(mappedBy = "cliente")
 	private List<Reserva>reservas;
+
+	
+
+	public Cliente() {
+	}
+
+	public Cliente(Long clienteId, String nome, String telefone, Date dataNascimento, String cep
+			) {
+		this.clienteId = clienteId;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.dataNascimento = dataNascimento;
+		this.cep = cep;
+		
+		
+	}
 
 	public String getNome() {
 		return nome;
@@ -85,6 +93,14 @@ public class Cliente {
 
 	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 
 	

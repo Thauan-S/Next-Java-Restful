@@ -1,6 +1,7 @@
 package com.tropical.services;
 
 import com.tropical.data.dto.EmpresaDTO;
+import com.tropical.exceptions.ForbiddenAccesException;
 import com.tropical.model.*;
 import com.tropical.repository.EmpresaRepository;
 import com.tropical.repository.UserRepository;
@@ -181,6 +182,24 @@ class EmpresaServiceTest {
 assertEquals(ResponseEntity.noContent().build(),outPut);
 verify(empresaRepository,times(1)).deleteById(1L);
             }
+        @Test
+        @DisplayName("Should  Throw a ForbiddenAccesException When User not is admin")
+        void shouldNotDeleteACompaByIdWithSuccessWhenUserIsAdming(){
+            //arrange
+            var notAdmin=new Role();
+            notAdmin.setName("not is admin");
+            notAdmin.setRoleId(2L);
+            user.setRoles(Set.of(notAdmin));
+
+            doThrow(new ForbiddenAccesException()).when(userRepository).findById(uuidArgumentCaptor.capture());
+            //Act & Assert
+            ForbiddenAccesException exception=assertThrows(ForbiddenAccesException.class,()-> empresaService.delete(1L,token));
+            verify(empresaRepository,never()).deleteById(1L);
+            assertEquals("O usuário não possui permissão para realizar essa operação",exception.getMessage());
+
+
+
+        }
 
 
 

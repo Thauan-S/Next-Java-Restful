@@ -27,6 +27,14 @@ public class ClienteDto {
 		this.cep = cliente.getCep();
 		this.user = cliente.getUser();
 	}
+	
+	public ClienteDto(	Long clienteId, String nome, String telefone, Date dataNascimento, String cep) {
+		this.clienteId=clienteId;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.dataNascimento = dataNascimento;
+		this.cep = cep;
+	}
 
 	public ClienteDto() {
 		
@@ -80,9 +88,4 @@ public class ClienteDto {
 	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
 	}
-
-	
-	
-	
-	
 }
