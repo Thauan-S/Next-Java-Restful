@@ -5,10 +5,11 @@ const useCreatePackage = (Package) => {
     const [newPackage,setNewPackage]=useState(Package)
     const[token,setToken]=useState()
     useEffect(()=>{
+      setToken(window.localStorage.getItem('token'))
         axios
         .post("http://localhost:80/api/pacotes/v1",newPackage, {
             headers:{
-                Authorization:`Bearer `
+                Authorization:`Bearer ${token}`
             }
         })
     })

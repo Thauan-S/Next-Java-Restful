@@ -17,10 +17,10 @@ const NavBar = () => {
     }else{
       setHidden(false)
     }
-    if(username!=="admin"){
-      sethideManagementButton(true)
-    }else{
+    if(username=="admin"|| username?.startsWith("empresa")){
       sethideManagementButton(false)
+    }else{
+      sethideManagementButton(true)
     }
 
   })

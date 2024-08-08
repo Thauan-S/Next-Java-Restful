@@ -6,11 +6,13 @@ import { useRouter } from "next/router";
 import MessageModal from "@/components/messageModal";
 import EditClientModal from "./editClientModal";
 import Modal from "@/components/modal";
+import Link from "next/link";
 const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) => {
   const [id, setId] = useState('');
   const[showModal,setShowModal]=useState(false)
   const [token, setToken] = useState('');
   const router = useRouter();
+  console.log("clientes",clientes)
   useEffect(() => {
     setToken(window.localStorage.getItem("token"));
   });
@@ -178,67 +180,12 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) 
   //       </table>
   //     </div>
   //   );
-  // } else if (destinos) {
-  //   return (
-  //     <div className="table-responsive">
-  //       <table className="table">
-  //         <thead>
-  //           <tr>
-  //             <th scope="col"># ID</th>
-  //             <th scope="col">Destino</th>
-  //             <th scope="col">Descrição</th>
-  //             <th scope="col">Categoria</th>
-  //             <th scope="col">Duração em dias</th>
-  //             <th scope="col">imagem</th>
-  //             <th scope="col">Preço</th>
-  //             <th scope="col">Ações</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {destinos.map((i, index) => (
-  //             <tr key={index}>
-  //               <td>{i.id}</td>
-  //               <td>{i.destino}</td>
-  //               <td>{i.descricao}</td>
-  //               <td>{i.categoria}</td>
-  //               <td>{i.duracaoEmDias}</td>
-  //               <td>{i.imagem}</td>
-  //               <td>{i.preco}</td>
-
-  //               <td>
-  //                 <Link
-  //                   href={`/destinos/update-destino/${i.id}`}
-  //                   type="button"
-  //                   className="btn btn-primary"
-  //                 >
-  //                   <i className="bi bi-gear-fill" />
-  //                 </Link>
-
-  //                 <Link
-  //                   href={`/destinos/delete-destino/${i.id}`}
-  //                   type="button"
-  //                   className="btn btn-primary"
-  //                 >
-  //                   <i className="bi bi-trash"></i>
-  //                 </Link>
-
-  //                 <Link
-  //                   href={`/reserva/criar/${i.id}`}
-  //                   type="button"
-  //                   className="btn btn-primary"
-  //                 >
-  //                   {" "}
-  //                   Reservar
-  //                   <i className="bi bi-cart2"></i>
-  //                 </Link>
-  //               </td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   );
   // }
+  //  if (destinos) {
+  //   return (
+      
+  //   );
+   //}
 };
 
 export default Table;

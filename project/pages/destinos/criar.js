@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 const CriarPacote = () => {
   const [newPackage, setNewPackage] = useState({
@@ -10,20 +10,30 @@ const CriarPacote = () => {
     preco: "",
     categoria: "",
     imagem: "",
+    empresa:{nomeEmpresa:window.localStorage.getItem('username')}
   });
-
+  const[token,setToken]=useState()
   const router = useRouter();
   const handleInputChange = (e) => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
+    console.log(newPackage)
   };
   const handleAddPackage = () => {
-  const useCreatePackage(newPackage)
+      setToken(window.localStorage.getItem('token'))
+        axios
+        .post("http://localhost:80/api/pacotes/v1",newPackage, {
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        .then((response)=>{
+          console.log(response.data)
+        })
   };
 
   return (
     <main>
       <div className="container formulario">
-        <div className="form-floating"></div>
         <div className="form-floating mt-4">
           <input
             className="form-control"
