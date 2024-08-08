@@ -54,7 +54,6 @@ public class PacoteController {
 				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
 				}
 			)
-	//@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_BASIC')")
 	public Page<PacoteDeViagemDto> findAll(
 			@RequestParam(name = "page",defaultValue = "0" )int page,
 			@RequestParam(name = "size",defaultValue = "12" )int size,
@@ -105,7 +104,7 @@ public class PacoteController {
 				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
 				}
 			)
-	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
+	//@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
 	public PacoteDeViagemDto findById(@PathVariable Long id,JwtAuthenticationToken token) {
 		return pacoteService.findById(id, token);
 			
@@ -129,8 +128,9 @@ public class PacoteController {
 				@ApiResponse(description="Internal Server Error",responseCode ="500",content = @Content )
 				}
 			)
-	public PacoteDeViagemDto update( @RequestBody PacoteDeViagemDto pacote) {
-		return  pacoteService.update(pacote);
+	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
+	public PacoteDeViagemDto update( @RequestBody PacoteDeViagemDto pacoteDto,JwtAuthenticationToken token) {
+		return  pacoteService.update(pacoteDto,token);
 	}
 	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
 	@DeleteMapping("/{id}")

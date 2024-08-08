@@ -93,8 +93,23 @@ public class PacoteService {
 			
 	}
 
-	public PacoteDeViagemDto update( @RequestBody PacoteDeViagemDto pacote) {
-		return null;// services.update(pacote);
+	public PacoteDeViagemDto update( @RequestBody PacoteDeViagemDto pacoteDto,JwtAuthenticationToken token) {
+		var user=userRepository.findById(UUID.fromString(token.getName()));
+		var isAdmin=user.get().getRoles().stream()
+				.anyMatch(role-> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
+		if(isAdmin ||pacoteDto.getEmpresa().getUser().getUserId().equals(UUID.fromString(token.getName()))){
+
+		var pacoteDb=pacoteRepository.findById(pacoteDto.getId()).orElseThrow(()-> new ResourceNotFoundException("O pacote de id "+pacoteDto.getId()+" não foi encontrado na base de dados"));
+
+		pacoteDb.setDestino(pacoteDto.getDestino());
+		pacoteDb.setDescricao(pacoteDto.getDescricao());
+		pacoteDb.setCategoria(pacoteDto.getCategoria());
+		pacoteDb.setDuracaoEmDias(pacoteDto.getDuracaoEmDias());
+		pacoteDb.setImagem(pacoteDto.getImagem());
+		pacoteDb.setPreco(pacoteDto.getPreco());
+		pacoteRepository.save(pacoteDb);
+		}
+		return pacoteDto;
 	}
 	public ResponseEntity<?> delete(@PathVariable Long id,JwtAuthenticationToken token) {
 		var user=userRepository.findById(UUID.fromString(token.getName())).orElseThrow(()-> new ResourceNotFoundException("O pacote de id "+id+" não foi encontrado na base de dados"));
