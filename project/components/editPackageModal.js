@@ -1,91 +1,48 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
+import React, { useState,useEffect } from "react";
 
-import useGetClients from "@/hooks/useGetClients";
-import { useRouter } from "next/router";
-const EditClientModal = ({
-  cli,
-  showModal,
-  token,
-  setShowModal,
-  username,
-  setClientes,
-}) => {
-  const { setUpdate } = useGetClients();
-  const router = useRouter();
-  const [hidden, setHidden] = useState(true);
-  const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
-  const [cliente, setCliente] = useState({
-    clienteId: "",
-    nome: "",
-    telefone: "",
-    cep: "",
-    dataNascimento: "",
-    user: {
-      username: "",
-      password: "",
-      roles: [
-        {
-          roleId: "",
-          name: "",
-        },
-      ],
-    },
+const EditPackageModal = ({ idPackage, setModal, modal,token }) => {
+  
+  const [packageEdited, setPackageEdited] = useState({
+    id: "",
+    destino: "",
+    descricao: "",
+    categoria: "",
+    imagem:"",
+    preco:"",
+    duracaoEmDias:""
   });
+  useEffect(()=>{
+    
+    axios
+    .get("http://localhost:80/api/pacotes/v1/"+idPackage,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    .then((response)=>{
+      setPackageEdited(response.data)
+    })
+  },[idPackage])
   const handleInputChange = (e) => {
-    setCliente({ ...cliente, [e.target.name]: e.target.value });
+    setPackageEdited({...packageEdited, [e.target.name]: e.target.value})
+  
   };
-  useEffect(() => {
+  const handlePackageEdit = () => {
     axios
-      .get("http://localhost:80/api/clientes/v1/" + cli.clienteId, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setCliente(response.data);
-      })
-      .catch((error) => {
-        console.error;
-      });
-  }, [cli.clienteId]);
-  const handleEditClient = () => {
-    axios
-      .put("http://localhost:80/api/clientes/v1", cliente, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.status);
-        router.reload();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    setHidden(!hidden);
+    .put("http://localhost:80/api/pacotes/v1",packageEdited,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    .then((response)=>{
+      
+      console.log("O pacote foi editado ",response.data)
+    })
   };
-
-  // };
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:80/api/clientes/v1", {
-  //       headers: {
-  //         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log("Response", response.data);
-  //       setClientes(response.data.clientesList);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao Listar os Clientes", error);
-  //     });
-  // }, []);
-  if (showModal) {
-    return (
-      <>
+  return (
+    <>
+      {modal ? (
         <div
           className="modal fade show"
           style={{ display: "block" }}
@@ -98,11 +55,11 @@ const EditClientModal = ({
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Editar cliente <p>ID: {cliente.clienteId}</p>
+                  Editar Pacote de Viagem <p>ID: {packageEdited.id}</p>
                 </h1>
                 <button
                   type="button"
-                  onClick={() => setShowModal(!showModal)}
+                  onClick={() => setModal(!modal)}
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
@@ -111,7 +68,7 @@ const EditClientModal = ({
               <div className="modal-body">
                 <div
                   className="alert alert-primary"
-                  hidden={hidden}
+                  hidden={"hidden"}
                   role="alert"
                 >
                   Cliente editado com Sucesso!
@@ -119,11 +76,11 @@ const EditClientModal = ({
 
                 <div className="mb-3">
                   <label htmlFor="exampleInputEmail1" className="form-label">
-                    Nome
+                    Destino
                   </label>
                   <input
-                    value={cliente.clienteId}
-                    name="clienteId"
+                    value={packageEdited.id}
+                    name="id"
                     hidden={true}
                     readOnly
                     type="text"
@@ -133,76 +90,76 @@ const EditClientModal = ({
                   />
 
                   <input
-                    name="nome"
+                    name="destino"
                     id="exampleInputEmail1"
                     className="form-control"
-                    value={cliente.nome}
+                    value={packageEdited.destino}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputDate" className="form-label">
-                    Usuário
+                    Categoria
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="user"
-                    value={cliente.user.username}
-                    type="email"
+                    name="categoria"
+                    value={packageEdited.categoria}
+                    type="text"
                     className="form-control"
                     id="exampleInputDate"
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputPassword1" className="form-label">
-                    Senha
+                    Descrição
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="user"
-                    value={cliente.user.password}
-                    type="password"
+                    name="descricao"
+                    value={packageEdited.descricao}
+                    type="text"
                     className="form-control"
                     id="exampleInputPassword1"
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputPhone" className="form-label">
-                    Telefone
+                    Preço
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="telefone"
-                    value={cliente.telefone}
-                    placeholder="(xx) xxxx-xxxx"
-                    type="tel"
+                    name="preco"
+                    value={packageEdited.preco}
+                    placeholder="1000"
+                    type="number"
                     className="form-control"
                     id="exampleInputPhone"
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputCep" className="form-label">
-                    Cep
+                    Duração da viagem
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="cep"
-                    value={cliente.cep}
-                    placeholder="xxxx-xxxx"
-                    type="text"
+                    name="duracaoEmDias"
+                    value={packageEdited.duracaoEmDias}
+                    placeholder="3"
+                    type="number"
                     className="form-control"
                     id="exampleInputCep"
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="exampleInputDate" className="form-label">
-                    Data de Nascimento
+                    Url da imagem
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="dataNascimento"
-                    value={cliente.dataNascimento.split("T")[0]}
-                    type="date"
+                    name="imagem"
+                    value={packageEdited.imagem}
+                    type="text"
                     className="form-control"
                     id="exampleInputDate"
                   />
@@ -210,7 +167,7 @@ const EditClientModal = ({
 
                 <button
                   type="submit"
-                  onClick={handleEditClient}
+                  onClick={handlePackageEdit}
                   className="btn btn-primary"
                 >
                   Enviar
@@ -219,7 +176,7 @@ const EditClientModal = ({
               <div className="modal-footer">
                 <button
                   type="button"
-                  onClick={() => setShowModal(!showModal)}
+                  onClick={() => setModal(!modal)}
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
@@ -229,9 +186,9 @@ const EditClientModal = ({
             </div>
           </div>
         </div>
-      </>
-    );
-  } else return null;
+      ) : null}
+    </>
+  );
 };
 
-export default EditClientModal;
+export default EditPackageModal;

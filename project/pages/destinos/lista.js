@@ -2,12 +2,15 @@ import HeadComponent from "@/components/head";
 import Table from "@/components/table";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import TableDestinos from "@/components/tableDestinos";
+import TableDestinos from "@/components/tablePackage";
+import TablePackage from "@/components/tablePackage";
 const ListaDestinos = () => {
-  const [destinos, setDestinos] = useState(null);
+  const [packages, setPackages] = useState(null);
   var [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [direction, setDirection] = useState("ASC");
+  const[update,setUpdate]
+  //falta  recarregar a página quando atualizar
   useEffect(() => {
     axios
       .get("http://localhost:80/api/pacotes/v1",{
@@ -19,11 +22,11 @@ const ListaDestinos = () => {
         }
       })
       .then((response) => {
-        setDestinos(response.data.content);
+        setPackages(response.data.content);
 
       })
       .catch((error) => {
-        console.error("erro ao buscar a lista de destinos", error);
+        console.error("erro ao buscar a lista de pacotes", error);
       });
   }, [page,size,direction]);
   
@@ -31,7 +34,7 @@ const ListaDestinos = () => {
     <>
       <HeadComponent title={"Lista | Destinos"} />
       <main>
-        {  <TableDestinos destinos={destinos} /> }
+        {  <TablePackage packages={packages} /> }
       </main>
     </>
   );

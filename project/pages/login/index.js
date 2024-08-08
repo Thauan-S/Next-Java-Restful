@@ -21,7 +21,7 @@ const Login = () => {
         if (user.username == "admin") {
           router.push("/clientes/lista");
         }else if(user.username.startsWith("empresa")){
-          router.push("/destinos/criar")
+          router.push("/destinos/lista")
         } else {
           router.push("/");
         }
