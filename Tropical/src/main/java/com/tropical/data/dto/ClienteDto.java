@@ -35,7 +35,7 @@ public class ClienteDto {
 		this.dataNascimento = dataNascimento;
 		this.cep = cep;
 	}
-	
+
 	public ClienteDto() {
 		
 	}

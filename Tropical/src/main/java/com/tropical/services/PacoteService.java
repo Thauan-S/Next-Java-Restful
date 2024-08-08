@@ -58,7 +58,7 @@ public class PacoteService {
 	
 	public PacoteDeViagemDto create(@RequestBody PacoteDeViagemDto pacoteDTO,JwtAuthenticationToken token) {
 		var user= userRepository.findById(UUID.fromString(token.getName())).orElseThrow(()-> new ResourceNotFoundException("O usuário de id "+token.getName()+" não se encontra na base de dados"));
-		var empresa=empresaRepository.findById(pacoteDTO.getEmpresa().getEmpresaId()).orElseThrow(()-> new ResourceNotFoundException("A empresa de id "+pacoteDTO.getEmpresa().getEmpresaId()+" não se encontra na base de dados"));;
+		var empresa=empresaRepository.findBynomeEmpresa(pacoteDTO.getEmpresa().getNomeEmpresa()).orElseThrow(()-> new ResourceNotFoundException("A empresa de id "+pacoteDTO.getEmpresa().getEmpresaId()+" não se encontra na base de dados"));;
 		var isAdmin=user.getRoles().stream()
 				.anyMatch(role-> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
 		var isEmpresa=user.getRoles().stream()
@@ -75,7 +75,7 @@ public class PacoteService {
 		 pacoteRepository.save(pacote);
 		 return pacoteDTO;
 		 }else {
-			 throw new ForbiddenAccesException("você não tem permissão");
+			 throw new ForbiddenAccesException();
 		 }
 		
 	}

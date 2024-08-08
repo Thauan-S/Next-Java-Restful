@@ -83,6 +83,8 @@ public class PacoteController {
 			)
 	@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
 	public PacoteDeViagemDto create(@RequestBody PacoteDeViagemDto pacoteDTO,JwtAuthenticationToken token) {
+
+
 		return pacoteService.create(pacoteDTO, token);
 		
 	}
