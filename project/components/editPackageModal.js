@@ -1,8 +1,9 @@
+import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 
-const EditPackageModal = ({ idPackage, setModal, modal,token }) => {
-  
+const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate} }) => {
+ 
   const [packageEdited, setPackageEdited] = useState({
     id: "",
     destino: "",
@@ -12,18 +13,25 @@ const EditPackageModal = ({ idPackage, setModal, modal,token }) => {
     preco:"",
     duracaoEmDias:""
   });
+  const{globalState:{token},urlPackage:{url}}=useContext(GlobalContext)
+  // verificar por que está re-renderizando
+  //console.log("RENDERIZOU : EditPackageModal")
+  //console.log("UPDATE ANTES DE ATUALIZAR",update)
+  
   useEffect(()=>{
     
     axios
-    .get("http://localhost:80/api/pacotes/v1/"+idPackage,{
+    .get(`${url}/`+idPackage,{
       headers:{
         Authorization:`Bearer ${token}`
       }
     })
     .then((response)=>{
       setPackageEdited(response.data)
+    }).catch((error)=>{
+      console.error(error)
     })
-  },[idPackage])
+  },[idPackage,token,url])
   const handleInputChange = (e) => {
     setPackageEdited({...packageEdited, [e.target.name]: e.target.value})
   
@@ -36,7 +44,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,token }) => {
       }
     })
     .then((response)=>{
-      
+      setUpdate((prevUpdate)=> !prevUpdate)
+      console.log("UPDATE DEPOIS DE ATUALIZAR",update)
       console.log("O pacote foi editado ",response.data)
     })
   };

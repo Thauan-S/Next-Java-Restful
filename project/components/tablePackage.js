@@ -1,20 +1,24 @@
 import axios from "axios";
 import Link from "next/link";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import EditPackageModal from "./editPackageModal";
+import { GlobalContext } from "@/contexts/appContext";
 
-
-const TablePackage = ({ packages }) => {
+const TablePackage = ({ packages, update }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
-  const[token,setToken]=useState()
-  
-useEffect(()=>{
-  setToken(window.localStorage.getItem('token'))
-},[setToken])
+  const {
+    url,
+    globalState: { token },
+  } = useContext(GlobalContext);
+
   const handlePackageSelected = (id) => {
-    setIdPackage(id)
+    setIdPackage(id);
     setModal(!modal);
+  };
+  
+  const handleDeletePackage = (id) => {
+   confirm(`Deseja excluir o pacote de id: ${id}?`)
   };
 
   return (
@@ -55,7 +59,7 @@ useEffect(()=>{
                     </button>
 
                     <button
-                      href={`/destinos/delete-destino/${i.id}`}
+                      onClick={()=>handleDeletePackage(i.id)}
                       type="button"
                       className="btn btn-primary"
                     >
@@ -87,10 +91,10 @@ useEffect(()=>{
       )}
       {idPackage && (
         <EditPackageModal
-        token={token}
           modal={modal}
           setModal={setModal}
           idPackage={idPackage}
+          update={update}
         />
       )}
     </>
