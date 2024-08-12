@@ -40,7 +40,7 @@ public class PacoteDeViagem {
 	@Column(name = "duracao_dias", nullable = false)
 	private int duracaoEmDias;
 
-	@Column(nullable = false, length = 500)
+	@Column(nullable = false)
 	private String imagem;
 
 	@Column(nullable = false)

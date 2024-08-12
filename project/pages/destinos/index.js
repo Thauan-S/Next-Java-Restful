@@ -9,20 +9,20 @@ const Destinos = () => {
  
   const { packages } = useFindAllPackages();
   
-  const destinosNacionais =
+  const pacotesNacionais =
   packages && packages.content.filter((pacote) => pacote.categoria === "nacional");
-  const destinosInternacionais =
+  const pacotesInternacionais =
   packages && packages.content.filter((pacote) => pacote.categoria === "internacional");
   return (
     <>
       <HeadComponent title={"Tropical | Destinos"} />
       <main>
         <div className="container-fluid">
-          <Card pacotesNacionais={destinosNacionais} />
+          <Card pacotesNacionais={pacotesNacionais} />
         </div>
         <h1 className="text-center text-info">Internacionais</h1>
         <div className={`container-fluid`}>
-          <Card pacotesInternacionais={destinosInternacionais} />
+          <Card pacotesInternacionais={pacotesInternacionais} />
         </div>
       </main>
     </>
