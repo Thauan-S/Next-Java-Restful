@@ -6,7 +6,7 @@ import Link from "next/link";
 import axios from "axios";
 const Clientes = () => {
 
- const { username, clientes, setClientes, setPage, page } = useGetClients();
+ const { username, clientes, setClientes, setPage, page,setDirection } = useGetClients();
 
 
   
@@ -36,7 +36,7 @@ const Clientes = () => {
               marginLeft: "25px",
             }}
             className="btn col-1 btn-primary"
-            onClick={() => setPage((prevPage) => prevPage + 1)}
+            onClick={() => setPage((prevPage) => prevPage - 1)}
           >
             <i className="bi bi-arrow-left" />
              
@@ -54,6 +54,32 @@ const Clientes = () => {
             <i className="bi bi-arrow-right" />
             
           </button>
+          <button
+           style={{
+            height: "40px",
+            width: "50px",
+            margin: "15px",
+            marginLeft: "5px",
+          }}
+          className="btn col-1 btn-primary"
+          onClick={()=> setDirection( 'ASC')}
+          >
+          <i className="bi bi-sort-alpha-down"> </i>
+          </button>
+          <button
+           style={{
+            height: "40px",
+            width: "50px",
+            margin: "15px",
+            marginLeft: "5px",
+          }}
+          onClick={()=> setDirection((prevDirection)=> "DESC" )}
+          className="btn col-1 btn-primary">
+          <i className="bi bi-sort-alpha-up"> </i>
+          </button>
+          
+
+
         </div>
 
          <Table clientes={clientes} setClientes={setClientes} username={username} /> 

@@ -5,13 +5,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const Destinos = () => {
-  const [pacotes, setPacotes] = useState(null);
-  const [token, setToken] = useState(null);
+ 
+ 
   const { packages } = useFindAllPackages();
+  
   const destinosNacionais =
-    pacotes && pacotes.filter((pacote) => pacote.categoria === "nacional");
+  packages && packages.content.filter((pacote) => pacote.categoria === "nacional");
   const destinosInternacionais =
-    pacotes && pacotes.filter((pacote) => pacote.categoria === "internacional");
+  packages && packages.content.filter((pacote) => pacote.categoria === "internacional");
   return (
     <>
       <HeadComponent title={"Tropical | Destinos"} />
