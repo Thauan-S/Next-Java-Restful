@@ -4,14 +4,14 @@ import React, { useState, useEffect, useContext } from "react";
 import EditPackageModal from "./editPackageModal";
 import { GlobalContext } from "@/contexts/appContext";
 
-const TablePackage = ({ packages, update }) => {
+const TablePackage = ({ packages, update:{update,setUpdate} ,params:{page,setPage,setDirection} }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
   const {
-    url,
-    globalState: { token },
+    urlPackage:{url},
+    globalState: { token,username },
   } = useContext(GlobalContext);
-
+  console.log(page)
   const handlePackageSelected = (id) => {
     setIdPackage(id);
     setModal(!modal);
@@ -19,10 +19,88 @@ const TablePackage = ({ packages, update }) => {
   
   const handleDeletePackage = (id) => {
    confirm(`Deseja excluir o pacote de id: ${id}?`)
+   axios
+   .delete(`${url}/`+id,{
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
+   })
+   .then((response)=>{
+    console.log(response.status)
+    setUpdate((prevUpdate)=> !prevUpdate)
+   })
   };
 
   return (
     <>
+    <div className="row">
+          <Link
+            href={"/destinos/criar"}
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "25px",
+            }}
+            className="col-1 btn btn-primary"
+          >
+             <i className="bi bi-file-plus" />
+          </Link>
+           {username=="admin" ? <h1 className="text-center col ">Bem vindo ,{username}</h1>:null}
+          <button
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "25px",
+            }}
+            className="btn col-1 btn-primary"
+            onClick={() => setPage((prevPage) => prevPage - 1)}
+          >
+            <i className="bi bi-arrow-left" />
+             
+          </button>
+          <button
+            style={{
+              height: "40px",
+              width: "50px",
+              margin: "15px",
+              marginLeft: "5px",
+            }}
+            className="btn col-1 btn-primary"
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+          >
+            <i className="bi bi-arrow-right" />
+            
+          </button>
+          <button
+           style={{
+            height: "40px",
+            width: "50px",
+            margin: "15px",
+            marginLeft: "5px",
+          }}
+          className="btn col-1 btn-primary"
+          onClick={()=> setDirection( 'ASC')}
+          >
+          <i className="bi bi-sort-alpha-down"> </i>
+          </button>
+          <button
+           style={{
+            height: "40px",
+            width: "50px",
+            margin: "15px",
+            marginLeft: "5px",
+          }}
+          onClick={()=> setDirection((prevDirection)=> "DESC" )}
+          className="btn col-1 btn-primary">
+          <i className="bi bi-sort-alpha-up"> </i>
+          </button>
+          
+
+
+
+        </div>
       {packages ? (
         <div className="table-responsive">
           <table className="table">
@@ -50,31 +128,23 @@ const TablePackage = ({ packages, update }) => {
                   <td>{i.preco}</td>
 
                   <td>
-                    <button
+                    {username.startsWith("empresa") || username=="admin" ?<button
                       onClick={() => handlePackageSelected(i.id)}
                       type="button"
                       className="btn btn-primary"
                     >
                       <i className="bi bi-gear-fill" />
-                    </button>
-
+                    </button>: null}
+                    
+                    {username.startsWith("empresa") || username=="admin" ? 
                     <button
-                      onClick={()=>handleDeletePackage(i.id)}
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-
-                    <button
-                      href={`/reserva/criar/${i.id}`}
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      {" "}
-                      Reservar
-                      <i className="bi bi-cart2"></i>
-                    </button>
+                    onClick={()=>handleDeletePackage(i.id)}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>: null}
+                    
                   </td>
                 </tr>
               ))}
@@ -94,7 +164,7 @@ const TablePackage = ({ packages, update }) => {
           modal={modal}
           setModal={setModal}
           idPackage={idPackage}
-          update={update}
+          update={{update,setUpdate}}
         />
       )}
     </>

@@ -15,7 +15,7 @@ public class Reserva {
 	private Long reservaId;
 	@Column(name="data_reserva")
 	private ZonedDateTime dataReserva;
-	@Column(name="data_viagem")
+	@Column(name="data_viagem",nullable = false)
 	private Date dataViagem;
 	
 	@ManyToOne(cascade = CascadeType.ALL)

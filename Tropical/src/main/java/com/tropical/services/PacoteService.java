@@ -81,16 +81,8 @@ public class PacoteService {
 	}
 	
 	public PacoteDeViagemDto findById(@PathVariable Long id,JwtAuthenticationToken token) {
-		var user=userRepository.findById(UUID.fromString(token.getName())).orElseThrow(()-> new ResourceNotFoundException("O pacote de id "+id+" não foi encontrado na base de dados"));
-		var isAdmin=user.getRoles().stream()
-				.anyMatch(role-> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
 		var pacote=pacoteRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("O pacote de id "+id+" não foi encontrado na base de dados"));
-		if(isAdmin || pacote.getEmpresa().getUser().getUserId().equals(UUID.fromString(token.getName()))) {
 			return new PacoteDeViagemDto(pacote);
-		}else {
-			throw new ForbiddenAccesException();
-		}
-			
 	}
 
 	public PacoteDeViagemDto update( @RequestBody PacoteDeViagemDto pacoteDto,JwtAuthenticationToken token) {

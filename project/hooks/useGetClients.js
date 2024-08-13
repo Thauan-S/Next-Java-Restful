@@ -46,7 +46,7 @@ function useGetClients() {
         setClientes(response.data.clientesList)
    });
   },[page,size,direction,update]);
-  return { username, clientes, setPage, page ,setUpdate};
+  return { username, clientes, setPage, page ,setUpdate,setDirection};
 }
 
 export default useGetClients;

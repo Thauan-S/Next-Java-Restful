@@ -16,6 +16,6 @@ import com.tropical.model.User;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	Optional<Cliente> findByUser(User user);
-	
+	Optional<Cliente> findByUser_username(String username);
 
 }

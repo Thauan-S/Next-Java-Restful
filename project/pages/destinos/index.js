@@ -5,23 +5,24 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const Destinos = () => {
-  const [pacotes, setPacotes] = useState(null);
-  const [token, setToken] = useState(null);
+ 
+ 
   const { packages } = useFindAllPackages();
-  const destinosNacionais =
-    pacotes && pacotes.filter((pacote) => pacote.categoria === "nacional");
-  const destinosInternacionais =
-    pacotes && pacotes.filter((pacote) => pacote.categoria === "internacional");
+  
+  const pacotesNacionais =
+  packages && packages.content.filter((pacote) => pacote.categoria === "nacional");
+  const pacotesInternacionais =
+  packages && packages.content.filter((pacote) => pacote.categoria === "internacional");
   return (
     <>
       <HeadComponent title={"Tropical | Destinos"} />
       <main>
         <div className="container-fluid">
-          <Card pacotesNacionais={destinosNacionais} />
+          <Card pacotesNacionais={pacotesNacionais} />
         </div>
         <h1 className="text-center text-info">Internacionais</h1>
         <div className={`container-fluid`}>
-          <Card pacotesInternacionais={destinosInternacionais} />
+          <Card pacotesInternacionais={pacotesInternacionais} />
         </div>
       </main>
     </>

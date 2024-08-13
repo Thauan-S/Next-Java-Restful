@@ -1,6 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
 import styles from "../styles/card.module.css";
 import Link from "next/link";
+import Image from "next/image";
+import CreateReserveModal from "./createReserveModal";
 const Card = ({
   image,
   title,
@@ -9,8 +11,14 @@ const Card = ({
   pacotesNacionais,
   pacotesInternacionais,
 }) => {
-  console.log(pacotesNacionais);
+  const [modal,setModal]=useState(false)
+  const[packageId,setPackageId]=useState()
+ const handleClick=(id)=>{
+  setModal((prevModal)=> !prevModal)
+  setPackageId(id)
+ }
   if (title) {
+    //card da página home
     return (
       <div className="card h-100">
         <img
@@ -48,19 +56,20 @@ const Card = ({
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
-                    <Link
+                    <button
                       className={`btn btn-primary ${styles.btnpromo} text-end`}
-                      href={`/reserva/criar/${i.id}`}
+                      onClick={()=> handleClick(i.id) }
                     >
-                      {" "}
+                      
                       Comprar R${i.preco}
-                    </Link>
+                    </button>
                   </small>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        { modal && <CreateReserveModal modal={{modal,setModal}} packageId={packageId}  />   }
       </>
     );
   } else if (pacotesInternacionais) {
@@ -77,19 +86,20 @@ const Card = ({
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
-                    <Link
+                    <button
                       className={`btn btn-primary ${styles.btnpromo} text-end`}
-                      href={`/reserva/criar/${i.id}`}
+                      
+                      onClick={()=> handleClick(i.id) }
                     >
-                      {" "}
                       Comprar R${i.preco}
-                    </Link>
+                    </button>
                   </small>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        { modal && <CreateReserveModal modal={{modal,setModal}} packageId={packageId}  />   }
       </>
     );
   }

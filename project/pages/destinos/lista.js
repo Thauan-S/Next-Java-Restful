@@ -37,7 +37,7 @@ const ListaDestinos = () => {
     <>
       <HeadComponent title={"Lista | Destinos"} />
       <main>
-        {  <TablePackage packages={packages} update={{update,setUpdate}} /> }
+        {  <TablePackage params={{page,setPage,size,setSize,direction,setDirection}} packages={packages} update={{update,setUpdate}} /> }
       </main>
     </>
   );

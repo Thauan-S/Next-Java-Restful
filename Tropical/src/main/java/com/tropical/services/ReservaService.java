@@ -88,7 +88,8 @@ public class ReservaService {
 //	}
 
 	public ReservaDto create(@RequestBody ReservaDto dto, JwtAuthenticationToken token) {
-		var cliente = clienteRepository.findById(dto.getCliente().getClienteId());
+		System.out.println(dto.getCliente().getUser().getUsername());
+		var cliente = clienteRepository.findByUser_username(dto.getCliente().getUser().getUsername());
 
 		var pacote = pacoteRepository.findById(dto.getPacote().getId());
 
