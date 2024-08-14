@@ -5,6 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.domain.Page;
 
 import com.tropical.model.Cliente;
@@ -29,7 +31,7 @@ public class ReservaDto {
 	private Long reservaId;
 	private ZonedDateTime dataReserva;
 	private Date dataViagem;
-	
+	@JsonBackReference
 	private Cliente cliente;
 	private PacoteDeViagem pacote;
 	

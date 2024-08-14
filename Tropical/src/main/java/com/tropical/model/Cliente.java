@@ -1,9 +1,10 @@
 package com.tropical.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name="tb_clientes")
@@ -27,7 +28,7 @@ public class Cliente {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
 	private List<Reserva>reservas;
 
 	

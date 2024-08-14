@@ -2,6 +2,7 @@ package com.tropical.services;
 
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -44,6 +45,14 @@ public class ReservaService {
 		var reserva = reservaRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("A reserva de id" + id + "não existe na base de dados"));
 		return new ReservaDto(reserva);
+	}
+	public List<ReservaDto> findReserveByClientName(@PathVariable String username, JwtAuthenticationToken token){
+		System.out.println(username);
+		var reservesOfClient=reservaRepository.findByCliente_User_username(username).stream()
+				.map(reserva -> new ReservaDto(reserva.getReservaId(),reserva.getDataReserva(),reserva.getDataViagem(),reserva.getCliente(),reserva.getPacote()))
+				.toList();
+		System.out.println(reservesOfClient);
+		return reservesOfClient;
 	}
 
 	public Page<ReservaDto> findAll(@RequestParam(value = "page", defaultValue = "0") int page,

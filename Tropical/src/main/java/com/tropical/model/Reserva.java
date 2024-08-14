@@ -1,9 +1,10 @@
 package com.tropical.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
 import java.time.ZonedDateTime;
 import java.util.Date;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name="tb_reservas")
@@ -18,11 +19,11 @@ public class Reserva {
 	@Column(name="data_viagem",nullable = false)
 	private Date dataViagem;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="cliente_id_fk",nullable = false)
+	@ManyToOne
+	@JoinColumn(name="cliente_id_fk")
 	private Cliente cliente;
 	@ManyToOne
-	@JoinColumn(name = "pacote_id_fk",nullable = false)
+	@JoinColumn(name = "pacote_id_fk")
 	private PacoteDeViagem pacote;
 	
 	
