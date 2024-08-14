@@ -1,63 +1,51 @@
 import { GlobalContext } from "@/contexts/appContext";
+import useFindAllPackages from "@/hooks/useFindAllPackages";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
-const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
+const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
   const {
     urlReserve,
     urlPackage: { url },
     globalState: { token, username },
   } = useContext(GlobalContext);
-  const [packageDb, setPackageDb] = useState({
+  const { packages } = useFindAllPackages();
+  const [reserveDb, setReserveDb] = useState({
     id: "",
     destino: "",
-    duracaoEmDias: "",
-    preco: "",
-  });
-  const [reserva, setReserva] = useState({
     dataViagem: "",
-    cliente: {
-      user:{username:username}
-    },
-    pacote: {
-      id: packageId,
-    },
+  });
+
+  const [reserva, setReserva] = useState({
+     reservaId: "",
+     dataViagem:"",
+     pacote: {
+       id:""
+     }
+    
   });
   const [hidden, setHidden] = useState(true);
-  console.log(packageDb);
-  useEffect(() => {
+  const handleCreateReserve = () => {
     axios
-      .get(`${url}/` + packageId, {
+      .post(urlReserve, reserva, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setPackageDb(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
+        console.log(res.status);
+        if (res.status == 200) {
+          setHidden(false);
+        }
       });
-  }, [packageId,url,token]);
-  const handleCreateReserve=()=>{
-    axios
-    .post(urlReserve,reserva,{
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
-    })
-    .then((res)=>{
-        console.log(res.status)
-        if(res.status==200){
-            setHidden(false)
-        }
-       
-    })
-  }
-  const handleInputChange=(e)=>{
-    setReserva({...reserva,[e.target.name]:e.target.value})
-  }
-  
+  };
+  const handleInputChange = (e) => {
+    if(e.target.name=="id"){
+        setReserva(reserva.pacote.id=e.target.value)
+    }
+    setReserva({ ...reserva, [e.target.name]: e.target.value });
+  };
+  console.log(reserva)
   return (
     <>
       <div
@@ -72,7 +60,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Pacote id <p>ID: {packageId}</p>
+                Pacote id <p>ID: {idReserve}</p>
               </h1>
               <button
                 type="button"
@@ -84,23 +72,22 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
             </div>
             <div className="modal-body">
               <div className="alert alert-primary" hidden={hidden} role="alert">
-                Reserva feita com  com sucesso!
+                Reserva Atualizada com com sucesso!
               </div>
 
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Destino
                 </label>
-                <input
-                  value={packageDb.destino}
-                  name="destino"
-                  hidden={false}
-                  readOnly
-                  type="text"
-                  className="form-control"
-                  id="exampleInputNome"
-                  aria-describedby="emailHelp"
-                />
+                <select
+                    onChange={handleInputChange}
+                  className="form-select"
+                  aria-label="Default select example"
+                  name="id"
+                >
+                  <option selected="">Escolha um novo destino</option>
+                  {packages && packages.content.map((i)=><option  key={i.id}  value={i.id}>{i.destino}</option>)}
+                </select>
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputDate" className="form-label">
@@ -140,4 +127,4 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
   );
 };
 
-export default CreateReserveModal;
+export default EditReserveModal;

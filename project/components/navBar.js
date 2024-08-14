@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 const NavBar = () => {
   const [hidden,setHidden]=useState(true)
   const [hideManagementButton,sethideManagementButton]=useState(true)
+  const[hideMyReservesButton,setHideMyReservesButton]=useState(true)
   const router=useRouter()
   const[token,setToken]=useState()
   
@@ -19,8 +20,10 @@ const NavBar = () => {
     }
     if(username=="admin"|| username?.startsWith("empresa")){
       sethideManagementButton(false)
+      
     }else{
       sethideManagementButton(true)
+      setHideMyReservesButton(false)
     }
 
   })
@@ -72,6 +75,11 @@ const NavBar = () => {
             <li className="nav-item active">
               <Link href={"/sobre"} className="nav-link">
                 Sobre Nós
+              </Link>
+            </li>
+            <li hidden={hideMyReservesButton} className="nav-item active">
+              <Link href={"/reserva/minhasReservas"} className="nav-link">
+               Minhas reservas
               </Link>
             </li>
             <li className="nav-item active">

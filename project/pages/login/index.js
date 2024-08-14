@@ -15,7 +15,6 @@ const Login = () => {
     axios
       .post("http://localhost/api/auth/v1/login", user)
       .then((response) => {
-        console.log("username", user.username);
         window.localStorage.setItem("username", user.username);
         window.localStorage.setItem("token", response.data.accessToken);
         if (user.username == "admin") {
