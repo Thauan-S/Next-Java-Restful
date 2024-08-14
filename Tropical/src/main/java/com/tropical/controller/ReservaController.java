@@ -26,6 +26,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/reservas/v1")
 @Tag(name = "Reservas", description = "Endpoint para Gerenciar Clientes")
@@ -47,6 +49,12 @@ public class ReservaController {
 	@PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
 	public ReservaDto findById(@PathVariable Long id) {
 		return reservaService.findById(id);
+	}
+
+	@GetMapping(value = "/client/{username}")
+	@PreAuthorize("hasAnyAuthority('SCOPE_BASIC','SCOPE_ADMIN','SCOPE_EMPRESA')")
+	public List<ReservaDto> findReserveByClientName( @PathVariable String username,JwtAuthenticationToken token){
+		return reservaService.findReserveByClientName(username,token);
 	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
