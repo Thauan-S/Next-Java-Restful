@@ -3,22 +3,12 @@ package com.tropical.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_pacote_de_viagem")
@@ -51,6 +41,9 @@ public class PacoteDeViagem {
 	@JoinColumn(name = "empresa_id", nullable = false)
 	@JsonBackReference// geralmente do lado many
 	private Empresa empresa;
+
+	@OneToMany(mappedBy = "pacote",cascade = CascadeType.ALL)
+	List<Reserva> reservas;
 
 	public PacoteDeViagem() {
 
