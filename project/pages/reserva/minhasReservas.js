@@ -1,15 +1,8 @@
-import TableReserves from '@/components/tableReserves'
-import useMyReserves from '@/hooks/useMyReserves'
-import React from 'react'
-
-
+import TableReserves from "@/components/tableReserves";
+import React from "react";
 
 const MinhasReservas = () => {
-  const{reserves,username}=useMyReserves()
-  return (
-    <TableReserves reserves={reserves} username={username}/>
-  )
+  return <TableReserves />;
+};
 
-}
-
-export default MinhasReservas
+export default MinhasReservas;

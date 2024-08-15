@@ -25,7 +25,7 @@ const useFindAllPackages = () => {
         console.error("Erro ao buscar a lista de pacotes");
       });
   }, [direction,page,size]);
-  return { packages,direction,page,size, };
+  return { packages,direction,page,size};
 };
 
 export default useFindAllPackages;

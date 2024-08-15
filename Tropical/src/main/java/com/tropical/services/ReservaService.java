@@ -51,7 +51,6 @@ public class ReservaService {
 		var reservesOfClient=reservaRepository.findByCliente_User_username(username).stream()
 				.map(reserva -> new ReservaDto(reserva.getReservaId(),reserva.getDataReserva(),reserva.getDataViagem(),reserva.getCliente(),reserva.getPacote()))
 				.toList();
-		System.out.println(reservesOfClient);
 		return reservesOfClient;
 	}
 
@@ -116,9 +115,9 @@ public class ReservaService {
 	}
 
 	public ReservaDto update(@RequestBody ReservaDto reservaDto, JwtAuthenticationToken token) {
+
 		var user = userRepository.findById(UUID.fromString(token.getName()));
-		var reservaBd = reservaRepository.findById(reservaDto.getReservaId())
-				.orElseThrow(() -> new ResourceNotFoundException(
+		var reservaBd = reservaRepository.findById(reservaDto.getReservaId()).orElseThrow(() -> new ResourceNotFoundException(
 						"Reserva de id" + reservaDto.getReservaId() + " não encontrada na base de dados"));
 		var pacote = pacoteRepository.findById(reservaDto.getPacote().getId())
 				.orElseThrow(() -> new ResourceNotFoundException(
