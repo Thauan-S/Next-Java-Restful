@@ -44,9 +44,9 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
       }
     })
     .then((response)=>{
+      if(response.status==200){
       setUpdate((prevUpdate)=> !prevUpdate)
-      console.log("UPDATE DEPOIS DE ATUALIZAR",update)
-      console.log("O pacote foi editado ",response.data)
+      }
     })
   };
   return (

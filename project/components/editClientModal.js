@@ -10,8 +10,9 @@ const EditClientModal = ({
   setShowModal,
   username,
   setClientes,
+  setUpdate
 }) => {
-  const { setUpdate } = useGetClients();
+
   const router = useRouter();
   const [hidden, setHidden] = useState(true);
   const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
@@ -58,7 +59,10 @@ const EditClientModal = ({
       })
       .then((response) => {
         console.log(response.status);
-        router.reload();
+        if(response.status==200){
+          setUpdate((prevUpdate)=> !prevUpdate)
+        }
+        //router.reload();
       })
       .catch((error) => {
         console.error(error);
