@@ -23,7 +23,7 @@ public class User {
     private String password;
     
     @OneToOne(mappedBy = "user")
-    private Cliente cliente;
+    private Client client;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
@@ -42,11 +42,11 @@ public class User {
         this.username = username;
         this.password = password;
     }
-	public User(UUID userId, String username, String password, Cliente cliente, Set<Role> roles) {
+	public User(UUID userId, String username, String password, Client client, Set<Role> roles) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
-		this.cliente = cliente;
+		this.client = client;
 		this.roles = roles;
 	}
 

@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/auth/v1")
-@Tag(name= "Login",description = "Endpoint para Fazer login")
+@Tag(name= "Login",description = "Endpoint to login")
 public class TokenController {
 	@Autowired
 	TokenService tokenService;

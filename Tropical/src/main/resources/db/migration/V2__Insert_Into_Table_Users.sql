@@ -1,1 +1,5 @@
-INSERT INTO `tb_users` VALUES (_binary ' ^B³+¼Kãw\ï\Û\Æ','$2a$10$qBs5N8Q7azVnEyyRxNtpZuRNYGcf.rAf/H2VvId7ZOtnt/t1cxKQC','thauan'),(_binary '2\ï\æ¬A5¢=t·]I','$2a$10$ZocwjGwn6nhX02WidvSPouU4GInQVkD.O/9veMHznPcml0QG/8mHq','empresa2'),(_binary '7¢\é:±K|§8²ñ','$2a$10$VjrjZ9oATzhx7xFGeU.AKeDg6xllVmD6VZ0MhNV2z0eU6BqYp6shm','catatau'),(_binary 'l Tû(Lq\åU\0Y','$2a$10$dfDC16tSWEvqCSmMaicDA.yBu1MHA3znDN5m.uXjyRnVvT5v87cbe','admin'),(_binary '¦4\'\ÊofJ!vr\ÅÍp´','$2a$10$LWBGiKTjbv8B7c7/qlB45uCGr9eg059xpxkvJlOx1dxJxE0s/04xS','thau'),(_binary '\Úÿ©F\0Hò0\\','$2a$10$vvTApsGPvn0.1X.Cb18pWeDz/RXrmxBfa32fTkyomSevzZXhYVAX6','ioio');
+--INSERT INTO `tb_users` (`user_id`, `username`, `password`) VALUES
+--  (UNHEX(REPLACE(UUID(), '-', '')), 'thauan', 'password1'),
+--  (UNHEX(REPLACE(UUID(), '-', '')), 'empresa2', 'password2'),
+--  (UNHEX(REPLACE(UUID(), '-', '')), 'admin', 'password3'),
+--  (UNHEX(REPLACE(UUID(), '-', '')), 'thau', 'password4');
