@@ -24,7 +24,7 @@ const Gerenciamento = () => {
     },
     {
       title: "Reservas",
-      list: "/reserva/lista",
+      list: "/reserva/minhasReservas",
       icon: <i className="bi bi-file-check"></i>,
     },
   ];

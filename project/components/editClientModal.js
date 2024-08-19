@@ -49,7 +49,7 @@ const EditClientModal = ({
       .catch((error) => {
         console.error;
       });
-  }, [cli.clienteId]);
+  }, [cli.clienteId,token]);
   const handleEditClient = () => {
     axios
       .put("http://localhost:80/api/clientes/v1", cliente, {
@@ -95,7 +95,7 @@ const EditClientModal = ({
           id="exampleModal"
           tabIndex={-1}
           aria-labelledby="exampleModalLabel"
-          aria-hidden="hidden"
+          aria-hidden="false"
         >
           <div className="modal-dialog">
             <div className="modal-content">
