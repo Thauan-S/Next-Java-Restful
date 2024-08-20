@@ -9,6 +9,7 @@ import com.tropical.repository.ClientRepository;
 import com.tropical.repository.ReserveRepository;
 import com.tropical.repository.TravelPackageRepository;
 import com.tropical.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -60,7 +61,7 @@ public class ReserveService {
 		return ReserveDto.listReserves(reserves);
 	}
 
-
+	@Transactional
 	public ReserveDto create(@RequestBody ReserveDto dto, JwtAuthenticationToken token) {
 
 		var client = clientRepository.findByUser_username(dto.getClient().getUser().getUsername());
@@ -79,7 +80,7 @@ public class ReserveService {
 			throw new ResourceNotFoundException("Customer or travel package is not found in the database");
 		}
 	}
-
+	@Transactional
 	public ReserveDto update(@RequestBody ReserveDto reserveDto, JwtAuthenticationToken token) {
 
 		var user = userRepository.findById(UUID.fromString(token.getName()));
@@ -100,7 +101,7 @@ public class ReserveService {
 		}
 
 	}
-	
+	@Transactional
 	public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
 		var user = userRepository.findById(UUID.fromString(token.getName()));
 		var isAdmin = user.get().getRoles().stream()

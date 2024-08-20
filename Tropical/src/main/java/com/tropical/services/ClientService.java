@@ -8,6 +8,7 @@ import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.model.Role;
 import com.tropical.repository.ClientRepository;
 import com.tropical.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class ClientService {
         return ResponseEntity.ok(new ClientListDto(clients.getContent(), page, size, clients.getTotalPages(),
                 clients.getTotalElements()));
     }
-
+    @Transactional
     public ClientDto update(@RequestBody ClientDto clientDto, JwtAuthenticationToken token)
             throws AccessDeniedException {
         var user = userRepository.findById(UUID.fromString(token.getName()));
@@ -71,7 +72,7 @@ public class ClientService {
             throw new ForbiddenAccesException("");
         }
     }
-
+    @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName()));
         var clibd = clientRepository.findById(id).orElseThrow(

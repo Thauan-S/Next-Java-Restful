@@ -7,6 +7,7 @@ import com.tropical.model.Enterprise;
 import com.tropical.model.Role;
 import com.tropical.repository.EnterpriseRepository;
 import com.tropical.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -51,7 +52,7 @@ public class EnterpriseService {
                 ));
         return EnterpriseDto.enterpriseList(enterprises);
     }
-
+    @Transactional
     public EnterpriseDto update(@RequestBody EnterpriseDto enterpriseDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName()));
         var enterpriseBd = enterpriseRepository.findById(enterpriseDto.getEnterpriseId()).orElseThrow(() -> new ResourceNotFoundException("Enterprise does not found in the data base"));
@@ -70,7 +71,7 @@ public class EnterpriseService {
         }
 
     }
-
+    @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
 
         var user = userRepository.findById(UUID.fromString(token.getName()));

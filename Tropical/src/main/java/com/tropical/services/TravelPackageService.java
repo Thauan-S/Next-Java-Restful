@@ -9,6 +9,7 @@ import com.tropical.model.TravelPackage;
 import com.tropical.repository.EnterpriseRepository;
 import com.tropical.repository.TravelPackageRepository;
 import com.tropical.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -45,7 +46,7 @@ public class TravelPackageService {
         return TravelPackageDto.packagesList(travelPackages);
     }
 
-
+    @Transactional
     public TravelPackageDto create(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("The user id : " + token.getName() + "does not exists in the data base"));
         var enterprise = enterpriseRepository.findByname(travelPackageDto.getEnterprise().getName()).orElseThrow(() -> new ResourceNotFoundException("The enterprise  by id " + travelPackageDto.getEnterprise().getEnterpriseId() + "does not exists in the data base"));
@@ -75,7 +76,7 @@ public class TravelPackageService {
         var travelPackage = travelPackageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The package by " + id + " does not exists in the data base"));
         return new TravelPackageDto(travelPackage);
     }
-
+    @Transactional
     public TravelPackageDto update(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName()));
         var isAdmin = user.get().getRoles().stream()
@@ -94,7 +95,7 @@ public class TravelPackageService {
         }
         return travelPackageDto;
     }
-
+    @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("Package id :" + id + "was not found in the database"));
         var isAdmin = user.getRoles().stream()
