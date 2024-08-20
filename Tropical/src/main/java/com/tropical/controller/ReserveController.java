@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reserves/v1")
-@Tag(name = "Reserves", description = "Endpoint to manage reserves ")
+@Tag(name = "Reserves", description = "Endpoint  for managing reserves ")
 public class ReserveController {
 
     @Autowired

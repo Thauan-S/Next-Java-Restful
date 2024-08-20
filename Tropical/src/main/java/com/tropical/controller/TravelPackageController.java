@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/travelPackages/v1")
-@Tag(name = "TravelPackages", description = "Endpoint para manage travel packages")
+@Tag(name = "TravelPackages", description = "Endpoint  for managing travel packages")
 public class TravelPackageController {
     @Autowired
     TravelPackageService travelPackageService;

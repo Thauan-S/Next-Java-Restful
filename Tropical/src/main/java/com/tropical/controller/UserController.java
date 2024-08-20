@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/register")
-@Tag(name = "Users", description = "Endpoint to manage users")
+@Tag(name = "Users", description = "Endpoint for managing users")
 public class UserController {
 
     @Autowired

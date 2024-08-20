@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/enterprise/v1")
-@Tag(name = "Enterprises", description = "Endpoint to manage Enterprises")
+@Tag(name = "Enterprises", description = "Endpoint  for managing Enterprises")
 public class EnterpriseController {
     @Autowired
     EnterpriseService enterpriseService;

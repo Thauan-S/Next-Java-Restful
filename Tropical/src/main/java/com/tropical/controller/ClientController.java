@@ -20,7 +20,7 @@ import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/clients/v1")
-@Tag(name = "Clients", description = "Endpoint to manage Clients")
+@Tag(name = "Clients", description = "Endpoint for managing Clients")
 public class ClientController {
 
     @Autowired
