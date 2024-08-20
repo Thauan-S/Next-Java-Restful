@@ -1,28 +1,33 @@
 package com.tropical.services;
 
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.model.Client;
+import com.tropical.model.Reserve;
 import com.tropical.model.Role;
 import com.tropical.model.User;
 import com.tropical.repository.ClientRepository;
 import com.tropical.repository.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.webjars.NotFoundException;
+import org.springframework.http.ResponseEntity;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 public class ClientServiceTest {
@@ -32,8 +37,11 @@ public class ClientServiceTest {
     private UserRepository userRepository;
     @InjectMocks
     private ClientService clientService;
-    private Client client;
 
+    private Client client;
+    private User user;
+    private  Role role;
+    private Reserve reserve;
     @Captor
     private ArgumentCaptor<Client> clienteArgumentCaptor;
     @Captor
@@ -46,28 +54,41 @@ public class ClientServiceTest {
 
     @BeforeEach
      void setUp(){
-        var client = new Client();
+        reserve=new Reserve();
+        role=new Role();
+        role.setRoleId(1L);
+        role.setName("BASIC");
+
+        user = new User();
+        user.setRoles(Set.of(role));
+        user.setUserId(UUID.randomUUID());
+        user.setUsername("thau");
+        user.setPassword("123");
+
+        client = new Client();
         client.setClientId(1L);
         client.setName("Thauan");
-                client.setPhone("73988896878");
-                client.setBirthday(new Date(2002 - 17 - 11));
-                client.setZipCode("45330000");
+        client.setPhone("73988896878");
+        client.setBirthday(new Date(2002 - 17 - 11));
+        client.setZipCode("45330000");
+        client.setUser(user);
+        client.setReserves(List.of(reserve));
+
     }
     @Nested
-    class createClient {
+    class findClientById {
         @Test
         @DisplayName("Should returns a client with success")
         void shouldGetAClientWithSuccess() {
             //Arrange
-            doReturn(Optional.of(client))
-                    .when(clientRepository)
-                    .findById(IdArgumentCaptor.capture());
-
+            doReturn(Optional.of(client)).when(clientRepository).findById(IdArgumentCaptor.capture());
             //Act
             var outPut = clientService.findById(1L);
 
             //Assert
-            //assertNotNull(outPut.getBody().getClientId());
+            verify(clientRepository).findById(IdArgumentCaptor.capture());
+            assertEquals(1L, IdArgumentCaptor.getValue());
+            assertNotNull(outPut.getBody().getClientId());
             assertEquals("Thauan", outPut.getBody().getName());
             assertEquals(client.getName(), outPut.getBody().getName());
         }
@@ -82,10 +103,8 @@ public class ClientServiceTest {
             Optional<Client> outPut = clientRepository.findById(1L);
 
             //Assert
-            //assertNotNull(outPut.getClienteId());
-            NotFoundException exception = assertThrows(NotFoundException.class, () -> clientService.findById(clientId));
-
-            assertThrows(NotFoundException.class, () -> clientService.findById(1L));
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> clientService.findById(clientId));
+            assertThrows(ResourceNotFoundException.class, () -> clientService.findById(1L));
             assertEquals("The client  id :" + clientId + "does not  exist  in the data base", exception.getMessage());
         }
     }
