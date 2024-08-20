@@ -24,10 +24,10 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
     },
   });
   const [hidden, setHidden] = useState(true);
-  console.log(packageDb);
+console.log(username)
   useEffect(() => {
     axios
-      .get(`${url}/` + packageId, {
+      .get(`${url}/`+packageId, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,6 +39,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
         console.error(error);
       });
   }, [packageId,url,token]);
+  console.log("teste",packageDb);
   const handleCreateReserve=()=>{
     axios
     .post(urlReserve,reserva,{
@@ -66,7 +67,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
         id="exampleModal"
         tabIndex={-1}
         aria-labelledby="exampleModalLabel"
-        aria-hidden="hidden"
+        aria-hidden="false"
       >
         <div className="modal-dialog">
           <div className="modal-content">

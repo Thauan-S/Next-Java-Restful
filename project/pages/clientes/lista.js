@@ -6,7 +6,7 @@ import Link from "next/link";
 import axios from "axios";
 const Clientes = () => {
 
- const { username, clientes, setClientes, setPage, page,setDirection } = useGetClients();
+ const { username, clientes, setClientes, setPage, page,setDirection,setUpdate } = useGetClients();
 
 
   
@@ -82,7 +82,7 @@ const Clientes = () => {
 
         </div>
 
-         <Table clientes={clientes} setClientes={setClientes} username={username} /> 
+         <Table setUpdate={setUpdate} clientes={clientes} setClientes={setClientes} username={username} /> 
       </main>
     </>
   );

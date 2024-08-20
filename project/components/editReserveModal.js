@@ -1,23 +1,18 @@
 import { GlobalContext } from "@/contexts/appContext";
 import useFindAllPackages from "@/hooks/useFindAllPackages";
+import useMyReserves from "@/hooks/useMyReserves";
 import axios from "axios";
 import React, { useContext, useState, useEffect } from "react";
 
-const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
+const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) => {
   const {
     urlReserve,
     urlPackage: { url },
     globalState: { token, username },
   } = useContext(GlobalContext);
-  const { packages } = useFindAllPackages();
-  const [reserveDb, setReserveDb] = useState({
-    id: "",
-    destino: "",
-    dataViagem: "",
-  });
-
-  const [reserva, setReserva] = useState({
-     reservaId: "",
+  const {packages} = useFindAllPackages();
+  const [reserve, setReserve] = useState({
+     reservaId: idReserve,
      dataViagem:"",
      pacote: {
        id:""
@@ -25,9 +20,9 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
     
   });
   const [hidden, setHidden] = useState(true);
-  const handleCreateReserve = () => {
+  const handleUpdateReserve = () => {
     axios
-      .post(urlReserve, reserva, {
+      .put(urlReserve, reserve, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,17 +30,18 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
       .then((res) => {
         console.log(res.status);
         if (res.status == 200) {
+          setUpdate((prevUpdate)=>!prevUpdate)
           setHidden(false);
         }
       });
   };
   const handleInputChange = (e) => {
     if(e.target.name=="id"){
-        setReserva(reserva.pacote.id=e.target.value)
+      setReserve(reserve.pacote.id=e.target.value)
     }
-    setReserva({ ...reserva, [e.target.name]: e.target.value });
+    setReserve({ ...reserve, [e.target.name]: e.target.value });
   };
-  console.log(reserva)
+  console.log(reserve)
   return (
     <>
       <div
@@ -60,7 +56,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Pacote id <p>ID: {idReserve}</p>
+                Reserva id <p>ID: {idReserve}</p>
               </h1>
               <button
                 type="button"
@@ -96,7 +92,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
                 <input
                   onChange={handleInputChange}
                   name="dataViagem"
-                  value={reserva.dataViagem}
+                  value={reserve.dataViagem}
                   type="date"
                   className="form-control"
                   id="exampleInputDate"
@@ -104,7 +100,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal } }) => {
               </div>
               <button
                 type="submit"
-                onClick={handleCreateReserve}
+                onClick={handleUpdateReserve}
                 className="btn btn-primary"
               >
                 Enviar

@@ -8,7 +8,7 @@ public class UserAlreadyExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	public UserAlreadyExistsException() {
-		super("usuário já existe, por favor escolha outro");
+		super("The user already exists, please choose another one");
 	}
 	public UserAlreadyExistsException(String ex,Throwable cause ) {
 		super(ex,cause);

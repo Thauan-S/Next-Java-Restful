@@ -10,8 +10,9 @@ const EditClientModal = ({
   setShowModal,
   username,
   setClientes,
+  setUpdate
 }) => {
-  const { setUpdate } = useGetClients();
+
   const router = useRouter();
   const [hidden, setHidden] = useState(true);
   const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
@@ -48,7 +49,7 @@ const EditClientModal = ({
       .catch((error) => {
         console.error;
       });
-  }, [cli.clienteId]);
+  }, [cli.clienteId,token]);
   const handleEditClient = () => {
     axios
       .put("http://localhost:80/api/clientes/v1", cliente, {
@@ -58,7 +59,10 @@ const EditClientModal = ({
       })
       .then((response) => {
         console.log(response.status);
-        router.reload();
+        if(response.status==200){
+          setUpdate((prevUpdate)=> !prevUpdate)
+        }
+        //router.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -91,7 +95,7 @@ const EditClientModal = ({
           id="exampleModal"
           tabIndex={-1}
           aria-labelledby="exampleModalLabel"
-          aria-hidden="hidden"
+          aria-hidden="false"
         >
           <div className="modal-dialog">
             <div className="modal-content">

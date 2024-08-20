@@ -19,8 +19,8 @@ const Login = () => {
         window.localStorage.setItem("token", response.data.accessToken);
         if (user.username == "admin") {
           router.push("/clientes/lista");
-        }else if(user.username.startsWith("empresa")){
-          router.push("/destinos/lista")
+        } else if (user.username.startsWith("empresa")) {
+          router.push("/destinos/lista");
         } else {
           router.push("/");
         }

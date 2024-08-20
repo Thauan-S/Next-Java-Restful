@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState,useContext } from "react";
 import moment from "moment";
 import axios from "axios";
-import { headers } from "@/next.config";
-import { useRouter } from "next/router";
-import MessageModal from "@/components/messageModal";
 import EditClientModal from "./editClientModal";
-import Modal from "@/components/modal";
-import Link from "next/link";
-const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) => {
+import { GlobalContext } from "@/contexts/appContext";
+const Table = ({ clientes, reservas, contatos, destinos,setClientes,username,setUpdate }) => {
   const [id, setId] = useState('');
   const[showModal,setShowModal]=useState(false)
-  const [token, setToken] = useState('');
-  const router = useRouter();
-  console.log("clientes",clientes)
-  useEffect(() => {
-    setToken(window.localStorage.getItem("token"));
-  });
+  const{globalState:{token}}=useContext(GlobalContext)
+  
+  
+  
   
   const [clienteSelecionado, setClienteSelecionado] = useState("");
 
@@ -36,7 +30,9 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) 
           },
         })
         .then((response) => {
-          router.reload();
+          if(response.status==204){
+            setUpdate((prevUpdate)=>!prevUpdate)
+          }
         })
         .catch((error) => {
           console.error("erro ao excluir um cliente", error);
@@ -87,7 +83,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username }) 
             ))}
           </tbody>
         </table>
-        {clienteSelecionado && <EditClientModal cli={clienteSelecionado} token={token} showModal={showModal} setShowModal={setShowModal} setClientes={setClientes} username={username} />}
+        {clienteSelecionado && <EditClientModal setUpdate={setUpdate} cli={clienteSelecionado} token={token} showModal={showModal} setShowModal={setShowModal} setClientes={setClientes} username={username} />}
       </div>
     );
   } //else if (reservas) {

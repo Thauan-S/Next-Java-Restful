@@ -1,8 +1,10 @@
 package com.tropical.services;
 
-import java.time.Instant;
-import java.util.stream.Collectors;
-
+import com.tropical.data.dto.LoginRequest;
+import com.tropical.data.dto.LoginResponse;
+import com.tropical.exceptions.ResourceNotFoundException;
+import com.tropical.model.Role;
+import com.tropical.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -10,12 +12,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.webjars.NotFoundException;
 
-import com.tropical.data.dto.LoginRequest;
-import com.tropical.data.dto.LoginResponse;
-import com.tropical.model.Role;
-import com.tropical.repository.UserRepository;
+import java.time.Instant;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
@@ -34,7 +33,7 @@ public class TokenService {
 		var user =userRepository.findByUsername(loginRequest.username());
 		
 		
-		if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest,passwordEncoder)) throw new NotFoundException("O usuario ou senha estão inválidos");
+		if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest,passwordEncoder)) throw new ResourceNotFoundException("username or password is incorrect ");
 		var now= Instant.now();
 		var expiresIn=3600L;
 		var scopes= user.get().getRoles()
