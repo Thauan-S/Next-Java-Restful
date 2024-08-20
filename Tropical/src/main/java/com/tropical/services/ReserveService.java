@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.webjars.NotFoundException;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -41,7 +40,7 @@ public class ReserveService {
 
 	public ReserveDto findById(@PathVariable Long id) {
 		var reserve = reserveRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("A reserva de id" + id + "não existe na base de dados"));
+				.orElseThrow(() -> new ResourceNotFoundException("Reserve id" + id + "does not exists in data base"));
 		return new ReserveDto(reserve);
 	}
 	public List<ReserveDto> findReserveByClientName(@PathVariable String username, JwtAuthenticationToken token){
@@ -55,7 +54,7 @@ public class ReserveService {
 			@RequestParam(value = "size", defaultValue = "12") int size,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-		var reserves = reserveRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "reservaId"))
+		var reserves = reserveRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "reserveId"))
 				.map(reserve -> new Reserve(reserve.getReserveId(), reserve.getCreationDate(), reserve.getTravelDate(),
 						reserve.getClient(), reserve.getTravelPackage()));
 		return ReserveDto.listReserves(reserves);

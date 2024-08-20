@@ -20,14 +20,14 @@ import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/clients/v1")
-@Tag(name = "Customers", description = "Endpoint to manage Customers")
+@Tag(name = "Clients", description = "Endpoint to manage Clients")
 public class ClientController {
 
     @Autowired
     ClientService clientService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    @Operation(summary = "Find a customer by id ", description = "Find a customer by id ", tags = {"Customers"}, responses = {
+    @Operation(summary = "Find a client by id ", description = "Find a client by id ", tags = {"Clients"}, responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = ClientDto.class))),
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
@@ -40,14 +40,13 @@ public class ClientController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Find all customers", description = "Find all customers", tags = {
-            "Clientes"}, responses = {@ApiResponse(description = "Success", responseCode = "200", content = {
+    @Operation(summary = "Find all clients", description = "Find all clients", tags = {
+            "Clients"}, responses = {@ApiResponse(description = "Success", responseCode = "200", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClientDto.class)))}),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)})
-
     @PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<ClientListDto> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
                                                  @RequestParam(value = "size", defaultValue = "12") int size,
@@ -59,8 +58,8 @@ public class ClientController {
     @PutMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML}, consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML})
-    @Operation(summary = "Update a customer", description = "Update a customer", tags = {
-            "Customers"}, responses = {
+    @Operation(summary = "Update a client", description = "Update a client", tags = {
+            "Clients"}, responses = {
             @ApiResponse(description = "Updated", responseCode = "200", content = @Content(schema = @Schema(implementation = ClientDto.class))),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),
@@ -74,7 +73,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a customer by id", description = "Delete a customer by id", tags = {"Customers"}, responses = {
+    @Operation(summary = "Delete a client by id", description = "Delete a client by id", tags = {"Clients"}, responses = {
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
             @ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.webjars.NotFoundException;
 
 import java.util.UUID;
 
@@ -32,7 +31,7 @@ public class EnterpriseService {
     }
 
     public ResponseEntity<EnterpriseDto> findById(@PathVariable Long id) {
-        var enterprise = enterpriseRepository.findById(id).orElseThrow(() -> new NotFoundException("O cliente de id" + id + "não existe na base de dados"));
+        var enterprise = enterpriseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The company  id" + id + "does not exists in data base"));
         return ResponseEntity.ok(new EnterpriseDto(enterprise));
     }
 
@@ -41,7 +40,7 @@ public class EnterpriseService {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "12") int size,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        var enterprises = enterpriseRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "nomeEmpresa"))
+        var enterprises = enterpriseRepository.findAll(PageRequest.of(page, size, Direction.valueOf(direction), "name"))
                 .map(enterprise -> new Enterprise(
                         enterprise.getEnterpriseId(),
                         enterprise.getName(),
@@ -55,7 +54,7 @@ public class EnterpriseService {
 
     public EnterpriseDto update(@RequestBody EnterpriseDto enterpriseDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName()));
-        var enterpriseBd = enterpriseRepository.findById(enterpriseDto.getEnterpriseId()).orElseThrow(() -> new NotFoundException("Enterprise does not found in the data base"));
+        var enterpriseBd = enterpriseRepository.findById(enterpriseDto.getEnterpriseId()).orElseThrow(() -> new ResourceNotFoundException("Enterprise does not found in the data base"));
         var isAdmin = user.get().getRoles()
                 .stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));

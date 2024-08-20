@@ -13,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/register")
 @Tag(name = "Users", description = "Endpoint to manage users")
 public class UserController {
 
@@ -28,7 +26,7 @@ public class UserController {
     UserService userService;
 
 
-    @PostMapping("/register/user")
+    @PostMapping("/user")
     @Operation(
             summary = "Registers a  user",
             description = "Registers a  user",
@@ -48,7 +46,7 @@ public class UserController {
     }
 
     @Transactional
-    @PostMapping("/register/admin")
+    @PostMapping("/admin")
     @Operation(
             summary = "Create an administrator user",
             description = "Create an administrator user",
@@ -68,10 +66,10 @@ public class UserController {
         return userService.createNewAdmin(createUserDto);
     }
 
-    @PostMapping("/register/enterprise")
+    @PostMapping("/enterprise")
     @Operation(
-            summary = "Registers a company",
-            description = "Create an administrator user",
+            summary = "Registers  user of type  Enterprise",
+            description = "Registers  user of type  Enterprise",
             tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Created", responseCode = "200", content = @Content),
@@ -87,10 +85,10 @@ public class UserController {
         return userService.createNewEnterprise(enterpriseDto);
     }
 
-    @PostMapping("/register/customer")
+    @PostMapping("/client")
     @Operation(
-            summary = "Registers a  common user ",
-            description = "Registers a common user",
+            summary = "Register a user of type client",
+            description = "Register a user of type client",
             tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Created", responseCode = "200", content = @Content),
@@ -108,8 +106,8 @@ public class UserController {
 
     @GetMapping("/users")
     @Operation(
-            summary = "Find all users ",
-            description = "Find all users",
+            summary = "Searches all users only if you have administrator permission",
+            description = "Searches all users only if you have administrator permission",
             tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Created", responseCode = "200", content = @Content),

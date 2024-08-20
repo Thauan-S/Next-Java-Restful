@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/enterprise/v1")
-@Tag(name = "Enterprise", description = "Endpoint to manage Companies")
+@Tag(name = "Enterprises", description = "Endpoint to manage Enterprises")
 public class EnterpriseController {
     @Autowired
     EnterpriseService enterpriseService;
@@ -30,7 +30,7 @@ public class EnterpriseController {
     @Operation(
             summary = "Find a enterprise by id",
             description = "Find a enterprise by id",
-            tags = {"Companies"},
+            tags = {"Enterprises"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = EnterpriseDto.class))
@@ -50,9 +50,9 @@ public class EnterpriseController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON)
     @Operation(
-            summary = "Find all companies",
-            description = "Find all companies",
-            tags = {"Companies"},
+            summary = "Find all enterprises",
+            description = "Find all enterprises",
+            tags = {"Enterprises"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {
                             @Content(
@@ -80,7 +80,7 @@ public class EnterpriseController {
     @Operation(
             summary = "Update a  enterprise",
             description = "Update a  enterprise",
-            tags = {"Companies"},
+            tags = {"Enterprises"},
             responses = {
                     @ApiResponse(description = "Updated", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = EnterpriseDto.class))
@@ -103,7 +103,7 @@ public class EnterpriseController {
     @Operation(
             summary = "Delete a enterprise  ",
             description = "Delete a enterprise by id",
-            tags = {"Companies"},
+            tags = {"Enterprises"},
             responses = {
                     @ApiResponse(description = "No Content", responseCode = "204",
                             content = @Content

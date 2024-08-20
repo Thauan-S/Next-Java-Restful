@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.webjars.NotFoundException;
+
 
 import java.nio.file.AccessDeniedException;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class ClientService {
 
     public ResponseEntity<ClientDto> findById(@PathVariable Long id) {
         var client = clientRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("The client  id :" + id + "does not  exist  in the data base"));
+                .orElseThrow(() -> new ResourceNotFoundException("The client  id :" + id + "does not  exist  in the data base"));
 
         return ResponseEntity.ok(new ClientDto(client));
     }
