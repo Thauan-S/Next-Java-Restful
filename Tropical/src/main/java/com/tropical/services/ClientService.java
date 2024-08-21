@@ -53,7 +53,7 @@ public class ClientService {
     }
     @Transactional
     public ClientDto update(@RequestBody ClientDto clientDto, JwtAuthenticationToken token)
-            throws AccessDeniedException {
+             {
         var user = userRepository.findById(UUID.fromString(token.getName()));
         var clientbd = clientRepository.findById(clientDto.getClientId())
                 .orElseThrow(() -> new ResourceNotFoundException(
