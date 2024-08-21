@@ -3,6 +3,8 @@ package com.tropical.services;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.tropical.data.dto.ClientDto;
+import com.tropical.exceptions.ForbiddenAccesException;
 import com.tropical.exceptions.ResourceNotFoundException;
 import com.tropical.model.Client;
 import com.tropical.model.Reserve;
@@ -20,13 +22,11 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
-import java.time.ZonedDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,35 +35,44 @@ public class ClientServiceTest {
     private ClientRepository clientRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private JwtAuthenticationToken token;
     @InjectMocks
     private ClientService clientService;
 
     private Client client;
-    private User user;
-    private  Role role;
+    private Client client2;
+    private User commomUser;
+    private  Role basicRole;
     private Reserve reserve;
+    private ClientDto clientDto;
     @Captor
-    private ArgumentCaptor<Client> clienteArgumentCaptor;
+    private ArgumentCaptor<Client> clientArgumentCaptor;
     @Captor
-    private ArgumentCaptor<Long> IdArgumentCaptor;
+    private ArgumentCaptor<Long> idArgumentCaptor;
     @Captor
-    private ArgumentCaptor<PageRequest> PageRequestArgumentCaptor;
+    private ArgumentCaptor<PageRequest> pageRequestArgumentCaptor;
     @Captor
-    private ArgumentCaptor<UUID> UuidArgumentCaptor;
-
+    private ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @BeforeEach
      void setUp(){
-        reserve=new Reserve();
-        role=new Role();
-        role.setRoleId(1L);
-        role.setName("BASIC");
 
-        user = new User();
-        user.setRoles(Set.of(role));
-        user.setUserId(UUID.randomUUID());
-        user.setUsername("thau");
-        user.setPassword("123");
+        reserve=new Reserve();
+
+        basicRole =new Role();
+        basicRole.setRoleId(1L);
+        basicRole.setName("BASIC");
+
+
+
+        commomUser = new User();
+        commomUser.setRoles(Set.of(basicRole));
+        commomUser.setUserId(UUID.randomUUID());
+        commomUser.setUsername("thau");
+        commomUser.setPassword("123");
+
+
 
         client = new Client();
         client.setClientId(1L);
@@ -71,23 +80,34 @@ public class ClientServiceTest {
         client.setPhone("73988896878");
         client.setBirthday(new Date(2002 - 17 - 11));
         client.setZipCode("45330000");
-        client.setUser(user);
+        client.setUser(commomUser);
         client.setReserves(List.of(reserve));
 
+        client2 = new Client();
+        client2.setClientId(2L);
+        client2.setName("Thau");
+        client2.setPhone("111111");
+        client2.setBirthday(new Date(2002 - 11 - 11));
+        client2.setZipCode("4533");
+        client2.setReserves(List.of(reserve));
+
+        clientDto=new ClientDto(1L,"thau","7988896878",new Date(2002-17-11),"45330000",commomUser);
+        token=mock(JwtAuthenticationToken.class);
+        lenient().when(token.getName()).thenReturn(commomUser.getUserId().toString());
     }
     @Nested
     class findClientById {
         @Test
-        @DisplayName("Should returns a client with success")
+        @DisplayName("Should returns a client by id with success")
         void shouldGetAClientWithSuccess() {
             //Arrange
-            doReturn(Optional.of(client)).when(clientRepository).findById(IdArgumentCaptor.capture());
+            doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
             //Act
             var outPut = clientService.findById(1L);
 
             //Assert
-            verify(clientRepository).findById(IdArgumentCaptor.capture());
-            assertEquals(1L, IdArgumentCaptor.getValue());
+            verify(clientRepository).findById(idArgumentCaptor.capture());
+            assertEquals(1L, idArgumentCaptor.getValue());
             assertNotNull(outPut.getBody().getClientId());
             assertEquals("Thauan", outPut.getBody().getName());
             assertEquals(client.getName(), outPut.getBody().getName());
@@ -98,7 +118,7 @@ public class ClientServiceTest {
         void shouldThrowsANotFoundException() {
             //Arrange
             var clientId = 1L;
-            doReturn(Optional.empty()).when(clientRepository).findById(IdArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(clientRepository).findById(idArgumentCaptor.capture());
             //Act
             Optional<Client> outPut = clientRepository.findById(1L);
 
@@ -110,71 +130,71 @@ public class ClientServiceTest {
     }
 
     @Nested
-    class findClient {
+    class findAllClients {
 
         @Test
-        void shouldGetAClientByIdWithSuccess() {
+        @DisplayName("Should get a Page of Clients With Success")
+        void shouldGetAllClientsWithSuccess() {
             //Arrange
-            var cliente = new Client();
-            doReturn(Optional.of(cliente))
+            List<Client>clientList= List.of(client,client2);
+            Page<Client>pageOfClients=new PageImpl<>(clientList);
+            doReturn(pageOfClients)
                     .when(clientRepository)
-                    .findById(IdArgumentCaptor.capture());
+                    .findAll(pageRequestArgumentCaptor.capture());
             //Act
-            var outPut = clientRepository.findById(cliente.getClientId());
+            var outPut = clientService.findAll(0,2,"ASC");
 
             //Assert
-            assertTrue(outPut.isPresent());
-            assertEquals(1L, outPut.get().getClientId());
-            assertEquals("Thauan", outPut.get().getName());
-            assertEquals("73988896878", outPut.get().getPhone());
-            assertEquals(new Date(2002 - 17 - 11), outPut.get().getBirthday());
-            assertEquals("45330000", outPut.get().getZipCode());
+            assertTrue(outPut.hasBody());
+            assertEquals(2, outPut.getBody().size());
         }
-
-        @Test
-        void shouldGetAClientByIdWithSuccessWhenOptionalIsEmpty() {
-            //Arrange
-            doReturn(Optional.empty())
-                    .when(clientRepository)
-                    .findById(IdArgumentCaptor.capture());
-            //Act
-            var outPut = clientRepository.findById(client.getClientId());
-
-            //Assert
-            assertNotNull(outPut);
-            assertTrue(outPut.isEmpty());
-
-        }
-
     }
 
     @Nested
-    class listClient {
+    class updateClient {
         @Test
-        void shouldReturnAllClientsWithSuccess() {
-//            //Arrange
-//            var cliente1 = new Customer(1L, "Thauan", "73988896878", new Date(2002 - 17 - 11), "45330000");
-//            var cliente2 = new Customer(2L, "Thauan2", "73988896877", new Date(2002 - 17 - 12), "45330001");
-//            //Page<Cliente>page=new Page.of(cliente);
-//            List<Customer> clientesList = Arrays.asList(cliente1, cliente2);
-//
-//            Page<Customer> clientePage = new PageImpl<>(clientesList, PageRequest.of(0, 2), clientesList.size());
-//            //doReturn(page.get().toList())
-//            doReturn(clientePage)
-//                    .when(clienteRepository)
-//                    .findAll(PageRequestArgumentCaptor.capture());
-//
-//            //Act
-//            var output = clienteService.findAll(1, 2, "ASC");
-//
-//
-//            //Assert
-//            assertNotNull(output);
-//            assertEquals(clientesList.size(), Objects.requireNonNull(output.getBody()).size());
-//            assertEquals(clientesList.get(0).getClienteId(), cliente1.getClienteId());
-//            assertEquals(clientesList.get(1).getClienteId(), cliente2.getClienteId());
-//            assertEquals(clientePage.getSize(), clientesList.size());
+        @DisplayName("Should update a client with  success")
+        void shouldUpdateAClientWithSuccess() {
+            //Arrange
+            // falta definir os novos campos para update
+            doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
+            doReturn(client).when(clientRepository).save(clientArgumentCaptor.capture());
+            //Act
+            var output = clientService.update(clientDto,token);
+            //Assert
+            assertNotNull(output.getClientId());
+            assertEquals(clientDto.getClientId(),output.getClientId());
+            assertEquals(clientDto.getName(),output.getName());
+            assertEquals(clientDto.getPhone(),output.getPhone());
+            assertEquals(clientDto.getBirthday(),output.getBirthday());
+            assertEquals(clientDto.getZipCode(),output.getZipCode());
+            assertEquals(clientDto.getUser(),output.getUser());
+
+
+
         }
+        @Test
+        @DisplayName("Should throws a ResourceNotFoundException when Optional is empty")
+        void shouldThrowsAResourceNotFoundExceptionWhenClientNotExists() {
+            //Arrange
+            doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(clientRepository).findById(idArgumentCaptor.capture());
+
+            //Act & Assert
+            assertThrows(ResourceNotFoundException.class,()-> clientService.update(clientDto,token));
+        }
+        @Test
+        @DisplayName("Should throws a NotFoundException when Optional is empty")
+        void shouldThrowsAForbiddenAccessExceptionWhenClientNotExists() {
+            //Arrange
+           doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
+           doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doThrow(new ForbiddenAccesException("")).when(clientRepository).save(clientArgumentCaptor.capture());
+            //Act & Assert
+            assertThrows(ForbiddenAccesException.class,()-> clientService.update(clientDto,token));
+        }
+
 
 
     }
@@ -182,33 +202,39 @@ public class ClientServiceTest {
     @Nested
     class deleteById {
         @Test
+        @DisplayName("Should delete a client by id with success")
         void shouldDeleteClientById() {
             //Arrange
-//            Long IdToDelete = 1L;
-//            var cliente = new Customer(1L, "Thauan", "73988896878", new Date(2002 - 17 - 11), "45330000");
-//            Role admin = new Role();
-//            admin.setRoleId(1L);
-//            Role basic = new Role();
-//            admin.setRoleId(2L);
-//            Role empresa = new Role();
-//            admin.setRoleId(3L);
-//            Set<Role> roles = Set.of(admin, basic, empresa);
-//
-//            var jwt = new JwtAuthenticationToken(null, List.of(new SimpleGrantedAuthority("ROLE_USER")), UUID.randomUUID().toString());
-//
-//            User user = new User(
-//                    UUID.randomUUID(),
-//                    "username",
-//                    "password",
-//                    cliente,
-//                    roles);
-//            doReturn(Optional.of(user)).when(userRepository).findById(UuidArgumentCaptor.capture());
-//            doReturn(cliente).when(clienteRepository).findById(IdArgumentCaptor.capture());
-//            doNothing().when(clienteRepository).deleteById(IdArgumentCaptor.capture());
-//            //Act
-//            clienteService.delete(1L, jwt);
-//            //Assert
-//            verify(clienteRepository).deleteById(IdToDelete);
+            doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
+            //Act
+            clientService.delete(1L, token);
+            //Assert
+            verify(clientRepository).deleteById(1L);
+        }
+        @Test
+        @DisplayName("Should throws a ResourceNotFoundException when optional is empty")
+        void shouldThrowsAExceptionWhenOptionalIsEmptyDeleteClientById() {
+            //Arrange
+            var id=1L;
+            doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(clientRepository).findById(idArgumentCaptor.capture());
+            //Act & Assert
+            assertThrows(ResourceNotFoundException.class,()-> clientService.delete(id,token));
+        }
+        @Test
+        @DisplayName("Should throws a ResourceNotFoundException when optional is empty")
+        void shouldThrowsAExceptionWhenUserNotIsAdmin() {
+            //Arrange
+            var id=1L;
+
+            doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
+
+                assertThrows(ForbiddenAccesException.class,()-> clientService.delete(id,token));
+
+            //Act & Assert
+
         }
 
 
