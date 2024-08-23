@@ -59,28 +59,24 @@ public class EnterpriseService {
         var isAdmin = user.get().getRoles()
                 .stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
-        if (isAdmin || enterpriseBd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
-
+        if(isAdmin|| enterpriseBd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
             enterpriseBd.setName(enterpriseDto.getName());
             enterpriseBd.setAddress(enterpriseDto.getAddress());
             enterpriseBd.setCnpj(enterpriseDto.getCnpj());
             enterpriseRepository.save(enterpriseBd);
             return new EnterpriseDto(enterpriseBd);
-        } else {
+        }else {
             throw new ForbiddenAccesException("The user does not have permission");
+            }
         }
-
-    }
     @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
-
         var user = userRepository.findById(UUID.fromString(token.getName()));
-        System.out.println("usuário" + user.get().getUserId());
         var isAdmin = user.get().getRoles()
                 .stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
         var enterpriseBd = enterpriseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The company  id:" + id + "Is not in the database"));
-        if (isAdmin || enterpriseBd.getUser().getUserId().equals(user.get().getUserId())) {
+        if (isAdmin || enterpriseBd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
             enterpriseRepository.deleteById(id);
         } else {
             throw new ForbiddenAccesException("The user :" + user.get().getUsername() + " does not have permission to perform this operation ");

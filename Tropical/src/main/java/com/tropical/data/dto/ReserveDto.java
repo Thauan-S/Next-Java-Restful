@@ -38,6 +38,10 @@ public class ReserveDto {
         this.travelPackage = reserve.getTravelPackage();
     }
 
+    public ReserveDto() {
+
+    }
+
     public static Page<ReserveDto> listReserves(Page<Reserve> reserves) {
         return reserves.map(ReserveDto::new);
     }

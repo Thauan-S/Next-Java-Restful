@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.tropical.data.dto.EnterpriseDto;
+import com.tropical.exceptions.ForbiddenAccesException;
 import com.tropical.model.Enterprise;
 import com.tropical.model.Role;
 import com.tropical.model.TravelPackage;
@@ -55,6 +56,7 @@ class EnterpriseServiceTest {
     Enterprise enterprise2;
     EnterpriseDto enterpriseDto;
     Role enterpriseRole;
+    Role adminRole;
     TravelPackage travelPackage;
     @Captor
     ArgumentCaptor<PageRequest> PageRequestArgumentCaptor;
@@ -62,13 +64,25 @@ class EnterpriseServiceTest {
     @BeforeEach
     void setup() {
         enterpriseRole = new Role();
+        enterpriseRole.setName(Role.Values.EMPRESA.name());
+        enterpriseRole.setRoleId(Role.Values.EMPRESA.getRoleId());
+
+        adminRole = new Role();
+        adminRole.setName(Role.Values.ADMIN.name());
+        adminRole.setRoleId(Role.Values.ADMIN.getRoleId());
 
         user = new User();
+        user.setUserId(UUID.randomUUID());
+        user.setUsername("enterprise");
+        user.setPassword("123");
+        user.setRoles(Set.of(enterpriseRole));
 
         travelPackage = new TravelPackage();
 
+
         enterprise = new Enterprise(1L, "JAVA", "2983139491234", "Address", user, List.of(travelPackage));
         enterprise2 = new Enterprise(1L, "JAVA2", "123", "Address2", user, List.of(travelPackage));
+        lenient().when(token.getName()).thenReturn(user.getUserId().toString());
     }
 
     @Nested
@@ -114,61 +128,102 @@ class EnterpriseServiceTest {
     class updateEnterprise {
 
         @Test
-        void update() {
+        @DisplayName("Should update when user is admin")
+        void shouldUpdateWhenUserIsAdmin() {
             //Arrange
-            enterpriseDto=new EnterpriseDto();
+            enterpriseDto = new EnterpriseDto();
+            enterpriseDto.setEnterpriseId(1L);
+            user.setRoles(Set.of(adminRole));
+            enterpriseDto.setUser(user);
             enterpriseDto.setName("New name");
             enterpriseDto.setAddress("New address");
             enterpriseDto.setCnpj("23123412");
 
-           doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
-           doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
-           doReturn(enterprise).when(enterpriseRepository).save(enterpriseArgumentCaptor.capture());
-           //Act
-             var outPut=enterpriseService.update(enterpriseDto,token);
+            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
+            doReturn(enterprise).when(enterpriseRepository).save(enterpriseArgumentCaptor.capture());
+            //Act
+            var outPut = enterpriseService.update(enterpriseDto, token);
             //Assert
-            verify(enterpriseRepository,times(1)).save(enterprise);
-            assertEquals(enterpriseDto.getName(),outPut.getName());
-            
+            verify(enterpriseRepository, times(1)).save(enterprise);
+            assertEquals(enterpriseDto.getName(), outPut.getName());
+            assertEquals(enterpriseDto.getAddress(), outPut.getAddress());
+            assertEquals(enterpriseDto.getCnpj(), outPut.getCnpj());
+        }
+
+        @Test
+        @DisplayName("should throws a Exception when user not have authorization")
+        void shouldThrowsAExceptionWhenUserNotHaveAuthorization() {
+            //Arrange
+            enterpriseDto = new EnterpriseDto();
+            enterpriseDto.setEnterpriseId(1L);
+
+            user.setRoles(Set.of(enterpriseRole));
+            user.setUserId(UUID.randomUUID());
+
+            enterpriseDto.setUser(user);
+            enterpriseDto.setName("New name");
+            enterpriseDto.setAddress("New address");
+            enterpriseDto.setCnpj("23123412");
+
+            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
+            //ACT & Assert
+            assertThrows(ForbiddenAccesException.class, () -> enterpriseService.update(enterpriseDto, token));
+        }
+
+        @Test
+        @DisplayName("Should throw an exception when the enterprise user is not the same as the token user")
+        void shouldThrowsAExceptionWhenUserDoesNotEquals() {
+            // Arrange
+            enterpriseDto = new EnterpriseDto();
+            enterpriseDto.setEnterpriseId(1L);
+            user.setRoles(Set.of(enterpriseRole));
+            user.setUserId(UUID.randomUUID());
+            enterpriseDto.setUser(user);
+            enterpriseDto.setName("New name");
+            enterpriseDto.setAddress("New address");
+            enterpriseDto.setCnpj("23123412");
+
+            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
+            System.out.println(enterpriseDto.getUser().getUserId().equals(UUID.fromString(token.getName())));
+            //Act & Assert
+            assertThrows(ForbiddenAccesException.class, () -> enterpriseService.update(enterpriseDto, token));
         }
     }
 
     @Nested
     class deleteById {
         @Test
-        @DisplayName("Should delete a company by id with authentication token When user Is Admin")
-        void shouldDeleteACompaByIdWithSuccessWhenUserIsAdming() {
-//            //arrange
-//            var admin=new Role();
-//            admin.setName("admin");
-//            admin.setRoleId(1L);
-//            user.setRoles(Set.of(admin));
-//            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
-//            doReturn(Optional.of(enterprise)).when(empresaRepository).findById(IdArgumentCaptor.capture());
-//            //Act
-//            var empresa =empresaRepository.findById(1L);
-//            var outPut=empresaService.delete(1L,token);
-//
-//            //Assert
-//assertEquals(ResponseEntity.noContent().build(),outPut);
-//verify(empresaRepository,times(1)).deleteById(1L);
+        @DisplayName("Should delete a company by id with authentication token when user s Admin")
+        void shouldDeleteACompaByIdWithSuccessWhenUserIsAdmin() {
+            //arrange
+            user.setRoles(Set.of(adminRole));
+
+            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
+            //Act
+            var outPut = enterpriseService.delete(1L, token);
+            //Assert
+            verify(enterpriseRepository, times(1)).deleteById(1L);
         }
 
         @Test
         @DisplayName("Should  Throw a ForbiddenAccesException When User not is admin")
-        void shouldNotDeleteACompaByIdWithSuccessWhenUserIsAdming() {
-//            //arrange
-//            var notAdmin=new Role();
-//            notAdmin.setName("not is admin");
-//            notAdmin.setRoleId(2L);
-//            user.setRoles(Set.of(notAdmin));
-//
-//            doThrow(new ForbiddenAccesException()).when(userRepository).findById(uuidArgumentCaptor.capture());
-//            //Act & Assert
-//            ForbiddenAccesException exception=assertThrows(ForbiddenAccesException.class,()-> empresaService.delete(1L,token));
-//            verify(empresaRepository,never()).deleteById(1L);
-//            assertEquals("O usuário não possui permissão para realizar essa operação",exception.getMessage());
-//
+        void shouldNotDeleteAEnterpriseWhenUserNotIsAdmin() {
+            //arrange
+
+            user.setRoles(Set.of(enterpriseRole));
+            user.setUserId(UUID.randomUUID());
+
+            doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findById(idArgumentCaptor.capture());
+            //Act & Assert
+            ForbiddenAccesException exception=assertThrows(ForbiddenAccesException.class,()-> enterpriseService.delete(1L,token));
+            verify(enterpriseRepository,never()).deleteById(1L);
+            assertEquals("The user :" + user.getUsername() + " does not have permission to perform this operation ",exception.getMessage());
+
 
 
         }

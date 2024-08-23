@@ -86,8 +86,7 @@ public class ReserveService {
 		var user = userRepository.findById(UUID.fromString(token.getName()));
 		var reserveBd = reserveRepository.findById(reserveDto.getReserveId()).orElseThrow(() -> new ResourceNotFoundException(
 						"Reserve by id" + reserveDto.getReserveId() + " does not found in the data base"));
-		var travelPackage = travelPackageRepository.findById(reserveDto.getTravelPackage().getId())
-				.orElseThrow(() -> new ResourceNotFoundException(
+		var travelPackage = travelPackageRepository.findById(reserveDto.getTravelPackage().getId()).orElseThrow(() -> new ResourceNotFoundException(
 						"Travel package by id " + reserveDto.getTravelPackage().getId() + " does not found in the data base"));
 		var isAdmin = user.get().getRoles().stream()
 				.anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
@@ -110,8 +109,7 @@ public class ReserveService {
 		if (isAdmin || reserveBd.getClient().getUser().getUserId().equals((user.get().getUserId()))) {
 			reserveRepository.deleteById(id);
 		} else {
-			throw new ForbiddenAccesException(
-					"The user: " + user.get().getUsername() + " does not have permission to perform this operation");
+			throw new ForbiddenAccesException("The user: " + user.get().getUsername() + " does not have permission to perform this operation");
 		}
 		return ResponseEntity.noContent().build();
 	}

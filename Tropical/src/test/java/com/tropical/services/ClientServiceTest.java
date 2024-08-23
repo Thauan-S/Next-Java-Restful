@@ -214,7 +214,7 @@ public class ClientServiceTest {
         }
         @Test
         @DisplayName("Should throws a ResourceNotFoundException when optional is empty")
-        void shouldThrowsAExceptionWhenOptionalIsEmptyDeleteClientById() {
+        void shouldThrowsAExceptionWhenOptionalIsEmpty() {
             //Arrange
             var id=1L;
             doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
@@ -223,18 +223,16 @@ public class ClientServiceTest {
             assertThrows(ResourceNotFoundException.class,()-> clientService.delete(id,token));
         }
         @Test
-        @DisplayName("Should throws a ResourceNotFoundException when optional is empty")
+        @DisplayName("Should throws a ForbiddenAccesException when User not  is admin")
         void shouldThrowsAExceptionWhenUserNotIsAdmin() {
             //Arrange
-            var id=1L;
 
+            client.setUser(commomUser);
             doReturn(Optional.of(commomUser)).when(userRepository).findById(uuidArgumentCaptor.capture());
             doReturn(Optional.of(client)).when(clientRepository).findById(idArgumentCaptor.capture());
 
-                assertThrows(ForbiddenAccesException.class,()-> clientService.delete(id,token));
-
             //Act & Assert
-
+            assertThrows(ForbiddenAccesException.class,()-> clientService.delete(1L,token));
         }
 
 
