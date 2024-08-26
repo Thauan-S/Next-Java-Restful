@@ -49,7 +49,7 @@ public class TravelPackageService {
     @Transactional
     public TravelPackageDto create(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("The user id : " + token.getName() + "does not exists in the data base"));
-        var enterprise = enterpriseRepository.findByname(travelPackageDto.getEnterprise().getName()).orElseThrow(() -> new ResourceNotFoundException("The enterprise  by id " + travelPackageDto.getEnterprise().getEnterpriseId() + "does not exists in the data base"));
+        var enterprise = enterpriseRepository.findByname(travelPackageDto.getEnterprise().getName()).orElseThrow(() -> new ResourceNotFoundException("The enterprise  by name " + travelPackageDto.getEnterprise().getName() + "does not exists in the data base"));
         ;
         var isAdmin = user.getRoles().stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
@@ -73,18 +73,19 @@ public class TravelPackageService {
     }
 
     public TravelPackageDto findById(@PathVariable Long id, JwtAuthenticationToken token) {
-        var travelPackage = travelPackageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The package by " + id + " does not exists in the data base"));
+        var travelPackage = travelPackageRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("The package by " + id + " does not exists in the data base"));
         return new TravelPackageDto(travelPackage);
     }
+
     @Transactional
     public TravelPackageDto update(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName()));
         var isAdmin = user.get().getRoles().stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
         if (isAdmin || travelPackageDto.getEnterprise().getUser().getUserId().equals(UUID.fromString(token.getName()))) {
-
-            var packageDb = travelPackageRepository.findById(travelPackageDto.getId()).orElseThrow(() -> new ResourceNotFoundException("The package by id : " + travelPackageDto.getId() + " does not found in the data base"));
-
+            var packageDb = travelPackageRepository.findById(travelPackageDto.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("The package by id : " + travelPackageDto.getId() + " does not found in the data base"));
             packageDb.setDestiny(travelPackageDto.getDestiny());
             packageDb.setDescription(travelPackageDto.getDescription());
             packageDb.setCategory(travelPackageDto.getCategory());
@@ -95,17 +96,20 @@ public class TravelPackageService {
         }
         return travelPackageDto;
     }
+
     @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id, JwtAuthenticationToken token) {
-        var user = userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("Package id :" + id + "was not found in the database"));
+        var user = userRepository.findById(UUID.fromString(token.getName()))
+                .orElseThrow(() -> new ResourceNotFoundException("Package id :" + id + "was not found in the database"));
         var isAdmin = user.getRoles().stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
         var travelPackage =
-        travelPackageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Package id :" + id + "was not found in the database"));
-        if (isAdmin || travelPackage.getEnterprise().getUser().getUserId().equals(UUID.fromString(token.getName()))){
+                travelPackageRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Package id :" + id + "was not found in the database"));
+        if (isAdmin || travelPackage.getEnterprise().getUser().getUserId().equals(UUID.fromString(token.getName()))) {
             travelPackageRepository.delete(travelPackage);
             return ResponseEntity.noContent().build();
-        } else{
+        } else {
             throw new ForbiddenAccesException();
         }
 

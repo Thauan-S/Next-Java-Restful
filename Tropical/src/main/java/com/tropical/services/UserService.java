@@ -71,9 +71,9 @@ public class UserService {
 
         var companyRole = roleRepository.findByName(Role.Values.EMPRESA.name());
         var userDB = userRepository.findByUsername(enterpriseDto.getUser().getUsername());
-//		if(userDB.isPresent()) {
-//			throw new UserAlreadyExistsException();
-//		}
+        if (userDB.isPresent()) {
+            throw new UserAlreadyExistsException();
+        }
         var user = new User();
         user.setUsername(enterpriseDto.getUser().getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(enterpriseDto.getUser().getPassword()));
