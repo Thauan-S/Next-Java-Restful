@@ -3,6 +3,7 @@ package com.tropical.services;
 import com.tropical.data.dto.ClientDto;
 import com.tropical.data.dto.CreateUserDto;
 import com.tropical.data.dto.EnterpriseDto;
+import com.tropical.data.dto.UserDto;
 import com.tropical.exceptions.UserAlreadyExistsException;
 import com.tropical.exceptions.UserAlreadyUsedException;
 import com.tropical.model.Client;
@@ -124,8 +125,9 @@ public class UserService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<List<User>> listUsers() {
-        var users = userRepository.findAll();
+    public ResponseEntity<List<UserDto>> listUsers() {
+        var users = userRepository.findAll().stream()
+            .map(UserDto::new).toList();
         return ResponseEntity.ok(users);
     }
 }

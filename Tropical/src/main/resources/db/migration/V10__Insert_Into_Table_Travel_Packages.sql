@@ -1,0 +1,3 @@
+--INSERT INTO tb_companies (enterprise_id, address, cnpj, name_enterprise, user_id) VALUES
+--  (1, 'Rua A, 123', '12345678000195', 'Empresa A', UUID_TO_BIN('e1b8f0d4-4c12-4e7e-a30e-6d42d5dbde09'));
+--

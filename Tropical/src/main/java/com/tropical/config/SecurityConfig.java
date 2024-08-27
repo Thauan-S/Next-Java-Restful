@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/login" ).permitAll()
                         //.requestMatchers(HttpMethod.POST,"/login" ).hasAuthority("SCOPE_ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/register/empresa" ).permitAll()
+                        .requestMatchers(HttpMethod.POST,"/register/enterprise" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/register/admin" ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/register/client" ).permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/pacotes/v1").permitAll()
