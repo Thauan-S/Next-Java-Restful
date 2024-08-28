@@ -1,9 +1,9 @@
 CREATE TABLE `tb_travel_packages` (
   `travel_package_id` bigint NOT NULL AUTO_INCREMENT,
+  `destiny` varchar(45) NOT NULL,
+  `description` varchar(150) NOT NULL,
   `category` varchar(150) NOT NULL,
   `days` int NOT NULL,
-  `description` varchar(150) NOT NULL,
-  `destiny` varchar(45) NOT NULL,
   `image` varchar(255) NOT NULL,
   `price` decimal(38,2) NOT NULL,
   `enterprise_id` bigint NOT NULL,

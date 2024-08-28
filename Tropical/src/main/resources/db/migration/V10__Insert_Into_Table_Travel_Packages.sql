@@ -1,3 +1,3 @@
---INSERT INTO tb_companies (enterprise_id, address, cnpj, name_enterprise, user_id) VALUES
---  (1, 'Rua A, 123', '12345678000195', 'Empresa A', UUID_TO_BIN('e1b8f0d4-4c12-4e7e-a30e-6d42d5dbde09'));
---
+INSERT INTO `tb_travel_packages`(destiny,description,category,days,image,price,enterprise_id) VALUES
+ ('Rio de Janeiro','descrição','nacional',5,'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Cidade_Maravilhosa.jpg/288px-Cidade_Maravilhosa.jpg',1500.00,2)
+,('Londres','descrição','internacional',7,'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Cidade_Maravilhosa.jpg/288px-Cidade_Maravilhosa.jpg',3000.00,1);

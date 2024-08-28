@@ -1,8 +1,8 @@
 CREATE TABLE `tb_companies` (
   `enterprise_id` bigint NOT NULL AUTO_INCREMENT,
-  `address` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `cnpj` varchar(14) DEFAULT NULL,
-  `name_enterprise` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   `user_id` binary(16) DEFAULT NULL,
   PRIMARY KEY (`enterprise_id`),
   UNIQUE KEY `UK_ryrbo6e8at6vw7mhwfxro18w6` (`cnpj`),

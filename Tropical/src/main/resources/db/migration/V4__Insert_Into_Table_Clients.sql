@@ -1,2 +1,2 @@
---INSERT INTO `tb_clients` VALUES (1,'thauan',"73988896878",'2002-11-17','12345',b16fd428-64a8-11ef-a634-14cb1983820e)
---,(2,'thau','thau',"11111111",'2002-11-17','123456',b16fdb8c-64a8-11ef-a634-14cb1983820e);
+INSERT INTO `tb_clients` (name,phone,birthday,zip_code,user_id) VALUES ('thauan','73988896878','2002-11-17','12345',(select user_id from tb_users where username="thauan"))
+,('thau','11111111','2002-11-17','123456',(select user_id from tb_users where username="thau"));

@@ -1,8 +1,8 @@
 CREATE TABLE `tb_clients` (
   `client_id` bigint NOT NULL AUTO_INCREMENT,
-  `birthday` datetime(6) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
+  `birthday` datetime(6) DEFAULT NULL,
   `zip_code` varchar(255) DEFAULT NULL,
   `user_id` binary(16) DEFAULT NULL,
   PRIMARY KEY (`client_id`),
