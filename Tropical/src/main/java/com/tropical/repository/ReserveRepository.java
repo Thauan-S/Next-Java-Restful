@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 
-    List<Reserve> findByClient_User_Username(String username);
+    List<Reserve> findByClient_User_Email(String email);
 }

@@ -14,12 +14,12 @@ https://www.linkedin.com/in/thauan-devjr/
 
 <details>
     <summary><b>Pacotes de viagem</b></summary>
-    <img src="./media/categories.png" alt="Categorias">
+    <img src="./database/pacotes.jpg" alt="Categorias">
 </details>
 
 <details>
     <summary><b>Reservas</b></summary>
-    <img src="./media/categories.png" alt="Categorias">
+    <img src="./database/reservas.jpg" alt="Categorias">
 </details>
 <details>
     <summary><b>Clientes</b></summary>
@@ -47,10 +47,8 @@ create database tropical;
 
 ### Execute o projeto para criar as tabelas
 
-### Após isso , adicione as roles: 
- insert  into tb_roles (name) values("ADMIN"),("BASIC"),("EMPRESA");
-
 ## Documentação swagger
 http://localhost/swagger-ui/index.html
+
 
 [![Docker Hub Repo](https://img.shields.io/docker/pulls/thauans/tropical.svg)](https://hub.docker.com/repository/docker/thauans/tropical)

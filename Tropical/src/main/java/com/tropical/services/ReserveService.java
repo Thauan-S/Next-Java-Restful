@@ -45,7 +45,7 @@ public class ReserveService {
 		return new ReserveDto(reserve);
 	}
 	public List<ReserveDto> findReserveByClientName(@PathVariable String username, JwtAuthenticationToken token){
-		var reservesOfClient=reserveRepository.findByClient_User_Username(username).stream()
+		var reservesOfClient=reserveRepository.findByClient_User_Email(username).stream()
 				.map(reserve -> new ReserveDto(reserve.getReserveId(),reserve.getCreationDate(),reserve.getTravelDate(),reserve.getClient(),reserve.getTravelPackage()))
 				.toList();
 		return reservesOfClient;
@@ -64,7 +64,7 @@ public class ReserveService {
 	@Transactional
 	public ReserveDto create(@RequestBody ReserveDto dto, JwtAuthenticationToken token) {
 
-		var client = clientRepository.findByUser_username(dto.getClient().getUser().getUsername());
+		var client = clientRepository.findByUser_email(dto.getClient().getUser().getEmail());
 
 		var travelPackage = travelPackageRepository.findById(dto.getTravelPackage().getId());
 
@@ -109,7 +109,7 @@ public class ReserveService {
 		if (isAdmin || reserveBd.getClient().getUser().getUserId().equals((user.get().getUserId()))) {
 			reserveRepository.deleteById(id);
 		} else {
-			throw new ForbiddenAccesException("The user: " + user.get().getUsername() + " does not have permission to perform this operation");
+			throw new ForbiddenAccesException("The user: " + user.get().getEmail() + " does not have permission to perform this operation");
 		}
 		return ResponseEntity.noContent().build();
 	}

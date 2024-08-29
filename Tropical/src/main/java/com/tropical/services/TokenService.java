@@ -30,7 +30,7 @@ public class TokenService {
 
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
 		
-		var user =userRepository.findByUsername(loginRequest.username());
+		var user =userRepository.findByEmail(loginRequest.email());
 		
 		
 		if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest,passwordEncoder)) throw new ResourceNotFoundException("username or password is incorrect ");

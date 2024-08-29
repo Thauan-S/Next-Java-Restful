@@ -79,7 +79,7 @@ public class EnterpriseService {
         if (isAdmin || enterpriseBd.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
             enterpriseRepository.deleteById(id);
         } else {
-            throw new ForbiddenAccesException("The user :" + user.get().getUsername() + " does not have permission to perform this operation ");
+            throw new ForbiddenAccesException("The user :" + user.get().getEmail() + " does not have permission to perform this operation ");
         }
         return ResponseEntity.noContent().build();
     }

@@ -53,7 +53,7 @@ class TokenServiceTest {
         role = new Role();
         user = new User();
         user.setUserId(UUID.randomUUID());
-        user.setUsername("username");
+        user.setEmail("username");
         user.setPassword("encodedPassword");
         user.setRoles(Set.of(role));
     }
@@ -62,7 +62,7 @@ class TokenServiceTest {
     @Test
     void shouldLogInSuccessFully() {
         //Arrange
-        doReturn(Optional.of(user)).when(userRepository).findByUsername(stringArgumentCaptor.capture());
+        doReturn(Optional.of(user)).when(userRepository).findByEmail(stringArgumentCaptor.capture());
         doReturn(true).when(bCryptPasswordEncoder).matches(charSequenceArgumentCaptor.capture(),stringArgumentCaptor.capture());
 
         // Mock the JwtEncoder.encode method

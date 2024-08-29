@@ -17,7 +17,7 @@ public class UserDto {
     private UUID userId;
 
 
-    private String username;
+    private String email;
     @JsonIgnore
     private String password;
 
@@ -31,13 +31,13 @@ public class UserDto {
 
 	public UserDto() {
 	}
-    public UserDto(String username, String password) {
-        this.username = username;
+    public UserDto(String email, String password) {
+        this.email = email;
         this.password = password;
     }
-	public UserDto(UUID userId, String username, String password, Client client, Set<Role> roles) {
+	public UserDto(UUID userId, String email, String password, Client client, Set<Role> roles) {
 		this.userId = userId;
-		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.client = client;
 		this.roles = roles;
@@ -45,7 +45,7 @@ public class UserDto {
 
     public UserDto(User user) {
         this.userId = user.getUserId();
-        this.username = user.getUsername();
+        this.email = user.getEmail();
         this.password = user.getPassword();
         this.roles = user.getRoles();
     }
@@ -58,12 +58,12 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

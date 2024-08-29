@@ -102,12 +102,12 @@ class UserServiceTest {
         createAdminUserDto = new CreateUserDto("admin", "123");
         enterpriseDto = new EnterpriseDto();
         enterpriseUser = new User();
-        enterpriseUser.setUsername("enterprise");
+        enterpriseUser.setEmail("enterprise");
         enterpriseUser.setPassword("123");
         enterpriseDto.setUser(enterpriseUser);
 
         clientUser=new User();
-        clientUser.setUsername("client");
+        clientUser.setEmail("client");
         clientUser.setPassword("123");
         clientDto=new ClientDto();
         clientDto.setUser(clientUser);
@@ -130,7 +130,7 @@ class UserServiceTest {
         @DisplayName("Should throws a UserAlreadyExistsException when user exists")
         void shouldThrowsAException() {
             //Arrange
-            doReturn(Optional.of(user)).when(userRepository).findByUsername(stringArgumentCaptor.capture());
+            doReturn(Optional.of(user)).when(userRepository).findByEmail(stringArgumentCaptor.capture());
             //Act & Assert
             assertThrows(UserAlreadyExistsException.class, () -> userService.newUser(createUserDto));
         }
@@ -142,7 +142,7 @@ class UserServiceTest {
         @Test
         void createNewAdmin() {
             // Arrange
-            when(userRepository.findByUsername(stringArgumentCaptor.capture())).thenReturn(Optional.empty());
+            when(userRepository.findByEmail(stringArgumentCaptor.capture())).thenReturn(Optional.empty());
             when(roleRepository.findByName(stringArgumentCaptor.capture())).thenReturn(adminRole);
             when(bCryptPasswordEncoder.encode(stringArgumentCaptor.capture())).thenReturn("encodedPassword");
 
@@ -153,7 +153,7 @@ class UserServiceTest {
             verify(userRepository).save(userArgumentCaptor.capture());
             User savedUser = userArgumentCaptor.getValue();
 
-            assertEquals(createAdminUserDto.username(), savedUser.getUsername());
+            assertEquals(createAdminUserDto.email(), savedUser.getEmail());
             assertEquals("encodedPassword", savedUser.getPassword());
             assertEquals(Set.of(adminRole), savedUser.getRoles());
             assertEquals(ResponseEntity.ok().build(), output);
@@ -165,7 +165,7 @@ class UserServiceTest {
         @Test
         void createNewEnterprise() {
             //Arrange
-            when(userRepository.findByUsername(stringArgumentCaptor.capture())).thenReturn(Optional.empty());
+            when(userRepository.findByEmail(stringArgumentCaptor.capture())).thenReturn(Optional.empty());
             when(roleRepository.findByName(stringArgumentCaptor.capture())).thenReturn(adminRole);
             when(bCryptPasswordEncoder.encode(stringArgumentCaptor.capture())).thenReturn("encodedPassword");
             //Act
@@ -185,7 +185,7 @@ class UserServiceTest {
         void shouldCreateAclientWithSuccess() {
             //Arrange
             doReturn(basicRole).when(roleRepository).findByName(stringArgumentCaptor.capture());
-            doReturn(Optional.empty()).when(userRepository).findByUsername(stringArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(userRepository).findByEmail(stringArgumentCaptor.capture());
             when(bCryptPasswordEncoder.encode(stringArgumentCaptor.capture())).thenReturn("encodedPassword");
             //Act
             var outPut=userService.newClient(clientDto);
