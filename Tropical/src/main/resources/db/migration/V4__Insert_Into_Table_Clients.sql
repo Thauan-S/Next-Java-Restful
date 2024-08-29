@@ -1,0 +1,2 @@
+INSERT INTO `tb_clients` (name,phone,birthday,zip_code,user_id) VALUES ('thauan','73988896878','2002-11-17','12345',(select user_id from tb_users where email="thauan"))
+,('thau','11111111','2002-11-17','123456',(select user_id from tb_users where email="thau"));

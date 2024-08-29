@@ -23,7 +23,7 @@ public class Enterprise {
 	@Column(name="enterprise_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long enterpriseId;
-	@Column(name = "name_enterprise")
+	@Column(name = "name")
 	private String name;
 	@Column(length = 14 ,unique = true)
 	private String cnpj;

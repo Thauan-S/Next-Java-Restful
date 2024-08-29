@@ -69,7 +69,7 @@ public class ClientServiceTest {
         commomUser = new User();
         commomUser.setRoles(Set.of(basicRole));
         commomUser.setUserId(UUID.randomUUID());
-        commomUser.setUsername("thau");
+        commomUser.setEmail("thau");
         commomUser.setPassword("123");
 
 

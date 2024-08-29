@@ -73,7 +73,7 @@ class EnterpriseServiceTest {
 
         user = new User();
         user.setUserId(UUID.randomUUID());
-        user.setUsername("enterprise");
+        user.setEmail("enterprise");
         user.setPassword("123");
         user.setRoles(Set.of(enterpriseRole));
 
@@ -222,7 +222,7 @@ class EnterpriseServiceTest {
             //Act & Assert
             ForbiddenAccesException exception=assertThrows(ForbiddenAccesException.class,()-> enterpriseService.delete(1L,token));
             verify(enterpriseRepository,never()).deleteById(1L);
-            assertEquals("The user :" + user.getUsername() + " does not have permission to perform this operation ",exception.getMessage());
+            assertEquals("The user :" + user.getEmail() + " does not have permission to perform this operation ",exception.getMessage());
 
 
 

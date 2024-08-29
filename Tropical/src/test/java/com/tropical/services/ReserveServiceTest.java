@@ -22,7 +22,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -30,8 +29,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReserveServiceTest {
@@ -78,7 +75,7 @@ class ReserveServiceTest {
 
         user=new User();
         user.setUserId(UUID.randomUUID());
-        user.setUsername("thau");
+        user.setEmail("thau");
         user.setPassword("123");
 
 
@@ -125,7 +122,7 @@ class ReserveServiceTest {
     @Test
     void shouldGetAReserveWithSuccess() {
         //Arrange
-        doReturn(List.of(reserve)).when(reserveRepository).findByClient_User_Username(stringArgumentCaptor.capture());
+        doReturn(List.of(reserve)).when(reserveRepository).findByClient_User_Email(stringArgumentCaptor.capture());
         //Act
         var outPut=reserveService.findReserveByClientName("thauan",token);
         //Assert
@@ -133,7 +130,7 @@ class ReserveServiceTest {
         assertEquals(reserve.getReserveId(),outPut.get(0).getReserveId());
         assertEquals(reserve.getClient().getName(),outPut.get(0).getClient().getName());
         assertEquals(reserve.getCreationDate(),outPut.get(0).getCreationDate());
-        verify(reserveRepository,times(1)).findByClient_User_Username("thauan");
+        verify(reserveRepository,times(1)).findByClient_User_Email("thauan");
     }
     }
 
@@ -163,7 +160,7 @@ class ReserveServiceTest {
         void shouldCreateAReserveWithSuccess() {
         //Arrange
 
-            doReturn(Optional.of(client)).when(clientRepository).findByUser_username(stringArgumentCaptor.capture());
+            doReturn(Optional.of(client)).when(clientRepository).findByUser_email(stringArgumentCaptor.capture());
            doReturn(Optional.of(travelPackage)).when(travelPackageRepository).findById(idArgumentCaptor.capture());
            doReturn(reserve).when(reserveRepository).save(reserveArgumentCaptor.capture());
            //Act
@@ -179,7 +176,7 @@ class ReserveServiceTest {
         @DisplayName("Should throws a ResourceNotFoundException when optional is empty")
         void shouldThrowsAExceptionWhenOptionalIsEmpty() {
             //Arrange
-            doReturn(Optional.empty()).when(clientRepository).findByUser_username(stringArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(clientRepository).findByUser_email(stringArgumentCaptor.capture());
             doReturn(Optional.empty()).when(travelPackageRepository).findById(idArgumentCaptor.capture());
             //Ac & Assert
             assertThrows(ResourceNotFoundException.class,()-> reserveService.create(reserveDto,token));
@@ -271,13 +268,13 @@ class ReserveServiceTest {
             user.setRoles(Set.of(basicRole));
             user.setUserId(UUID.randomUUID());
             user.setPassword("123");
-            user.setUsername("thau");
+            user.setEmail("thau@gmail.com");
             client.setUser(user);
             reserve.setClient(client);
 
             doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
             doReturn(Optional.of(reserve)).when(reserveRepository).findById(idArgumentCaptor.capture());
-            doThrow(new ForbiddenAccesException("The user: " + user.getUsername() + " does not have permission to perform this operation")).when(reserveRepository).deleteById(idArgumentCaptor.capture());
+            doThrow(new ForbiddenAccesException("The user: " + user.getEmail() + " does not have permission to perform this operation")).when(reserveRepository).deleteById(idArgumentCaptor.capture());
             //Act & Assert
             assertThrows(ForbiddenAccesException.class,()->reserveService.delete(1L,token));
 

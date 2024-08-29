@@ -2,24 +2,28 @@ package com.tropical.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tropical.data.dto.LoginRequest;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_users")
-public class User {
-
+public class User implements Serializable {
+    private  static  final long serialVersionUID=1L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id")
     private UUID userId;
 
-   // @Column(unique = true)
-    private String username;
+    @NotBlank
+    @Email
+    private String email;
     private String password;
     
     @OneToOne(mappedBy = "user")
@@ -38,13 +42,13 @@ public class User {
 
 	public User() {
 	}
-    public User(String username, String password) {
-        this.username = username;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
-	public User(UUID userId, String username, String password, Client client, Set<Role> roles) {
+	public User(UUID userId, String email, String password, Client client, Set<Role> roles) {
 		this.userId = userId;
-		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.client = client;
 		this.roles = roles;
@@ -58,12 +62,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

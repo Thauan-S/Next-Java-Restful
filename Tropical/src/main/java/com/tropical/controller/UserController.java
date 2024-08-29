@@ -3,6 +3,7 @@ package com.tropical.controller;
 import com.tropical.data.dto.ClientDto;
 import com.tropical.data.dto.CreateUserDto;
 import com.tropical.data.dto.EnterpriseDto;
+import com.tropical.data.dto.UserDto;
 import com.tropical.model.User;
 import com.tropical.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -120,7 +121,7 @@ public class UserController {
             }
     )
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<List<User>> listAllUsers() {
+    public ResponseEntity<List<UserDto>> listAllUsers() {
         return userService.listUsers();
     }
 }
