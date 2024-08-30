@@ -3,6 +3,7 @@ package com.tropical.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -42,6 +43,7 @@ public class TravelPackage {
 	private Enterprise enterprise;
 
 	@OneToMany(mappedBy = "travelPackage",cascade = CascadeType.ALL)
+	@JsonManagedReference
 	List<Reserve> reserves;
 
 	public TravelPackage() {
