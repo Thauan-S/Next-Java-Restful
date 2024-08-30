@@ -53,7 +53,7 @@ create database tropical;
 create database email;
 
 ### Execute os projetos para criar as tabelas
-
+### senha dos usuários: 123
 ## Documentação swagger
 http://localhost/swagger-ui/index.html
 
