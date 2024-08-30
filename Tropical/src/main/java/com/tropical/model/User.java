@@ -25,7 +25,7 @@ public class User implements Serializable {
     @NotBlank
     @Email
     private String email;
-    @JsonIgnore
+
     private String password;
     
     @OneToOne(mappedBy = "user")
