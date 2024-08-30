@@ -29,7 +29,7 @@ public class TokenService {
 	}
 
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
-		
+		System.out.println(loginRequest.email());
 		var user =userRepository.findByEmail(loginRequest.email());
 		
 		

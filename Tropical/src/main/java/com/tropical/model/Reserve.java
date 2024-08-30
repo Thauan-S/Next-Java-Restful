@@ -1,5 +1,6 @@
 package com.tropical.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
@@ -20,9 +21,11 @@ public class Reserve {
 
     @ManyToOne
     @JoinColumn(name = "client_id_fk")
+    @JsonBackReference
     private Client client;
     @ManyToOne
     @JoinColumn(name = "travel_package_id_fk")
+    @JsonBackReference
     private TravelPackage travelPackage;
 
     public Reserve() {

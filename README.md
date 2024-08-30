@@ -9,43 +9,50 @@ https://www.linkedin.com/in/thauan-devjr/
 
 <details>
     <summary><b>Usuários</b></summary>
-    <img src="./media/categories.png" alt="Categorias">
+    <img src="./database/Users.png" alt="Users">
 </details>
 
 <details>
     <summary><b>Pacotes de viagem</b></summary>
-    <img src="./database/pacotes.jpg" alt="Categorias">
+    <img src="./database/Travel packages.png" alt="Travel Packages">
 </details>
 
 <details>
     <summary><b>Reservas</b></summary>
-    <img src="./database/reservas.jpg" alt="Categorias">
+    <img src="./database/Reserves.png" alt="Reserves">
 </details>
 <details>
     <summary><b>Clientes</b></summary>
-    <img src="./media/categories.png" alt="Categorias">
+    <img src="./database/Clients.png" alt="Clients">
 </details>
 <details>
     <summary><b>Empresas</b></summary>
-    <img src="./media/categories.png" alt="Categorias">
+    <img src="./database/Enterprise.png" alt="Enterprises">
 </details>
 
 # Diagramas
 <details>
     <summary><b>Diagrama de classes</b></summary>
     <img src="./database/Diagrama de classes.png" alt="Categorias">
+    <summary><b>Diagrama de classes Ms email</b></summary>
+    <img src="./database/Class Diagram Ms Email.png" alt="Categorias">
 </details>
 <details>
     <summary><b>Diagrama de entidade e relacionamento</b></summary>
     <img src="./database/DER.png" alt="Categorias">
+    <summary><b>Diagrama de entidade e relacionamento Ms Email</b></summary>
+    <img src="./database/DER MSemail .png" alt="Categorias">
 </details>
+
 
 ## Criação do banco de dados
 ### Antes de tudo, é necessario criar o banco de dados:
 
 create database tropical;
 
-### Execute o projeto para criar as tabelas
+create database email;
+
+### Execute os projetos para criar as tabelas
 
 ## Documentação swagger
 http://localhost/swagger-ui/index.html

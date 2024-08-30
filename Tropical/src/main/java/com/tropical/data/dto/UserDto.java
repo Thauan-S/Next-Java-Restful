@@ -15,10 +15,7 @@ import java.util.UUID;
 public class UserDto {
     
     private UUID userId;
-
-
     private String email;
-    @JsonIgnore
     private String password;
 
 

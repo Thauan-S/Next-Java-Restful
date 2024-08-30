@@ -1,6 +1,7 @@
 package com.tropical.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class User implements Serializable {
     @NotBlank
     @Email
     private String email;
+    @JsonIgnore
     private String password;
     
     @OneToOne(mappedBy = "user")

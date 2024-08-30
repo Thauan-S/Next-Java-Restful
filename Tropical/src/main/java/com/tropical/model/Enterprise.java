@@ -33,8 +33,9 @@ public class Enterprise {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@JsonManagedReference
+
 	@OneToMany(mappedBy = "enterprise" ,fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<TravelPackage> travelPackage;
 
 	
