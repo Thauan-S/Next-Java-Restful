@@ -1,18 +1,25 @@
+.div_buttons{
+    display: flex;
+     justify-content:center; 
+}
 
 .login{
-    
-
+    text-align: center ; 
+    margin: auto;
+    height: 250px;
 }
 .input{
     justify-content: center;
 }
 .degrade {
      background: linear-gradient(to bottom, #ff9900, rgb(59, 128, 207));
-    width: 100%; /* ou a largura desejada */
-    height: 500px; /* ou a altura desejada */
+    height: 500px; 
+     display: flex;
      
 }
-.btn{
-    margin-top: 10px;
-    width: 70px;
+.btnLogin{
+    width: 100px;
+}
+.input_password{
+    margin-block-end: 15px;
 }

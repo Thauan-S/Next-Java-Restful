@@ -1,0 +1,8 @@
+.div_signUp{
+    display: flex;
+     justify-content: center;
+}
+.div_signUp     
+button{
+    margin-left: 2px;
+}

@@ -6,6 +6,7 @@ import { headers } from "@/next.config";
 import { useRouter } from "next/router";
 const Login = () => {
   const [hidden, setHidden] = useState(true);
+  const[hiddenBtnLogin,setHiddenBtnLogin]=useState(true)
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -39,18 +40,18 @@ const Login = () => {
     <>
       <HeadComponent title={"Tropical | Login"} />
       <div className={`${styles.degrade}`}>
-        <div className={`container-fluid ${styles.login}  text-center`}>
+        <div className={`container-fluid ${styles.login} `}>
           <div className={`row ${styles.input}`}>
             <div className="mb-3  col-10 col-md-5">
               <p hidden={hidden}>
                 Login ou senha informados inválidos, digite novamente
               </p>
               <label htmlFor="nome" className="form-label  ">
-                <p> Nome</p>
+                <p> Email</p>
               </label>
               <input
                 type="text"
-                placeholder="Insira seu nome"
+                placeholder="Insira seu email"
                 className="form-control text-center "
                 id="nome"
                 name="username"
@@ -69,20 +70,22 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="Insira sua senha"
-                className="form-control  text-center"
+                className={`form-control  text-center ${styles.input_password}`}
                 id="senha"
                 name="password"
                 value={user.password}
                 onChange={handleInputChange}
                 required=""
               />
-              <button
-                onClick={handleLogin}
-                type="button"
-                className={`${styles.btn} btn btn-primary `}
-              >
-                Login
-              </button>
+              <div className={`${styles.div_buttons}`}>
+                <button
+                  onClick={handleLogin}
+                  type="button"
+                  className={`${styles.btnLogin} btn btn-primary `}
+                >
+                  Login
+                </button>
+              </div>
             </div>
           </div>
         </div>

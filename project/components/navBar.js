@@ -90,7 +90,7 @@ const NavBar = () => {
           </ul>
           <div className="col-md-2 ">
             <div className={`row ${styles.btnHeader} `}>
-              <Link href={"/clientes"} className="btn  btn-primary active ">
+              <Link href={"/login/cadastro"} className="btn  btn-primary active ">
                 Cadastre-se
               </Link>
               <Link href={"/login"} className="btn  btn-primary active ">
