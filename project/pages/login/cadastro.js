@@ -43,7 +43,7 @@ const Cadastro = () => {
     }
     setEnterprise({ ...enterprise, [e.target.name]: e.target.value });
   };
-  console.log(enterprise);
+  console.log(client);
   const handleAddClient = () => {
     axios
       .post("http://localhost:80/register/client", client)
@@ -148,6 +148,7 @@ const Cadastro = () => {
                 </label>
                 <input
                   name="email"
+                  value={client.user.email}
                   onChange={handleInputClientChange}
                   type="text"
                   className="form-control"
@@ -162,6 +163,7 @@ const Cadastro = () => {
               <input
                 name="password"
                 onChange={handleInputClientChange}
+                value={client.user.password}
                 id="inputState"
                 type="password"
                 className="form-control"
