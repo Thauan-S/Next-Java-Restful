@@ -21,7 +21,7 @@ const Cadastro = () => {
     cnpj: "",
     address: "",
     user: {
-      username: "",
+      email: "",
       password: "",
     },
   });
