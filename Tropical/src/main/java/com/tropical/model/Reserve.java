@@ -25,7 +25,6 @@ public class Reserve {
     private Client client;
     @ManyToOne
     @JoinColumn(name = "travel_package_id_fk")
-    @JsonBackReference
     private TravelPackage travelPackage;
 
     public Reserve() {

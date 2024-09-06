@@ -1,5 +1,6 @@
 package com.tropical.data.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tropical.model.Enterprise;
@@ -20,7 +21,7 @@ public class EnterpriseDto {
 	
 	private User user;
 	
-	private List<TravelPackage> travelPackage;
+	private List<TravelPackage> travelPackage=new ArrayList<>();
 
 	public EnterpriseDto(Long enterpriseId, String name, String cnpj, String address, User user,
 						 List<TravelPackage> travelPackage) {

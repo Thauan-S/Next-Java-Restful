@@ -74,6 +74,7 @@ public class UserService {
     }
 @Transactional
     public ResponseEntity<Void> createNewEnterprise(@RequestBody EnterpriseDto enterpriseDto) {
+    System.out.println(enterpriseDto);
 
         var companyRole = roleRepository.findByName(Role.Values.EMPRESA.name());
         var userDB = userRepository.findByEmail(enterpriseDto.getUser().getEmail());

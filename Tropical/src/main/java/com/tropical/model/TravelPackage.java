@@ -1,8 +1,11 @@
 package com.tropical.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.NumberFormat;
@@ -43,8 +46,8 @@ public class TravelPackage {
 	private Enterprise enterprise;
 
 	@OneToMany(mappedBy = "travelPackage",cascade = CascadeType.ALL)
-	@JsonManagedReference
-	List<Reserve> reserves;
+	@JsonIgnore
+	List<Reserve> reserves=new ArrayList<>();
 
 	public TravelPackage() {
 

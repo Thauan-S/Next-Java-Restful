@@ -27,9 +27,6 @@ public class User implements Serializable {
     private String email;
 
     private String password;
-    
-    @OneToOne(mappedBy = "user")
-    private Client client;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
@@ -48,11 +45,10 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
     }
-	public User(UUID userId, String email, String password, Client client, Set<Role> roles) {
+	public User(UUID userId, String email, String password, Set<Role> roles) {
 		this.userId = userId;
 		this.email = email;
 		this.password = password;
-		this.client = client;
 		this.roles = roles;
 	}
 
