@@ -18,6 +18,7 @@ const TableReserves = () => {
     setDestiny(destino);
     setHiddenDelete(!hiddenDelete);
   };
+  console.log(reserves)
   return (
     <>
       <main>
@@ -42,7 +43,7 @@ const TableReserves = () => {
               <tbody>
                 {reserves.map((i, index) => (
                   <tr key={index}>
-                    <td>{i.reservaId}</td>
+                    <td>{i.id}</td>
                     <td>{i.pacote.destino}</td>
                     <td>{i.dataReserva}</td>
                     <td>{i.dataViagem}</td>

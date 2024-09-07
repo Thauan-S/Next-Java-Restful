@@ -10,11 +10,11 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username,set
   
   
   
-  
   const [clienteSelecionado, setClienteSelecionado] = useState("");
 
-  const handleClienteSelecionado = (clienteId) => {
-    const cliente = clientes.find((cliente) => cliente.clienteId === clienteId);
+  const handleClienteSelecionado = (customerId) => {
+    
+    const cliente = clientes.find((cliente) => cliente.customerId === customerId);
     setClienteSelecionado(cliente);
     setShowModal(true)
   };
@@ -24,7 +24,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username,set
     if (response == true) {
       setId(id);
       axios
-        .delete("http://localhost:80/api/clientes/v1/" + id, {
+        .delete("http://localhost:80/api/clients/v1/" + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -57,22 +57,22 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username,set
           <tbody>
             {clientes.map((i, index) => (
               <tr key={index}>
-                <td>{i.clienteId}</td>
-                <td>{i.nome}</td>
-                <td>{i.telefone}</td>
-                <td>{i.cep}</td>
-                <td>{moment(i.dataNascimento).format("DD/MM/YYYY")}</td>
+                <td>{i.customerId}</td>
+                <td>{i.name}</td>
+                <td>{i.phone}</td>
+                <td>{i.zipCode}</td>
+                <td>{moment(i.birthday).format("DD/MM/YYYY")}</td>
                 <td>
                   <button
                      type="button"
                      className="btn btn-primary"
-                    onClick={() => handleClienteSelecionado(i.clienteId) }
+                    onClick={() => handleClienteSelecionado(i.customerId) }
                   >
                     <i className="bi bi-gear-fill" />
                   </button>
                  
                   <button
-                    onClick={() => handleDeleteClient(i.clienteId)}
+                    onClick={() => handleDeleteClient(i.customerId)}
                     type="button"
                     className="btn btn-primary"
                   >

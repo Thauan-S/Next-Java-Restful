@@ -17,13 +17,13 @@ const EditClientModal = ({
   const [hidden, setHidden] = useState(true);
   const [papeis, setPapeis] = useState(["EMPRESA", "BASIC", "ADMIN"]);
   const [cliente, setCliente] = useState({
-    clienteId: "",
-    nome: "",
-    telefone: "",
-    cep: "",
-    dataNascimento: "",
+    customerId: "",
+    name: "",
+    phone: "",
+    zipCode: "",
+    birthday: "",
     user: {
-      username: "",
+      email: "",
       password: "",
       roles: [
         {
@@ -33,12 +33,13 @@ const EditClientModal = ({
       ],
     },
   });
+  console.log(cli.customerId)
   const handleInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
   };
   useEffect(() => {
     axios
-      .get("http://localhost:80/api/clientes/v1/" + cli.clienteId, {
+      .get("http://localhost:80/api/clients/v1/" + cli.customerId, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -49,10 +50,10 @@ const EditClientModal = ({
       .catch((error) => {
         console.error;
       });
-  }, [cli.clienteId,token]);
+  }, [cli.customerId,token]);
   const handleEditClient = () => {
     axios
-      .put("http://localhost:80/api/clientes/v1", cliente, {
+      .put("http://localhost:80/api/clients/v1", cliente, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,7 +102,7 @@ const EditClientModal = ({
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Editar cliente <p>ID: {cliente.clienteId}</p>
+                  Editar cliente <p>ID: {cli.customerId}</p>
                 </h1>
                 <button
                   type="button"
@@ -125,8 +126,8 @@ const EditClientModal = ({
                     Nome
                   </label>
                   <input
-                    value={cliente.clienteId}
-                    name="clienteId"
+                    value={cliente.customerId}
+                    name="customerId"
                     hidden={true}
                     readOnly
                     type="text"
@@ -136,10 +137,10 @@ const EditClientModal = ({
                   />
 
                   <input
-                    name="nome"
+                    name="name"
                     id="exampleInputEmail1"
                     className="form-control"
-                    value={cliente.nome}
+                    value={cliente.name}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -150,7 +151,7 @@ const EditClientModal = ({
                   <input
                     onChange={handleInputChange}
                     name="user"
-                    value={cliente.user.username}
+                    value={cliente.user.email}
                     type="email"
                     className="form-control"
                     id="exampleInputDate"
@@ -175,8 +176,8 @@ const EditClientModal = ({
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="telefone"
-                    value={cliente.telefone}
+                    name="phone"
+                    value={cliente.phone}
                     placeholder="(xx) xxxx-xxxx"
                     type="tel"
                     className="form-control"
@@ -189,8 +190,8 @@ const EditClientModal = ({
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="cep"
-                    value={cliente.cep}
+                    name="zipCode"
+                    value={cliente.zipCode}
                     placeholder="xxxx-xxxx"
                     type="text"
                     className="form-control"
@@ -203,8 +204,8 @@ const EditClientModal = ({
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="dataNascimento"
-                    value={cliente.dataNascimento.split("T")[0]}
+                    name="birthday"
+                    value={cliente.birthday.split("T")[0]}
                     type="date"
                     className="form-control"
                     id="exampleInputDate"

@@ -10,7 +10,7 @@ const useMyReserves = () => {
     urlReserve,
     globalState: { token },
   } = useContext(GlobalContext);
-
+console.log(urlReserve)
   useEffect(() => {
     setUsername(window.localStorage.getItem("username"));
     console.log(update)

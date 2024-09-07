@@ -10,6 +10,7 @@ const useFindAllPackages = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [direction, setDirection] = useState("ASC");
+  console.log(update)
   useEffect(() => {
     axios
       .get(url, {
@@ -25,7 +26,7 @@ const useFindAllPackages = () => {
       .catch((error) => {
         console.error("Erro ao buscar a lista de pacotes");
       });
-  }, [direction,page,size,url]);
+  }, [direction,page,size,url,update]);
   return { packages,direction,page,size,setUpdate,setPage,setSize,setDirection};
 };
 
