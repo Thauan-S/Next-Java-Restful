@@ -11,6 +11,7 @@ const Card = ({
   pacotesNacionais,
   pacotesInternacionais,
 }) => {
+  console.log(pacotesNacionais)
   const [modal,setModal]=useState(false)
   const[packageId,setPackageId]=useState()
  const handleClick=(id)=>{
@@ -49,10 +50,11 @@ const Card = ({
           {pacotesNacionais.map((i) => (
             <div key={i.id} className="col">
               <div className="card h-100">
-                <img src={i.imagem} className="card-img-top" alt="teste" />
+                <img src={i.image} className="card-img-top" alt="teste" />
                 <div className="card-body">
-                  <h5 className="card-title">{i.destino}</h5>
-                  <p className="card-text">{i.descricao}</p>
+                  <h5 className="card-title">{i.destiny}</h5>
+                  <p className="card-text">{i.description}</p>
+                  <p className="card-text"> dias de viagem {i.days}</p>
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
@@ -61,7 +63,7 @@ const Card = ({
                       onClick={()=> handleClick(i.id) }
                     >
                       
-                      Comprar R${i.preco}
+                      Comprar R${i.price}
                     </button>
                   </small>
                 </div>
@@ -79,10 +81,11 @@ const Card = ({
           {pacotesInternacionais.map((i) => (
             <div key={i.id} className="col">
               <div className="card h-100">
-                <img src={i.imagem} className="card-img-top" alt="..." />
+                <img src={i.image} className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title">{i.destino}</h5>
-                  <p className="card-text">{i.descricao}</p>
+                  <h5 className="card-title">{i.destiny}</h5>
+                  <p className="card-text">{i.description}</p>
+                  <p className="card-text"> dias de viagem{i.days}</p>
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
@@ -91,7 +94,7 @@ const Card = ({
                       
                       onClick={()=> handleClick(i.id) }
                     >
-                      Comprar R${i.preco}
+                      Comprar R${i.price}
                     </button>
                   </small>
                 </div>

@@ -33,7 +33,7 @@ function useGetClients() {
   useEffect(() => {
     setUsername(window.localStorage.getItem("username"));
     axios
-      .get("http://localhost:80/api/clientes/v1", {
+      .get("http://localhost:80/api/clients/v1", {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },params:{
@@ -43,7 +43,7 @@ function useGetClients() {
        }
       })
       .then(response => {
-        setClientes(response.data.clientesList)
+        setClientes(response.data.customersList)
    });
   },[page,size,direction,update]);
   return { username, clientes, setPage, page ,setUpdate,setDirection};

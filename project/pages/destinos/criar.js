@@ -13,13 +13,12 @@ const CriarPacote = () => {
     preco: "",
     categoria: "",
     imagem: "",
-    empresa:{nomeEmpresa:username}
+    enterprise:{name:username}
   });
   console.log("Update pagina de criar , rever")
   const router = useRouter();
   const handleInputChange = (e) => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
-    console.log(newPackage)
   };
   const handleAddPackage = () => {
         axios
@@ -29,7 +28,7 @@ const CriarPacote = () => {
             }
         })
         .then((response)=>{
-          console.log(response.data)
+          router.push("/destinos/lista")
         })
   };
 
@@ -39,47 +38,46 @@ const CriarPacote = () => {
         <div className="form-floating mt-4">
           <input
             className="form-control"
-            name="destino"
+            name="destiny"
             placeholder="Leave a comment here"
             id="floatingTextarea"
             onChange={handleInputChange}
-            value={newPackage.destino}
+            value={newPackage.destiny}
           />
           <label htmlFor="floatingTextarea">Destino</label>
         </div>
         <div className="form-floating">
           <input
             className="form-control mt-1"
-            name="descricao"
+            name="description"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
             onChange={handleInputChange}
             style={{ height: 100 }}
-            value={newPackage.descricao}
+            value={newPackage.description}
           />
           <label htmlFor="floatingTextarea2">Descrição </label>
         </div>
         <div className="form-floating">
           <input
             className="form-control mt-1"
-            name="duracaoEmDias"
+            name="days"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
-            style={{ height: 100 }}
             onChange={handleInputChange}
-            value={newPackage.duracaoEmDias}
+            value={newPackage.days}
           />
           <label htmlFor="floatingTextarea2">Duracão em Dias </label>
         </div>
         <div className="form-floating">
           <input
             className="form-control mt-1"
-            name="preco"
+            name="price"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
             style={{ height: 100 }}
             onChange={handleInputChange}
-            value={newPackage.preco}
+            value={newPackage.price}
           />
           <label htmlFor="floatingTextarea2">Preço </label>
         </div>
@@ -87,10 +85,10 @@ const CriarPacote = () => {
           <input
             type="text"
             className="form-control mt-1"
-            name="imagem"
+            name="image"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
-            value={newPackage.imagem}
+            value={newPackage.image}
             onChange={handleInputChange}
             style={{ height: 10 }}
           />
@@ -99,12 +97,12 @@ const CriarPacote = () => {
         <div className="form-floating">
           <input
             className="form-control mt-1"
-            name="categoria"
+            name="category"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
             onChange={handleInputChange}
             style={{ height: 10 }}
-            value={newPackage.categoria}
+            value={newPackage.category}
           />
           <label htmlFor="floatingTextarea2">categoria </label>
         </div>

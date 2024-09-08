@@ -1,7 +1,7 @@
 import { GlobalContext } from "@/contexts/appContext";
 import useFindAllPackages from "@/hooks/useFindAllPackages";
-import useMyReserves from "@/hooks/useMyReserves";
 import axios from "axios";
+import moment from "moment";
 import React, { useContext, useState, useEffect } from "react";
 
 const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) => {
@@ -10,15 +10,28 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
     urlPackage: { url },
     globalState: { token, username },
   } = useContext(GlobalContext);
+  
   const {packages} = useFindAllPackages();
+  
   const [reserve, setReserve] = useState({
-     reservaId: idReserve,
-     dataViagem:"",
-     pacote: {
+     reserveId: idReserve,
+     travelDate:"",
+     travelPackage: {
        id:""
      }
     
   });
+  useEffect(()=>{
+    axios.get(`${urlReserve}/`+idReserve,{
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+    }).then((response)=>{
+      console.log("response",response)
+      setReserve(response.data)
+    })
+  },[token,idReserve,urlReserve])
+  console.log("reserves",token)
   const [hidden, setHidden] = useState(true);
   const handleUpdateReserve = () => {
     axios
@@ -28,7 +41,6 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
         },
       })
       .then((res) => {
-        console.log(res.status);
         if (res.status == 200) {
           setUpdate((prevUpdate)=>!prevUpdate)
           setHidden(false);
@@ -37,7 +49,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
   };
   const handleInputChange = (e) => {
     if(e.target.name=="id"){
-      setReserve(reserve.pacote.id=e.target.value)
+      setReserve(reserve.travelPackage.id=e.target.value)
     }
     setReserve({ ...reserve, [e.target.name]: e.target.value });
   };
@@ -82,17 +94,17 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
                   name="id"
                 >
                   <option selected="">Escolha um novo destino</option>
-                  {packages && packages.content.map((i)=><option  key={i.id}  value={i.id}>{i.destino}</option>)}
+                  {packages && packages.content.map((i)=><option  key={i.id}  value={i.id}>{i.destiny}</option>)}
                 </select>
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputDate" className="form-label">
-                  Data de data de Viagem
+                
                 </label>
                 <input
                   onChange={handleInputChange}
-                  name="dataViagem"
-                  value={reserve.dataViagem}
+                  name="travelDate"
+                  value={reserve.travelDate}
                   type="date"
                   className="form-control"
                   id="exampleInputDate"

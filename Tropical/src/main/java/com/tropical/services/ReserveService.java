@@ -44,8 +44,8 @@ public class ReserveService {
 				.orElseThrow(() -> new ResourceNotFoundException("Reserve id" + id + "does not exists in data base"));
 		return new ReserveDto(reserve);
 	}
-	public List<ReserveDto> findReserveByClientName(@PathVariable String username, JwtAuthenticationToken token){
-		var reservesOfClient=reserveRepository.findByClient_User_Email(username).stream()
+	public List<ReserveDto> findReserveByClientEmail(@PathVariable String email, JwtAuthenticationToken token){
+		var reservesOfClient=reserveRepository.findByClient_User_Email(email).stream()
 				.map(reserve -> new ReserveDto(reserve.getReserveId(),reserve.getCreationDate(),reserve.getTravelDate(),reserve.getClient(),reserve.getTravelPackage()))
 				.toList();
 		return reservesOfClient;

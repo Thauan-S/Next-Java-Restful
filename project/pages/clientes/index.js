@@ -5,12 +5,12 @@ import HeadComponent from "@/components/head";
 
 const Cadastro = () => {
   const [cliente, setCliente] = useState({
-    nome: "",
-    telefone: "",
-    dataNascimento: "",
-    cep: "",
+    name: "",
+    phone: "",
+    birthday: "",
+    zipCode: "",
     user:{
-      username:"",
+      email:"",
       password:""
     }
     
@@ -19,8 +19,8 @@ const Cadastro = () => {
   const router = useRouter();
   const handleInputChange = (e) => {
     
-    if(e.target.name==="username"){
-      setCliente(cliente.user.username=e.target.value)
+    if(e.target.name==="email"){
+      setCliente(cliente.user.email=e.target.value)
     }else if(e.target.name==="password"){
       setCliente((cliente.user.password=e.target.value))
     }
@@ -30,7 +30,7 @@ const Cadastro = () => {
 
   const handleAddClient = () => {
     axios
-      .post("http://localhost:80/register/cliente",cliente)
+      .post("http://localhost:80/register/client",cliente)
       .then((response) => {
         router.push("/login");
       })
@@ -52,9 +52,9 @@ const Cadastro = () => {
               type="text"
               placeholder="Insira seu nome"
               className="form-control"
-              id="nome"
-              name="nome"
-              value={cliente.nome}
+              id="name"
+              name="name"
+              value={cliente.name}
               onChange={handleInputChange}
               aria-describedby="emailHelp"
               required=""
@@ -68,15 +68,15 @@ const Cadastro = () => {
               type="tel"
               placeholder="(00) 0000-0000"
               className="form-control"
-              id="telefone"
-              name="telefone"
-              value={cliente.telefone}
+              id="phone"
+              name="phone"
+              value={cliente.phone}
               onChange={handleInputChange}
               required=""
             />
           </div>
           <div className="mb-3 row">
-            <label htmlFor="Data de Nascimento" className="form-label">
+            <label htmlFor="birthday" className="form-label">
               Data de Nascimento
             </label>
             <div className="col-md-2 col-sm-4">
@@ -84,9 +84,9 @@ const Cadastro = () => {
                 type="date"
                 placeholder="Insira seu telefone"
                 className="form-control"
-                id="Data de Nascimento"
-                name="dataNascimento"
-                value={cliente.dataNascimento}
+                id="birthday"
+                name="birthday"
+                value={cliente.birthday}
                 onChange={handleInputChange}
                 required=""
               />
@@ -103,9 +103,9 @@ const Cadastro = () => {
               pattern="[0-9]{5}-[0-9]{3}"
               placeholder="Insira seu Cep"
               className="form-control"
-              id="cep"
-              name="cep"
-              value={cliente.cep}
+              id="zipCode"
+              name="zipCode"
+              value={cliente.zipCode}
               onChange={handleInputChange}
               required=""
             />
@@ -121,8 +121,8 @@ const Cadastro = () => {
               className="form-control"
               type="email"
               placeholder="seuemail@exemplo.com"
-              name="username"
-              value={cliente.user.username}
+              name="email"
+              value={cliente.user.email}
               onChange={handleInputChange}
             />
             <div id="emailHelp" className="form-text">

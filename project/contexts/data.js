@@ -7,8 +7,8 @@ export const globalState = {
       ? window.localStorage.getItem("username")
       : null,
 };
-export const urlPackage = { url: "http://localhost:80/api/pacotes/v1" };
-export const urlReserve = "http://localhost:80/api/reservas/v1";
+export const urlPackage = { url: "http://localhost:80/api/travelPackages/v1" };
+export const urlReserve = "http://localhost:80/api/reserves/v1";
 
 
 function checkLocalStorageUpdates() {

@@ -2,16 +2,16 @@ import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
 import React, { useState,useEffect,useContext } from "react";
 
-const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate} }) => {
+const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate} }) => {
  
   const [packageEdited, setPackageEdited] = useState({
     id: "",
-    destino: "",
-    descricao: "",
-    categoria: "",
-    imagem:"",
-    preco:"",
-    duracaoEmDias:""
+    destiny: "",
+    description: "",
+    category: "",
+    image:"",
+    price:"",
+    days:""
   });
   const{globalState:{token},urlPackage:{url}}=useContext(GlobalContext)
   // verificar por que está re-renderizando
@@ -38,13 +38,14 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
   };
   const handlePackageEdit = () => {
     axios
-    .put("http://localhost:80/api/pacotes/v1",packageEdited,{
+    .put("http://localhost:80/api/travelPackages/v1",packageEdited,{
       headers:{
         Authorization:`Bearer ${token}`
       }
     })
     .then((response)=>{
       if(response.status==200){
+        console.log(response.status)
       setUpdate((prevUpdate)=> !prevUpdate)
       }
     })
@@ -58,7 +59,7 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
           id="exampleModal"
           tabIndex={-1}
           aria-labelledby="exampleModalLabel"
-          aria-hidden="hidden"
+         
         >
           <div className="modal-dialog">
             <div className="modal-content">
@@ -99,10 +100,10 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   />
 
                   <input
-                    name="destino"
+                    name="destiny"
                     id="exampleInputEmail1"
                     className="form-control"
-                    value={packageEdited.destino}
+                    value={packageEdited.destiny}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -112,8 +113,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="categoria"
-                    value={packageEdited.categoria}
+                    name="category"
+                    value={packageEdited.category}
                     type="text"
                     className="form-control"
                     id="exampleInputDate"
@@ -125,8 +126,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="descricao"
-                    value={packageEdited.descricao}
+                    name="description"
+                    value={packageEdited.description}
                     type="text"
                     className="form-control"
                     id="exampleInputPassword1"
@@ -138,8 +139,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="preco"
-                    value={packageEdited.preco}
+                    name="price"
+                    value={packageEdited.price}
                     placeholder="1000"
                     type="number"
                     className="form-control"
@@ -152,8 +153,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="duracaoEmDias"
-                    value={packageEdited.duracaoEmDias}
+                    name="days"
+                    value={packageEdited.days}
                     placeholder="3"
                     type="number"
                     className="form-control"
@@ -166,8 +167,8 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{update,setUpdate}
                   </label>
                   <input
                     onChange={handleInputChange}
-                    name="imagem"
-                    value={packageEdited.imagem}
+                    name="image"
+                    value={packageEdited.image}
                     type="text"
                     className="form-control"
                     id="exampleInputDate"
