@@ -10,21 +10,21 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
   } = useContext(GlobalContext);
   const [packageDb, setPackageDb] = useState({
     id: "",
-    destino: "",
-    duracaoEmDias: "",
-    preco: "",
+    destiny: "",
+    days: "",
+    price: "",
   });
   const [reserva, setReserva] = useState({
-    dataViagem: "",
-    cliente: {
-      user:{username:username}
+    travelDate: "",
+    client: {
+      user:{email:username}
     },
-    pacote: {
+    travelPackage: {
       id: packageId,
     },
   });
   const [hidden, setHidden] = useState(true);
-console.log(username)
+console.log(reserva)
   useEffect(() => {
     axios
       .get(`${url}/`+packageId, {
@@ -39,7 +39,7 @@ console.log(username)
         console.error(error);
       });
   }, [packageId,url,token]);
-  console.log("teste",packageDb);
+  //console.log("teste",packageDb);
   const handleCreateReserve=()=>{
     axios
     .post(urlReserve,reserva,{
@@ -93,8 +93,8 @@ console.log(username)
                   Destino
                 </label>
                 <input
-                  value={packageDb.destino}
-                  name="destino"
+                  value={packageDb.destiny}
+                  name="destiny"
                   hidden={false}
                   readOnly
                   type="text"
@@ -109,8 +109,8 @@ console.log(username)
                 </label>
                 <input
                   onChange={handleInputChange}
-                  name="dataViagem"
-                  value={reserva.dataViagem}
+                  name="travelDate"
+                  value={reserva.travelDate}
                   type="date"
                   className="form-control"
                   id="exampleInputDate"

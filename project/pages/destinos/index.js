@@ -8,11 +8,11 @@ const Destinos = () => {
  
  
   const { packages } = useFindAllPackages();
-  
+  console.log(packages)
   const pacotesNacionais =
-  packages && packages.content.filter((pacote) => pacote.categoria === "nacional");
+  packages && packages.content.filter((pacote) => pacote.category === "nacional");
   const pacotesInternacionais =
-  packages && packages.content.filter((pacote) => pacote.categoria === "internacional");
+  packages && packages.content.filter((pacote) => pacote.category === "internacional");
   return (
     <>
       <HeadComponent title={"Tropical | Destinos"} />

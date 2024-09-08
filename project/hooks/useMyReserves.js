@@ -10,10 +10,12 @@ const useMyReserves = () => {
     urlReserve,
     globalState: { token },
   } = useContext(GlobalContext);
-console.log(urlReserve)
+
   useEffect(() => {
-    setUsername(window.localStorage.getItem("username"));
-    console.log(update)
+    console.log("active")
+    console.log(username)
+  setUsername(window.localStorage.getItem("username"));
+ 
     axios
       .get(`${urlReserve}/client/${username}`, {
         headers: {
@@ -21,11 +23,13 @@ console.log(urlReserve)
         },
       })
       .then((res) => {
+        console.log(res.data)
         setReserves(res.data);
       })
       .catch((error) => {
         console.error(error);
       });
+ 
   }, [username, token, urlReserve,update]);
   return { reserves, setReserves, username,setUpdate };
 };

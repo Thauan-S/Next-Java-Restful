@@ -10,7 +10,6 @@ const useFindAllPackages = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [direction, setDirection] = useState("ASC");
-  console.log(update)
   useEffect(() => {
     axios
       .get(url, {

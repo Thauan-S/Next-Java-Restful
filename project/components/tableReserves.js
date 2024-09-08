@@ -18,7 +18,6 @@ const TableReserves = () => {
     setDestiny(destino);
     setHiddenDelete(!hiddenDelete);
   };
-  console.log(reserves)
   return (
     <>
       <main>
@@ -43,14 +42,14 @@ const TableReserves = () => {
               <tbody>
                 {reserves.map((i, index) => (
                   <tr key={index}>
-                    <td>{i.id}</td>
-                    <td>{i.pacote.destino}</td>
-                    <td>{i.dataReserva}</td>
-                    <td>{i.dataViagem}</td>
-                    <td>{i.pacote.preco}</td>
+                    <td>{i.reserveId}</td>
+                    <td>{i.travelPackage.destiny}</td>
+                    <td>{i.creationDate}</td>
+                    <td>{i.travelDate}</td>
+                    <td>{i.travelPackage.price}</td>
                     <td>
                       <button
-                        onClick={() => handleReserveSelected(i.reservaId)}
+                        onClick={() => handleReserveSelected(i.reserveId)}
                         type="button"
                         className="btn btn-primary"
                       >
@@ -59,7 +58,7 @@ const TableReserves = () => {
 
                       <button
                         onClick={() =>
-                          handleDeleteReserve(i.reservaId, i.pacote.destino)
+                          handleDeleteReserve(i.reserveId, i.travelPackage.destiny)
                         }
                         type="button"
                         className="btn btn-primary"

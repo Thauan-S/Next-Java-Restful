@@ -8,7 +8,7 @@ const Login = () => {
   const [hidden, setHidden] = useState(true);
   const[hiddenBtnLogin,setHiddenBtnLogin]=useState(true)
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const router = useRouter();
@@ -16,11 +16,11 @@ const Login = () => {
     axios
       .post("http://localhost/api/auth/v1/login", user)
       .then((response) => {
-        window.localStorage.setItem("username", user.username);
+        window.localStorage.setItem("username", user.email);
         window.localStorage.setItem("token", response.data.accessToken);
-        if (user.username == "admin") {
+        if (user.email == "admin") {
           router.push("/clientes/lista");
-        } else if (user.username.startsWith("empresa")) {
+        } else if (user.email.startsWith("empresa")) {
           router.push("/destinos/lista");
         } else {
           router.push("/");
@@ -54,8 +54,8 @@ const Login = () => {
                 placeholder="Insira seu email"
                 className="form-control text-center "
                 id="nome"
-                name="username"
-                value={user.username}
+                name="email"
+                value={user.email}
                 onChange={handleInputChange}
                 aria-describedby="emailHelp"
                 required=""
