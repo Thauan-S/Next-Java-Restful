@@ -1,7 +1,9 @@
 body {
   
-   
-   background-color: rgba(120, 185, 238, 0.5);
+   box-sizing: border-box;
+   max-width: 100%;
+   overflow-x: hidden;
+   background-color: rgba(96, 177, 243, 0.5);
   }
   main{
    min-height: 100vh ;
