@@ -34,13 +34,12 @@ public class ReserveController {
             @ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)})
-    @PreAuthorize(value = "hasAuthority('SCOPE_ADMIN')")
     public ReserveDto findById(@PathVariable Long id) {
         return reserveService.findById(id);
     }
 
-    @GetMapping(value = "/client/{username}")
-    @Operation(summary = "Find a  reserve ", description = "Find a reserve by client name", tags = {"Reserves"}, responses = {
+    @GetMapping(value = "/client/{email}")
+    @Operation(summary = "Find a  reserve ", description = "Find a reserve by client email", tags = {"Reserves"}, responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content(schema = @Schema(implementation = ReserveDto.class))),
             @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
             @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
@@ -48,8 +47,8 @@ public class ReserveController {
             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)})
     @PreAuthorize("hasAnyAuthority('SCOPE_BASIC','SCOPE_ADMIN','SCOPE_EMPRESA')")
-    public List<ReserveDto> findReserveByClientName(@PathVariable String username, JwtAuthenticationToken token) {
-        return reserveService.findReserveByClientName(username, token);
+    public List<ReserveDto> findReserveByClientEmail(@PathVariable String email, JwtAuthenticationToken token) {
+        return reserveService.findReserveByClientEmail(email, token);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
