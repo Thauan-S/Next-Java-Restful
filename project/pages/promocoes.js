@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const Promocoes = () => {
@@ -10,10 +11,13 @@ const Promocoes = () => {
             <div className="row">
               <div className="card-group">
                 <div className="card  border-info">
-                  <img
-                    src="img/cataratas.jpg"
+                  <Image
+                    src="/img/cataratas.jpg"
                     className="card-img-top img-card"
                     alt="Cataratas do iguaçu"
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Cataratas do iguaçu</h5>
@@ -33,10 +37,14 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card border-info">
-                  <img
-                    src="img/Sydney.jpg"
+                  <Image
+                    src="/img/Sydney.jpg"
                     className="card-img-top img-card"
                     alt="Ópera de Sydney"
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
+                    
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Sydney Austrália</h5>
@@ -59,10 +67,13 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card h-100 border-info ">
-                  <img
-                    src="img/Dubai.jpg"
+                  <Image
+                    src="/img/Dubai.jpg"
                     className="card-img-top img-card"
                     alt="Foto do Burj Al Arab , um hotel em formato de vela de barco"
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Dubai</h5>
@@ -89,10 +100,13 @@ const Promocoes = () => {
             <div className="row">
               <div className="card-group">
                 <div className="card border-info">
-                  <img
-                    src="img/Sydney.jpg"
+                  <Image
+                    src="/img/Sydney.jpg"
                     className="card-img-top img-card"
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">TSydney Austrália</h5>
@@ -109,10 +123,13 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card border-info">
-                  <img
-                    src="img/Sydney.jpg"
+                  <Image
+                    src="/img/Sydney.jpg"
                     className="card-img-top img-card"
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Sydney Austrália</h5>
@@ -128,10 +145,13 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card border-info">
-                  <img
-                    src="img/Sydney.jpg"
+                  <Image
+                    src="/img/Sydney.jpg"
                     className="card-img-top img-card"
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Sydney Austrália</h5>
@@ -155,10 +175,13 @@ const Promocoes = () => {
             <div className="row">
               <div className="card-group">
                 <div className="card border-info">
-                  <img
-                    src="img/Dubai.jpg"
+                  <Image
+                    src="/img/Dubai.jpg"
                     className="card-img-top img-card"
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Dubai</h5>
@@ -175,10 +198,13 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card  border-info  ">
-                  <img
-                    src="img/Dubai.jpg"
+                  <Image
+                    src="/img/Dubai.jpg"
                     className="card-img-top img-card "
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Dubai</h5>
@@ -194,10 +220,13 @@ const Promocoes = () => {
                   </div>
                 </div>
                 <div className="card border-info">
-                  <img
-                    src="img/Dubai.jpg"
+                  <Image
+                    src="/img/Dubai.jpg"
                     className="card-img-top img-card"
                     alt="..."
+                    layout="responsive" 
+                    width={800} 
+                    height={600}
                   />
                   <div className="card-body text-center">
                     <h5 className="card-title">Dubai</h5>

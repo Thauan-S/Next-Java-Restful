@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 const Carrousel = ({ arrCarrousel }) => {
   if (arrCarrousel) {
     return (
@@ -30,7 +31,14 @@ const Carrousel = ({ arrCarrousel }) => {
           <div className="rounded carousel-inner">
             {arrCarrousel.map((i, index) => (
               <div key={index} className={`carousel-item ${i.active} `}>
-                <img src={i.image} className="d-block  w-100" alt="..." />
+                <Image
+                  src={i.image}
+                  className="d-block  w-100"
+                  alt="..."
+                  layout="responsive"
+                  width={800}
+                  height={600}
+                />
                 <div className="carousel-caption d-none d-md-block">
                   <h5 className="text-dark">{i.title}</h5>
                 </div>

@@ -23,7 +23,7 @@ const UpdateContato = () => {
       .catch((error) => {
         console.error("erro ao buscar o contato", error);
       });
-  }, []);
+  }, [contatoId]);
 
   const handleInputChange = (e) => {
     setContato({ ...contato, [e.target.name]: e.target.value });
