@@ -124,7 +124,7 @@ class ReserveServiceTest {
         //Arrange
         doReturn(List.of(reserve)).when(reserveRepository).findByClient_User_Email(stringArgumentCaptor.capture());
         //Act
-        var outPut=reserveService.findReserveByClientName("thauan",token);
+        var outPut=reserveService.findReserveByClientEmail("thauan",token);
         //Assert
         assertNotNull(outPut);
         assertEquals(reserve.getReserveId(),outPut.get(0).getReserveId());

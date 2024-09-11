@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styles from "../styles/card.module.css";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,21 +11,24 @@ const Card = ({
   pacotesNacionais,
   pacotesInternacionais,
 }) => {
-  console.log(pacotesNacionais)
-  const [modal,setModal]=useState(false)
-  const[packageId,setPackageId]=useState()
- const handleClick=(id)=>{
-  setModal((prevModal)=> !prevModal)
-  setPackageId(id)
- }
+  console.log(pacotesNacionais);
+  const [modal, setModal] = useState(false);
+  const [packageId, setPackageId] = useState();
+  const handleClick = (id) => {
+    setModal((prevModal) => !prevModal);
+    setPackageId(id);
+  };
   if (title) {
     //card da página home
     return (
       <div className="card h-100">
-        <img
+        <Image
           className={`${styles.img} rounded card-img-top`}
           src={image}
           alt="..."
+          layout="responsive"
+          width={800}
+          height={600}
         />
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
@@ -50,7 +53,14 @@ const Card = ({
           {pacotesNacionais.map((i) => (
             <div key={i.id} className="col">
               <div className="card h-100">
-                <img src={i.image} className="card-img-top" alt="teste" />
+                <Image
+                  src={i.image}
+                  className="card-img-top"
+                  alt="teste"
+                  layout="responsive"
+                  width={800}
+                  height={600}
+                />
                 <div className="card-body">
                   <h5 className="card-title">{i.destiny}</h5>
                   <p className="card-text">{i.description}</p>
@@ -60,9 +70,8 @@ const Card = ({
                   <small className="text-body-secondary">
                     <button
                       className={`btn btn-primary ${styles.btnpromo} text-end`}
-                      onClick={()=> handleClick(i.id) }
+                      onClick={() => handleClick(i.id)}
                     >
-                      
                       Comprar R${i.price}
                     </button>
                   </small>
@@ -71,7 +80,12 @@ const Card = ({
             </div>
           ))}
         </div>
-        { modal && <CreateReserveModal modal={{modal,setModal}} packageId={packageId}  />   }
+        {modal && (
+          <CreateReserveModal
+            modal={{ modal, setModal }}
+            packageId={packageId}
+          />
+        )}
       </>
     );
   } else if (pacotesInternacionais) {
@@ -81,7 +95,14 @@ const Card = ({
           {pacotesInternacionais.map((i) => (
             <div key={i.id} className="col">
               <div className="card h-100">
-                <img src={i.image} className="card-img-top" alt="..." />
+                <Image
+                  src={i.image}
+                  className="card-img-top"
+                  alt="..."
+                  layout="responsive"
+                  width={800}
+                  height={600}
+                />
                 <div className="card-body">
                   <h5 className="card-title">{i.destiny}</h5>
                   <p className="card-text">{i.description}</p>
@@ -91,8 +112,7 @@ const Card = ({
                   <small className="text-body-secondary">
                     <button
                       className={`btn btn-primary ${styles.btnpromo} text-end`}
-                      
-                      onClick={()=> handleClick(i.id) }
+                      onClick={() => handleClick(i.id)}
                     >
                       Comprar R${i.price}
                     </button>
@@ -102,7 +122,12 @@ const Card = ({
             </div>
           ))}
         </div>
-        { modal && <CreateReserveModal modal={{modal,setModal}} packageId={packageId}  />   }
+        {modal && (
+          <CreateReserveModal
+            modal={{ modal, setModal }}
+            packageId={packageId}
+          />
+        )}
       </>
     );
   }
