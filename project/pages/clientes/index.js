@@ -33,7 +33,7 @@ const Cadastro = () => {
       .post("https://next-java-restful-tropical-back-end.onrender.com/register/client",cliente)
       .then((response) => {
         console.log(response.status)
-        //router.push("/login");
+        router.push("/login");
       })
       .catch((error) => {
         console.error("erro ao cadastrar Usuário " + error);
