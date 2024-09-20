@@ -7,8 +7,8 @@ export const globalState = {
       ? window.localStorage.getItem("username")
       : null,
 };
-export const urlPackage = { url: "http://localhost:80/api/travelPackages/v1" };
-export const urlReserve = "http://localhost:80/api/reserves/v1";
+export const urlPackage = { url: "https://next-java-restful-tropical-back-end.onrender.com/api/travelPackages/v1" };
+export const urlReserve = "https://next-java-restful-tropical-back-end.onrender.com/api/reserves/v1";
 
 
 function checkLocalStorageUpdates() {
