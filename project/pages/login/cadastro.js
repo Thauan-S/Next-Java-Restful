@@ -46,7 +46,7 @@ const Cadastro = () => {
   console.log(client);
   const handleAddClient = () => {
     axios
-      .post("http://localhost:80/register/client", client)
+      .post("https://next-java-restful-tropical-back-end.onrender.com/client", client)
       .then((response) => {
         router.push("/login");
       })
@@ -56,7 +56,7 @@ const Cadastro = () => {
   };
   const handleAddEnteprise = () => {
     axios
-      .post("http://localhost:80/register/enterprise", enterprise)
+      .post("https://next-java-restful-tropical-back-end.onrender.com/register/enterprise", enterprise)
       .then((response) => {
         router.push("/login");
       })
