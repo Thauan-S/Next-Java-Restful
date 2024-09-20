@@ -33,7 +33,7 @@ function useGetClients() {
   useEffect(() => {
     setUsername(window.localStorage.getItem("username"));
     axios
-      .get("http://localhost:80/api/clients/v1", {
+      .get("https://next-java-restful-tropical-back-end.onrender.com/api/clients/v1", {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },params:{
