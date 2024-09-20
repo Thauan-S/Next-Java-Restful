@@ -39,7 +39,7 @@ const EditClientModal = ({
   };
   useEffect(() => {
     axios
-      .get("http://localhost:80/api/clients/v1/" + cli.customerId, {
+      .get("https://next-java-restful-tropical-back-end.onrender.com/api/clients/v1/" + cli.customerId, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +53,7 @@ const EditClientModal = ({
   }, [cli.customerId,token]);
   const handleEditClient = () => {
     axios
-      .put("http://localhost:80/api/clients/v1", cliente, {
+      .put("https://next-java-restful-tropical-back-end.onrender.com/api/clients/v1", cliente, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
