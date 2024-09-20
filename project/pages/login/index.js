@@ -14,7 +14,7 @@ const Login = () => {
   const router = useRouter();
   const handleLogin = () => {
     axios
-      .post("http://localhost/api/auth/v1/login", user)
+      .post("https://next-java-restful-tropical-back-end.onrender.com/api/auth/v1/login", user)
       .then((response) => {
         window.localStorage.setItem("username", user.email);
         window.localStorage.setItem("token", response.data.accessToken);
