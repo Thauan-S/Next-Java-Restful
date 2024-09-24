@@ -67,7 +67,8 @@ public class ReserveService {
 		var client = clientRepository.findByUser_email(dto.getClient().getUser().getEmail());
 
 		var travelPackage = travelPackageRepository.findById(dto.getTravelPackage().getId());
-
+		System.out.println("client email"+client.get().getUser().getEmail());
+		System.out.println("travel package"+travelPackage.get().getId());
 		if (client.isPresent() && travelPackage.isPresent()) {
 			Reserve reserve = new Reserve();
 			reserve.setClient(client.get());
@@ -76,9 +77,8 @@ public class ReserveService {
 			reserve.setTravelPackage(travelPackage.get());
 			reserveRepository.save(reserve);
 			return new ReserveDto(reserve);
-		} else {
-			throw new ResourceNotFoundException("Customer or travel package is not found in the database");
 		}
+		return null;
 	}
 	@Transactional
 	public ReserveDto update(@RequestBody ReserveDto reserveDto, JwtAuthenticationToken token) {
