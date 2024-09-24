@@ -12,7 +12,9 @@ const useFindAllPackages = () => {
   const [direction, setDirection] = useState("ASC");
   useEffect(() => {
     axios
-      .get(url, {
+      .get("https://next-java-restful-tropical-back-end.onrender.com/api/travelPackages/v1"
+
+, {
         params: {
           page: page,
           size: size,

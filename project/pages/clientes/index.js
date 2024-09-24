@@ -30,8 +30,9 @@ const Cadastro = () => {
 
   const handleAddClient = () => {
     axios
-      .post("http://localhost:80/register/client",cliente)
+      .post("https://next-java-restful-tropical-back-end.onrender.com/register/client",cliente)
       .then((response) => {
+        console.log(response.status)
         router.push("/login");
       })
       .catch((error) => {

@@ -24,7 +24,7 @@ const Table = ({ clientes, reservas, contatos, destinos,setClientes,username,set
     if (response == true) {
       setId(id);
       axios
-        .delete("http://localhost:80/api/clients/v1/" + id, {
+        .delete("https://next-java-restful-tropical-back-end.onrender.com/api/clients/v1/" + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

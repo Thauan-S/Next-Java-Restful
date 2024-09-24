@@ -38,7 +38,7 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate} }) => 
   };
   const handlePackageEdit = () => {
     axios
-    .put("http://localhost:80/api/travelPackages/v1",packageEdited,{
+    .put("https://next-java-restful-tropical-back-end.onrender.com/api/travelPackages/v1",packageEdited,{
       headers:{
         Authorization:`Bearer ${token}`
       }
