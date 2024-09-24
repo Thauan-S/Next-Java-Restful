@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['upload.wikimedia.org'], // Adiciona o domínio permitido
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // Permite qualquer hostname
+      },
+    ],
   },
 }
 
