@@ -60,6 +60,28 @@ public class TravelPackageController {
             @RequestParam(name = "direction", defaultValue = "asc") String direction) {
         return travelPackageService.findAll(page, size, direction);
     }
+    @GetMapping(produces = MediaType.APPLICATION_JSON,value = "enterprise/{name}")
+    @Operation(
+            summary = "Find all travel packages by enterprise name",
+            description = "Find all travel packages by enterprise name",
+            tags = {"TravelPackages"},
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = TravelPackageDto.class))
+                            )
+                    }),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized ", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN,SCOPE_EMPRESA')")
+    public TravelPackageDto findTravelPackagesByEnterpriseName(@PathVariable String name,JwtAuthenticationToken token) {
+        return travelPackageService.findByTravelPackageByEnterpriseName(name,token);
+    }
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON,

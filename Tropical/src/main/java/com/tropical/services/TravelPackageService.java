@@ -77,6 +77,19 @@ public class TravelPackageService {
                 () -> new ResourceNotFoundException("The package by " + id + " does not exists in the data base"));
         return new TravelPackageDto(travelPackage);
     }
+    public TravelPackageDto findByTravelPackageByEnterpriseName(@PathVariable String  name, JwtAuthenticationToken token) {
+        var user=userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("The user id : " + token.getName() + "does not exists in the data base"));
+        var isAdmin=user.getRoles()
+                .stream()
+                .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
+        var travelPackage = travelPackageRepository.findByEnterprise_Name(name).orElseThrow(
+                () -> new ResourceNotFoundException("The enterprise by name " + name + " does not have travel packages in the data base"));
+        if(isAdmin||travelPackage.getEnterprise().getName().equalsIgnoreCase(name)){
+            return new TravelPackageDto(travelPackage);
+        }
+        throw  new ForbiddenAccesException("The user not have permission");
+
+    }
 
     @Transactional
     public TravelPackageDto update(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
