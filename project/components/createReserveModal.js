@@ -41,6 +41,8 @@ console.log(reserva)
   }, [packageId,url,token]);
   //console.log("teste",packageDb);
   const handleCreateReserve=()=>{
+    console.log("url:",urlReserve)
+    console.log(reserva)
     axios
     .post(urlReserve,reserva,{
         headers:{
