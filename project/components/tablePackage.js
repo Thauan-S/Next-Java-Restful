@@ -5,8 +5,7 @@ import EditPackageModal from "./editPackageModal";
 import { GlobalContext } from "@/contexts/appContext";
 
 const TablePackage = ({
-  packages,
-  params: { page, setPage, size, direction, setDirection},update:{setUpdate}
+  packages
 }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
