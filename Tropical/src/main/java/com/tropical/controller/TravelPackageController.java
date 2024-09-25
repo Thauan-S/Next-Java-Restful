@@ -60,7 +60,7 @@ public class TravelPackageController {
             @RequestParam(name = "direction", defaultValue = "asc") String direction) {
         return travelPackageService.findAll(page, size, direction);
     }
-    @GetMapping(produces = MediaType.APPLICATION_JSON,value = "enterprise/{name}")
+    @GetMapping(produces = MediaType.APPLICATION_JSON,value = "enterprise/{email}")
     @Operation(
             summary = "Find all travel packages by enterprise name",
             description = "Find all travel packages by enterprise name",
@@ -78,9 +78,9 @@ public class TravelPackageController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN,SCOPE_EMPRESA')")
-    public TravelPackageDto findTravelPackagesByEnterpriseName(@PathVariable String name,JwtAuthenticationToken token) {
-        return travelPackageService.findByTravelPackageByEnterpriseName(name,token);
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
+    public TravelPackageDto findTravelPackagesByEnterpriseEmail(@PathVariable String email,JwtAuthenticationToken token) {
+        return travelPackageService.findByTravelPackageByEnterpriseEmail(email,token);
     }
 
 

@@ -14,17 +14,16 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
     days: "",
     price: "",
   });
-  const [reserva, setReserva] = useState({
+  const [reserve, setReserve] = useState({
     travelDate: "",
     client: {
       user:{email:username}
     },
     travelPackage: {
       id: packageId,
-    },
+    }
   });
   const [hidden, setHidden] = useState(true);
-console.log(reserva)
   useEffect(() => {
     axios
       .get(`${url}/`+packageId, {
@@ -41,24 +40,24 @@ console.log(reserva)
   }, [packageId,url,token]);
   //console.log("teste",packageDb);
   const handleCreateReserve=()=>{
-    console.log("url:",urlReserve)
-    console.log(reserva)
     axios
-    .post(urlReserve,reserva,{
+    .post(urlReserve,reserve,{
         headers:{
             Authorization:`Bearer ${token}`
         }
     })
     .then((res)=>{
-        console.log(res.status)
+      console.log(  res.data)
         if(res.status==200){
             setHidden(false)
         }
        
+    }).catch((error)=>{
+      console.log(error)
     })
   }
   const handleInputChange=(e)=>{
-    setReserva({...reserva,[e.target.name]:e.target.value})
+    setReserve({...reserve,[e.target.name]:e.target.value})
   }
   
   return (
@@ -112,7 +111,7 @@ console.log(reserva)
                 <input
                   onChange={handleInputChange}
                   name="travelDate"
-                  value={reserva.travelDate}
+                  value={reserve.travelDate}
                   type="date"
                   className="form-control"
                   id="exampleInputDate"

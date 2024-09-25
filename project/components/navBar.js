@@ -9,14 +9,14 @@ const NavBar = () => {
   const [hideMyReservesButton, setHideMyReservesButton] = useState(true);
   const router = useRouter();
   const [token, setToken] = useState();
-
+  
   useEffect(() => {
     const username = window.localStorage.getItem("username");
     setToken(window.localStorage.getItem("token"));
-    if (token == null) {
-      setHidden(true);
-    } else {
+    if (token) {
       setHidden(false);
+    } else {
+      setHidden(true);
     }
     if (username == "admin" || username?.startsWith("empresa")) {
       sethideManagementButton(false);
