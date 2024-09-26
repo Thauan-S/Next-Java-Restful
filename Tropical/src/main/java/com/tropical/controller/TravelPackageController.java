@@ -27,6 +27,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/travelPackages/v1")
@@ -79,8 +81,8 @@ public class TravelPackageController {
             }
     )
     @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_EMPRESA')")
-    public TravelPackageDto findTravelPackagesByEnterpriseEmail(@PathVariable String email,JwtAuthenticationToken token) {
-        return travelPackageService.findByTravelPackageByEnterpriseEmail(email,token);
+    public List<TravelPackageDto> findTravelPackagesByEnterpriseEmail(@PathVariable String email, JwtAuthenticationToken token) {
+        return travelPackageService.findTravelPackageByEnterpriseEmail(email,token);
     }
 
 

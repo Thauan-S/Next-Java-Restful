@@ -5,6 +5,7 @@ import com.tropical.model.TravelPackage;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 public class TravelPackageDto {
@@ -52,6 +53,12 @@ public class TravelPackageDto {
 		this.image = travelPackage.getImage();
 		this.price = travelPackage.getPrice();
 		this.enterprise = travelPackage.getEnterprise();
+	}
+
+	public static  List<TravelPackageDto> convertToPackageDtoList(List<TravelPackage> travelPackagesOfEnterprise) {
+
+				 return travelPackagesOfEnterprise.stream().map(TravelPackageDto::new).toList();
+
 	}
 
 
