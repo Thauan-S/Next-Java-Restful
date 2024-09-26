@@ -4,26 +4,23 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 
 const useFindAllPackagesByEnterpriseName = () => {
-  const [name, setName] = useState();
   const {
     urlPackage:{url},
-    globalState: { token, username },
+    globalState: {token,username},
   } = useContext(GlobalContext);
-  console.log(username)
-  console.log(url)
+  
+ 
   const [travelPackages, setTravelPackages] = useState("");
   useEffect(() => {
-    setName(username);
     axios
-      .get(`${url}/enterprise/${name}`, {
+      .get(`${url}/enterprise/${username}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        console.log(response.data)
         setTravelPackages(response.data)});
-  }, [name, token, username, url]);
+  }, [token,url,username]);
   return { travelPackages };
 };
 

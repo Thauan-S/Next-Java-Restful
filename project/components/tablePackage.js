@@ -9,7 +9,6 @@ const TablePackage = ({
 }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
-  
   const {
     urlPackage: { url },
     globalState: { token, username },
@@ -121,7 +120,7 @@ const TablePackage = ({
               </tr>
             </thead>
             <tbody>
-              {packages.content.map((i, index) => (
+              {packages.map((i, index) => (
                 <tr key={index}>
                   <td>{i.id}</td>
                   <td>{i.destiny}</td>
