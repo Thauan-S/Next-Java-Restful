@@ -151,7 +151,7 @@ class TravelPackageServiceTest {
             //Arrange
             user.setRoles(Set.of(adminRole));
             doReturn(Optional.of(user)).when(userRepository).findById(uuidArgumentCaptor.capture());
-            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findByname(stringArgumentCaptor.capture());
+            doReturn(Optional.of(enterprise)).when(enterpriseRepository).findByUser_Email(stringArgumentCaptor.capture());
             doReturn(travelPackage).when(travelPackageRepository).save(travelPackageArgumentCaptor.capture());
             //Act
             var outPut = travelPackageService.create(travelPackageDto, token);

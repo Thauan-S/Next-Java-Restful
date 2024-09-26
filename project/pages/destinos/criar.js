@@ -1,11 +1,13 @@
 import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useState,useEffect,useContext } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
 
 const CriarPacote = () => {
-  const{globalState:{token,username},urlPackage:{url}}=useContext(GlobalContext)
+  const {
+    globalState: { token, username },
+    urlPackage: { url },
+  } = useContext(GlobalContext);
   const [newPackage, setNewPackage] = useState({
     destino: "",
     descricao: "",
@@ -13,23 +15,26 @@ const CriarPacote = () => {
     preco: "",
     categoria: "",
     imagem: "",
-    enterprise:{name:username}
+    enterprise: {
+      user: {
+        email: username,
+      },
+    },
   });
-  console.log("Update pagina de criar , rever")
   const router = useRouter();
   const handleInputChange = (e) => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
   };
   const handleAddPackage = () => {
-        axios
-        .post(`${url}`,newPackage, {
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
-        })
-        .then((response)=>{
-          router.push("/destinos/lista")
-        })
+    axios
+      .post(`${url}`, newPackage, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        router.push("/destinos/lista");
+      });
   };
 
   return (

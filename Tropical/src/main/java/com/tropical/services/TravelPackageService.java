@@ -50,7 +50,7 @@ public class TravelPackageService {
     @Transactional
     public TravelPackageDto create(@RequestBody TravelPackageDto travelPackageDto, JwtAuthenticationToken token) {
         var user = userRepository.findById(UUID.fromString(token.getName())).orElseThrow(() -> new ResourceNotFoundException("The user id : " + token.getName() + "does not exists in the data base"));
-        var enterprise = enterpriseRepository.findByname(travelPackageDto.getEnterprise().getName()).orElseThrow(() -> new ResourceNotFoundException("The enterprise  by name " + travelPackageDto.getEnterprise().getName() + "does not exists in the data base"));
+        var enterprise = enterpriseRepository.findByUser_Email(travelPackageDto.getEnterprise().getUser().getEmail()).orElseThrow(() -> new ResourceNotFoundException("The enterprise  by email " + travelPackageDto.getEnterprise().getUser().getEmail() + "does not exists in the data base"));
         ;
         var isAdmin = user.getRoles().stream()
                 .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
