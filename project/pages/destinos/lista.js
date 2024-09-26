@@ -8,7 +8,7 @@ const ListaDestinos = () => {
   
   const{travelPackages}=useFindAllPackagesByEnterpriseName()
   //falta  recarregar a página quando atualizar
- 
+
   return (
     <>
       <HeadComponent title={"Lista | Destinos"} />
