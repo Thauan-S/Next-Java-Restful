@@ -4,18 +4,12 @@ import React, { useEffect, useContext, useState } from "react";
 
 const useMyReserves = () => {
   const [reserves, setReserves] = useState(null);
-  const [username, setUsername] = useState();
   const[update,setUpdate]=useState(true)
   const {
     urlReserve,
-    globalState: { token },
+    globalState: { token,username },
   } = useContext(GlobalContext);
-
   useEffect(() => {
-    console.log("active")
-    console.log(username)
-  setUsername(window.localStorage.getItem("username"));
- 
     axios
       .get(`${urlReserve}/client/${username}`, {
         headers: {

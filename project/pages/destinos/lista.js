@@ -6,14 +6,14 @@ import useFindAllPackages from "@/hooks/useFindAllPackages";
 import useFindAllPackagesByEnterpriseName from "@/hooks/useFindAllPackagesByEnterpriseName";
 const ListaDestinos = () => {
   
-  const{travelPackages}=useFindAllPackagesByEnterpriseName()
+  const{travelPackages,setUpdate,update}=useFindAllPackagesByEnterpriseName()
   //falta  recarregar a página quando atualizar
 
   return (
     <>
       <HeadComponent title={"Lista | Destinos"} />
       <main>
-        {  <TablePackage packages={travelPackages}  /> }
+        {  <TablePackage packages={travelPackages} update={{setUpdate,update}}  /> }
       </main>
     </>
   );

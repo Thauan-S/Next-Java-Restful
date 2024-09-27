@@ -2,7 +2,7 @@ import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
 import React, { useState,useEffect,useContext } from "react";
 
-const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate} }) => {
+const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate,update }}) => {
  
   const [packageEdited, setPackageEdited] = useState({
     id: "",
@@ -46,7 +46,7 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate} }) => 
     .then((response)=>{
       if(response.status==200){
         console.log(response.status)
-      setUpdate((prevUpdate)=> !prevUpdate)
+      setUpdate((prevUpdate) => !prevUpdate)
       }
     })
   };

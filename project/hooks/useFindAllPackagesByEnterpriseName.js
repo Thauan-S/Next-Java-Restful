@@ -4,12 +4,12 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 
 const useFindAllPackagesByEnterpriseName = () => {
+  const[update,setUpdate]=useState(false)
   const {
     urlPackage:{url},
     globalState: {token,username},
   } = useContext(GlobalContext);
   
- 
   const [travelPackages, setTravelPackages] = useState("");
   useEffect(() => {
     axios
@@ -20,8 +20,8 @@ const useFindAllPackagesByEnterpriseName = () => {
       })
       .then((response) => {
         setTravelPackages(response.data)});
-  }, [token,url,username]);
-  return { travelPackages };
+  }, [token,url,username,update]);
+  return { travelPackages,setUpdate,update };
 };
 
 export default useFindAllPackagesByEnterpriseName;
