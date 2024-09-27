@@ -5,7 +5,7 @@ import EditPackageModal from "./editPackageModal";
 import { GlobalContext } from "@/contexts/appContext";
 
 const TablePackage = ({
-  packages
+  packages,update:{update,setUpdate}
 }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
@@ -169,7 +169,7 @@ const TablePackage = ({
           modal={modal}
           setModal={setModal}
           idPackage={idPackage}
-          update={{ setUpdate }}
+          update={ {setUpdate,update} }
         />
       )}
     </>
