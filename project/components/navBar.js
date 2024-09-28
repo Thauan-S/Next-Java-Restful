@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import Link from "next/link";
 import styles from "../styles/navBar.module.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
+
+import { GlobalContext } from "@/contexts/appContext";
 const NavBar = () => {
+  const[user,setUser]=useState("")
   const [hidden, setHidden] = useState(true);
-  const [hideManagementButton, sethideManagementButton] = useState(true);
+  const [hideManagementButton, setHideManagementButton] = useState(true);
   const [hideMyReservesButton, setHideMyReservesButton] = useState(true);
-  const router = useRouter();
-  const [token, setToken] = useState();
   
+  const router = useRouter();
+
   useEffect(() => {
-    const username = window.localStorage.getItem("username");
-    setToken(window.localStorage.getItem("token"));
-    if (token) {
-      setHidden(false);
+    setUser(window.localStorage.getItem("username"))
+  }, [user]);
+  useEffect(() => {
+    if (user) {
+      setHidden(prevhiden=> !prevhiden);
+      if (user === "admin" || user.startsWith("empresa")) {
+        setHideManagementButton(false);
+        setHideMyReservesButton(true);
+      } else {
+        setHideMyReservesButton(false); 
+      }
     } else {
+      setHideMyReservesButton(true);
       setHidden(true);
     }
-    if (username == "admin" || username?.startsWith("empresa")) {
-      sethideManagementButton(false);
-    } else {
-      sethideManagementButton(true);
-      setHideMyReservesButton(false);
-    }
-  }, [setToken, token]);
+   
+  }, [user]);
+
+
+
   const handleLogout = () => {
-    window.localStorage.clear();
-    setToken(window.localStorage.getItem("token"));
+    window.localStorage.clear()
     router.push("/login");
-    setHidden(true);
+   
+    //setHidden(true);
+    
   };
   return (
     <header className="">
@@ -81,18 +91,9 @@ const NavBar = () => {
                 Sobre Nós
               </Link>
             </li>
-            <li hidden={hideMyReservesButton} className="nav-item active">
+            <li  className="nav-item active">
               <Link href={"/reserva/minhasReservas"} className="nav-link">
                 Minhas reservas
-              </Link>
-            </li>
-            <li className="nav-item active">
-              <Link
-                hidden={hideManagementButton}
-                href={"/gerenciamento"}
-                className="nav-link"
-              >
-                Gerenciamento
               </Link>
             </li>
           </ul>

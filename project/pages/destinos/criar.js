@@ -4,8 +4,10 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect, useContext } from "react";
 
 const CriarPacote = () => {
+  const[token,setToken]=useState("")
+  const[username,setUsername]=useState()
   const {
-    globalState: { token, username },
+   
     urlPackage: { url },
   } = useContext(GlobalContext);
   const [newPackage, setNewPackage] = useState({
@@ -26,6 +28,7 @@ const CriarPacote = () => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
   };
   const handleAddPackage = () => {
+    setToken(window.localStorage.getItem("token"))
     axios
       .post(`${url}`, newPackage, {
         headers: {

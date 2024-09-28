@@ -4,14 +4,17 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 
 const useFindAllPackagesByEnterpriseName = () => {
+  const[username,setUsername]=useState("")
+  const[token,setToken]=useState("")
   const[update,setUpdate]=useState(false)
   const {
     urlPackage:{url},
-    globalState: {token,username},
   } = useContext(GlobalContext);
   
   const [travelPackages, setTravelPackages] = useState("");
   useEffect(() => {
+    setUsername(window.localStorage.getItem("username"))
+    setToken(window.localStorage.getItem("token"))
     axios
       .get(`${url}/enterprise/${username}`, {
         headers: {

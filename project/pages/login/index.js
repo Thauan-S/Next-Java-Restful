@@ -13,11 +13,14 @@ const Login = () => {
   });
   const router = useRouter();
   const handleLogin = () => {
+    window.localStorage.clear()
     axios
       .post("https://next-java-restful-tropical-back-end.onrender.com/api/auth/v1/login", user)
       .then((response) => {
         window.localStorage.setItem("username", user.email);
         window.localStorage.setItem("token", response.data.accessToken);
+        console.log(response.data)
+        window.localStorage.setItem("typeOfUser",response.data.typeOfUser)
         if (user.email == "admin") {
           router.push("/clientes/lista");
         } else if (user.email.startsWith("empresa")) {
