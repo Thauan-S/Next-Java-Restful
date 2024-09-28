@@ -11,7 +11,6 @@ const Card = ({
   pacotesNacionais,
   pacotesInternacionais,
 }) => {
-  console.log(pacotesNacionais);
   const [modal, setModal] = useState(false);
   const [packageId, setPackageId] = useState();
   const handleClick = (id) => {

@@ -22,7 +22,7 @@ const useFindAllPackages = () => {
         }
       })
       .then((response) => {
-        setPackages(response.data);
+        setPackages(response.data.content);
       })
       .catch((error) => {
         console.error("Erro ao buscar a lista de pacotes");

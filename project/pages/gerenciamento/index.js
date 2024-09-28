@@ -18,13 +18,13 @@ const Gerenciamento = () => {
     {
       title: "Pacotes",
       create: "/destinos/criar",
-      list: "/destinos/lista",
+      list: "/gerenciamento/destinos",
 
       icon: <i className="bi bi-airplane"></i>,
     },
     {
       title: "Reservas",
-      list: "/reserva/minhasReservas",
+      list: "/gerenciamento/reservas",
       icon: <i className="bi bi-file-check"></i>,
     },
   ];

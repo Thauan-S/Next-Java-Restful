@@ -16,7 +16,7 @@ const Clientes = () => {
       <main>
         <div className="row">
           <Link
-            href={"/clientes"}
+            href={"/gerenciamento"}
             style={{
               height: "40px",
               width: "50px",
@@ -25,7 +25,7 @@ const Clientes = () => {
             }}
             className="col-1 btn btn-primary"
           >
-            <i className="bi bi-person-add" />
+            <i className="bi bi-gear" />
           </Link>
           <h1 className="text-center col ">Bem vindo ,{username}</h1>
           <button

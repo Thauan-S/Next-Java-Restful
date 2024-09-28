@@ -1,12 +1,16 @@
+import HeadComponent from "@/components/head";
+import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
 import Link from "next/link";
-import React, { useState, useEffect, useContext } from "react";
-import EditPackageModal from "./editPackageModal";
-import { GlobalContext } from "@/contexts/appContext";
+import TablePackage from "@/components/tablePackage";
+import useFindAllPackages from "@/hooks/useFindAllPackages";
 
-const TablePackage = ({ packages, update: { update, setUpdate } }) => {
-  const [modal, setModal] = useState(true);
-  const [idPackage, setIdPackage] = useState();
+import { GlobalContext } from "@/contexts/appContext";
+import EditPackageModal from "@/components/editPackageModal";
+const ListaDestinos = () => {
+    const [modal, setModal] = useState(true);
+    const [idPackage, setIdPackage] = useState();
+  const{packages,setUpdate,update}=useFindAllPackages()
   const {
     urlPackage: { url },
     globalState: { token, username },
@@ -34,22 +38,13 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
         });
     }
   };
-
   return (
     <>
+      <HeadComponent title={"Lista | Destinos"} />
+      <main>
+      <>
       <div className="row">
-        <Link
-          href={"/destinos/criar"}
-          style={{
-            height: "40px",
-            width: "50px",
-            margin: "15px",
-            marginLeft: "25px",
-          }}
-          className="col-1 btn btn-primary"
-        >
-          <i className="bi bi-file-plus" />
-        </Link>
+       
         {username == "admin" ? (
           <h1 className="text-center col ">Bem vindo ,{username}</h1>
         ) : null}
@@ -167,11 +162,13 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
           modal={modal}
           setModal={setModal}
           idPackage={idPackage}
-          update={{ setUpdate, update }}
+          update={ {setUpdate,update} }
         />
       )}
+    </>
+      </main>
     </>
   );
 };
 
-export default TablePackage;
+export default ListaDestinos;

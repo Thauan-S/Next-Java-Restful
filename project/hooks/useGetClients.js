@@ -7,7 +7,6 @@ function useGetClients() {
   var [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [direction, setDirection] = useState("ASC");
-  console.log("valor",update)
   // const [getClients, setGetClients] = useState(() => {
   //   return (p)=>{
   //   axios
