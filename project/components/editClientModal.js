@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import styles from "../styles/editClientModal.module.css"
 import useGetClients from "@/hooks/useGetClients";
 import { useRouter } from "next/router";
 const EditClientModal = ({
@@ -70,28 +70,11 @@ const EditClientModal = ({
       });
     setHidden(!hidden);
   };
-
-  // };
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:80/api/clientes/v1", {
-  //       headers: {
-  //         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log("Response", response.data);
-  //       setClientes(response.data.clientesList);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao Listar os Clientes", error);
-  //     });
-  // }, []);
   if (showModal) {
     return (
-      <>
+      <main>
         <div
-          className="modal fade show"
+          className="modal fade show "
           style={{ display: "block" }}
           id="exampleModal"
           tabIndex={-1}
@@ -99,7 +82,7 @@ const EditClientModal = ({
           aria-hidden="false"
         >
           <div className="modal-dialog">
-            <div className="modal-content">
+            <div className={`modal-content ${styles.modal}`}>
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
                   Editar cliente <p>ID: {cli.customerId}</p>
@@ -223,7 +206,7 @@ const EditClientModal = ({
               <div className="modal-footer">
                 <button
                   type="button"
-                  onClick={() => setShowModal(!showModal)}
+                  onClick={() => {setShowModal(!showModal), setHidden(true)}}
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
@@ -233,7 +216,7 @@ const EditClientModal = ({
             </div>
           </div>
         </div>
-      </>
+      </main>
     );
   } else return null;
 };

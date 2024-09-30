@@ -36,7 +36,7 @@ const Cadastro = () => {
     setClient({ ...client, [e.target.name]: e.target.value });
   };
   const handleInputEnterpriseChange = (e) => {
-    if (e.target.name === "email") {
+    if (e.target.name == "email") {
       setEnterprise((enterprise.user.email = e.target.value));
     } else if (e.target.name === "password") {
       setEnterprise((enterprise.user.password = e.target.value));
@@ -66,23 +66,24 @@ const Cadastro = () => {
   };
   return (
     <>
+    
       <HeadComponent title={"Tropical | Cadastro"} />
       <main>
         <div className={`${styles.div_signUp}`}>
           <button
             className="btn btn-primary"
             type="submit"
-            onClick={() => setHiddenFormClient((prevHidden) => !prevHidden)}
+            onClick={() => {setHiddenFormClient((prevHidden) => !prevHidden),setHiddenFormEnterprise(true)}}
           >
-            <i className="bi bi-person-fill-add"> </i>  cliente
+            <i className="bi bi-person-fill-add"> </i>  Cliente
           </button>
 
           <button
             className="btn btn-primary"
             type="submit"
-            onClick={() => setHiddenFormEnterprise((prevHidden) => !prevHidden)}
+            onClick={() => {setHiddenFormEnterprise((prevHidden)=>!prevHidden),setHiddenFormClient(true)}}
           >
-            <i className="bi bi-building-add"> </i> empresa
+            <i className="bi bi-building-add"> </i> Empresa
           </button>
         </div>
         <div className={`${styles.div_client} container-fluid`}>
@@ -182,7 +183,7 @@ const Cadastro = () => {
           </form>
         </div>
 
-        <form hidden={hiddenFormEnterprise} className="row g-3">
+        <form hidden={hiddenFormEnterprise} className="row g-3 container-fluid">
         <div className="col-md-6">
               <label htmlFor="inputEmail4" className="form-label">
                 Nome da empresa
@@ -265,6 +266,7 @@ const Cadastro = () => {
             </div>
         </form>
       </main>
+      
     </>
   );
 };
