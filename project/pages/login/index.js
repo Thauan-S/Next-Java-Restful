@@ -17,13 +17,16 @@ const Login = () => {
     axios
       .post("https://next-java-restful-tropical-back-end.onrender.com/api/auth/v1/login", user)
       .then((response) => {
+        console.log(response.data)
         window.localStorage.setItem("username", user.email);
         window.localStorage.setItem("token", response.data.accessToken);
-        console.log(response.data)
+        let typeOfUser=response.data.typeOfUser
+        
         window.localStorage.setItem("typeOfUser",response.data.typeOfUser)
-        if (user.email == "admin") {
+      
+        if (typeOfUser=="ADMIN") {
           router.push("/clientes/lista");
-        } else if (user.email.startsWith("empresa")) {
+        } else if (typeOfUser=="EMPRESA") {
           router.push("/destinos/lista");
         } else {
           router.push("/");
