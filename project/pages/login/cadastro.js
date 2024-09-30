@@ -7,10 +7,11 @@ import CreateClient from "@/components/createClient";
 import CreateEnterprise from "@/components/createEnterprise";
 
 const Cadastro = () => {
-  const [alternateForms, setAlternateForms] = useState(false);
-  
-  const router = useRouter();
-  
+  const [activeComponent, setActiveComponent] = useState(false);
+  const components={
+    client:<CreateClient/>,
+    enterprise:<CreateEnterprise/>
+  }
   return (
     <>
     
@@ -20,7 +21,7 @@ const Cadastro = () => {
           <button
             className="btn btn-primary"
             type="submit"
-            onClick={() => {setAlternateForms(true)}}
+            onClick={() => setActiveComponent("client")}
           >
             <i className="bi bi-person-fill-add"> </i>  Cliente
           </button>
@@ -28,13 +29,13 @@ const Cadastro = () => {
           <button
             className="btn btn-primary"
             type="submit"
-            onClick={() => {setAlternateForms(false)}}
+            onClick={() => setActiveComponent("enterprise")}
           >
             <i className="bi bi-building-add"> </i> Empresa
           </button>
         </div>
-      {}
-       {alternateForms?<CreateClient/>:<CreateEnterprise/>}
+     
+       {components[activeComponent]}
        
       </main>
       
