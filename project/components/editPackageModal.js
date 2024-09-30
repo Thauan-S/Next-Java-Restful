@@ -1,7 +1,7 @@
 import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
 import React, { useState,useEffect,useContext } from "react";
-
+import styles from "../styles/editPackageModal.module.css"
 const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate,update }}) => {
  
   const [packageEdited, setPackageEdited] = useState({
@@ -62,7 +62,7 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate,update 
          
         >
           <div className="modal-dialog">
-            <div className="modal-content">
+            <div className={`modal-content ${styles.modal}`}>
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
                   Editar Pacote de Viagem <p>ID: {packageEdited.id}</p>

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
-
+import styles from "../styles/promocoes.module.css"
 const Promocoes = () => {
   return (
-    <main>
+    <main className={`${styles.promocoes}`}>
       <h1 className="bg-white text-center">Ofertas do dia</h1>
       <div id="carouselExample" className="carousel slide">
         <div className="carousel-inner">

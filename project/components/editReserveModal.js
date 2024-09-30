@@ -1,7 +1,7 @@
 import { GlobalContext } from "@/contexts/appContext";
 import useFindAllPackages from "@/hooks/useFindAllPackages";
 import axios from "axios";
-import moment from "moment";
+import styles from "../styles/editReserveModal.module.css"
 import React, { useContext, useState, useEffect } from "react";
 
 const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) => {
@@ -65,7 +65,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div className={`modal-content  ${styles.modal}`}>
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Reserva id <p>ID: {idReserve}</p>
@@ -94,7 +94,7 @@ const EditReserveModal = ({ idReserve, modal: { modal, setModal },setUpdate }) =
                   name="id"
                 >
                   <option selected="">Escolha um novo destino</option>
-                  {packages && packages.content.map((i)=><option  key={i.id}  value={i.id}>{i.destiny}</option>)}
+                  {packages && packages.map((i)=><option  key={i.id}  value={i.id}>{i.destiny}</option>)}
                 </select>
               </div>
               <div className="mb-3">

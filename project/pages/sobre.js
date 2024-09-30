@@ -24,7 +24,7 @@ const Sobre = () => {
           a mi vulputate fringilla. Sed malesuada dignissim enim quis egestas.
           Nam congue venenatis ex, nec aliquam arcu porta vel. Nulla dolor ex,
           posuere nec lacus vitae, cursus egestas ex. Pellentesque sit amet
-          sapien in erat tincidunt auctor a at odio. Cras quis viverra nulla.{" "}
+          sapien in erat tincidunt auctor a at odio. Cras quis viverra nulla.
           <br />
           Nunc ultrices ac elit eget sodales. Sed pretium tempus mi ut luctus.
           Suspendisse magna metus, pretium vel hendrerit a, pretium a odio. Sed

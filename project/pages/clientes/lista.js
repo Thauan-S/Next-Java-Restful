@@ -11,9 +11,9 @@ const Clientes = () => {
 
   
   return (
-    <>
+    <body>
       <HeadComponent title={" Clientes | Lista"} />
-      <main>
+      <main className="list">
         <div className="row">
           <Link
             href={"/gerenciamento"}
@@ -84,7 +84,7 @@ const Clientes = () => {
 
          <Table setUpdate={setUpdate} clientes={clientes} setClientes={setClientes} username={username} /> 
       </main>
-    </>
+    </body>
   );
 };
 
