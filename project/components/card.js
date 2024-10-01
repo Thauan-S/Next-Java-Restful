@@ -105,7 +105,7 @@ const Card = ({
                 <div className="card-body">
                   <h5 className="card-title">{i.destiny}</h5>
                   <p className="card-text">{i.description}</p>
-                  <p className="card-text"> dias de viagem{i.days}</p>
+                  <p className="card-text"> dias de viagem {i.days}</p>
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
