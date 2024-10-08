@@ -7,23 +7,30 @@ const useFindAllPackagesByEnterpriseName = () => {
   const[username,setUsername]=useState("")
   const[token,setToken]=useState("")
   const[update,setUpdate]=useState(false)
-  const {
-    urlPackage:{url},
-  } = useContext(GlobalContext);
+ 
   
   const [travelPackages, setTravelPackages] = useState("");
   useEffect(() => {
-    setUsername(window.localStorage.getItem("username"))
-    setToken(window.localStorage.getItem("token"))
+    const storedUsername = window.localStorage.getItem("username");
+    const storedToken = window.localStorage.getItem("token");
+    if (storedUsername && storedToken) {
+      setUsername(storedUsername);
+      setToken(storedToken);
+    }
+  }, []);
+  useEffect(() => {
+    if(username&&token){
     axios
-      .get(`${url}/enterprise/${username}`, {
+      .get(`https://next-java-restful-tropical-back-end.onrender.com/api/travelPackages/v1/enterprise/${username}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
+        console.log(response.data)
         setTravelPackages(response.data)});
-  }, [token,url,username,update]);
+      }
+  }, [token,username,update]);
   return { travelPackages,setUpdate,update };
 };
 

@@ -6,31 +6,34 @@ import Image from "next/image";
 
 import { GlobalContext } from "@/contexts/appContext";
 const NavBar = () => {
-  const[user,setUser]=useState("")
+  const[typeOfUser,setTypeOfUser]=useState("")
   const [hidden, setHidden] = useState(true);
   const [hideManagementButton, setHideManagementButton] = useState(true);
   const [hideMyReservesButton, setHideMyReservesButton] = useState(true);
-  
+  const {globalState:{type}}=useContext(GlobalContext)
   const router = useRouter();
 
+  
+  
   useEffect(() => {
-    setUser(window.localStorage.getItem("username"))
-  }, [user]);
-  useEffect(() => {
-    if (user) {
-      setHidden(prevhiden=> !prevhiden);
-      if (user === "admin" || user.startsWith("empresa")) {
+    setTypeOfUser(window.localStorage.getItem("typeOfUser"))
+   
+    if (typeOfUser) {
+      setHidden(false);
+      if (typeOfUser === "ADMIN" || typeOfUser=="EMPRESA") {
         setHideManagementButton(false);
         setHideMyReservesButton(true);
+        setHidden(false);
       } else {
         setHideMyReservesButton(false); 
+        setHidden(true);
       }
-    } else {
+    } else if(typeOfUser== "undefined"||typeOfUser==null) {
       setHideMyReservesButton(true);
       setHidden(true);
     }
    
-  }, [user]);
+  }, [typeOfUser]);
 
 
 
@@ -92,7 +95,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li  className="nav-item active">
-              <Link href={"/reserva/minhasReservas"} className="nav-link">
+              <Link hidden={hideMyReservesButton} href={"/reserva/minhasReservas"} className="nav-link">
                 Minhas reservas
               </Link>
             </li>
