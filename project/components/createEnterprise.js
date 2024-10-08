@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import styles from "../styles/createClient.module.css"
+import axios from 'axios';
+
 const CreateEnterprise = () => {
   const [enterprise, setEnterprise] = useState({
     name: "",
@@ -11,10 +13,13 @@ const CreateEnterprise = () => {
     },
   });
   
-  const handleAddEnteprise = () => {
+  const handleAddEnteprise = (e) => {
+    e.preventDefault()
+  console.log("test")
     axios
       .post("https://next-java-restful-tropical-back-end.onrender.com/register/enterprise", enterprise)
       .then((response) => {
+        console.log(response.status)
         router.push("/login");
       })
       .catch((error) => {
@@ -22,7 +27,7 @@ const CreateEnterprise = () => {
       });
   };
   const handleInputEnterpriseChange = (e) => {
-    console.log(e.target)
+    
     if (e.target.name === "email") {
       setEnterprise((enterprise.user.email = e.target.value));
     } else if (e.target.name === "password") {
@@ -30,6 +35,7 @@ const CreateEnterprise = () => {
     }
     setEnterprise({ ...enterprise, [e.target.name]: e.target.value });
   };
+  console.log(enterprise)
   return (
     <div className={`container-fluid`}>
    <form className="row g-3 container-fluid">
@@ -82,7 +88,7 @@ const CreateEnterprise = () => {
                 </label>
                 <input
                   name="email"
-                  value={enterprise.email}
+                  value={enterprise.user.email}
                   onChange={handleInputEnterpriseChange}
                   type="text"
                   className="form-control"
@@ -95,7 +101,7 @@ const CreateEnterprise = () => {
                 Senha
               </label>
               <input
-              value={enterprise.password}
+              value={enterprise.user.password}
                 name="password"
                 onChange={handleInputEnterpriseChange}
                 id="enterprisePassword"

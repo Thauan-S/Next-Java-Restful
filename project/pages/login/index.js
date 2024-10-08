@@ -13,7 +13,7 @@ const Login = () => {
   });
   const router = useRouter();
   const handleLogin = () => {
-    window.localStorage.clear()
+    //window.localStorage.clear()
     axios
       .post("https://next-java-restful-tropical-back-end.onrender.com/api/auth/v1/login", user)
       .then((response) => {

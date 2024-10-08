@@ -5,38 +5,36 @@ import HeadComponent from "@/components/head";
 import styles from "../../styles/cadastro.module.css";
 import CreateClient from "@/components/createClient";
 import CreateEnterprise from "@/components/createEnterprise";
+import Link from "next/link";
 
 const Cadastro = () => {
-  const [activeComponent, setActiveComponent] = useState(false);
-  const components={
-    client:<CreateClient/>,
-    enterprise:<CreateEnterprise/>
-  }
+  
+ 
+    <CreateClient/>,
+   <CreateEnterprise/>
+  
   return (
     <>
     
       <HeadComponent title={"Tropical | Cadastro"} />
       <main>
         <div className={`${styles.div_signUp}`}>
-          <button
+          <Link
             className="btn btn-primary"
-            type="submit"
-            onClick={() => setActiveComponent("client")}
+            
+            href="./cadastroCliente"
           >
             <i className="bi bi-person-fill-add"> </i>  Cliente
-          </button>
+          </Link>
 
-          <button
+          <Link
             className="btn btn-primary"
-            type="submit"
-            onClick={() => setActiveComponent("enterprise")}
+            href="./cadastroEnterprise"
           >
             <i className="bi bi-building-add"> </i> Empresa
-          </button>
+          </Link>
         </div>
      
-       {components[activeComponent]}
-       
       </main>
       
     </>

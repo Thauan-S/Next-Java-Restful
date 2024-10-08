@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import styles from "../styles/createClient.module.css"
+import axios from 'axios';
+
 const CreateClient = () => {
     const [client, setClient] = useState({
         name: "",
@@ -20,11 +22,14 @@ const CreateClient = () => {
         }
         setClient({ ...client, [e.target.name]: e.target.value });
       };
-      const handleAddClient = () => {
+      const handleAddClient = (e) => {
+        e.preventDefault()
         axios
           .post("https://next-java-restful-tropical-back-end.onrender.com/register/client", client)
           .then((response) => {
-            router.push("/login");
+            console.log(response.status)
+            //router.push("/login");
+            
           })
           .catch((error) => {
             console.error("erro ao cadastrar Usuário " + error);

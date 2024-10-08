@@ -7,6 +7,7 @@ import { GlobalContext } from "@/contexts/appContext";
 const TablePackage = ({ packages, update: { update, setUpdate } }) => {
   const [modal, setModal] = useState(true);
   const [idPackage, setIdPackage] = useState();
+  const[typeOfUser,setTypeOfUser]=useState()
   const {
     urlPackage: { url },
     globalState: { token, username },
@@ -15,6 +16,9 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
     setIdPackage(id);
     setModal(!modal);
   };
+  useEffect(() => {
+    setTypeOfUser(window.localStorage.getItem("typeOfUser"))
+  }, [username]);
   const handleDeletePackage = (id) => {
     var response = confirm(`Deseja excluir o pacote de id: ${id}?`);
     console.log(response);
@@ -50,7 +54,7 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
         >
           <i className="bi bi-file-plus" />
         </Link>
-        {username == "admin" ? (
+        {typeOfUser == "ADMIN" ? (
           <h1 className="text-center col ">Bem vindo ,{username}</h1>
         ) : null}
         <button
@@ -129,7 +133,7 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
                   <td>{i.price}</td>
 
                   <td>
-                    {username.startsWith("empresa") || username == "admin" ? (
+                    {typeOfUser=="ENTERPRISE"|| typeOfUser=="ADMIN" ? (
                       <button
                         onClick={() => handlePackageSelected(i.id)}
                         type="button"
@@ -139,7 +143,7 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
                       </button>
                     ) : null}
 
-                    {username.startsWith("empresa") || username == "admin" ? (
+                    {typeOfUser=="ENTERPRISE"|| typeOfUser=="ADMIN" ? (
                       <button
                         onClick={() => handleDeletePackage(i.id)}
                         type="button"
