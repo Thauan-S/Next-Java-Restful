@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import styles from "../styles/createClient.module.css"
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const CreateEnterprise = () => {
   const [enterprise, setEnterprise] = useState({
@@ -12,7 +13,7 @@ const CreateEnterprise = () => {
       password: "",
     },
   });
-  
+  const router = useRouter()
   const handleAddEnteprise = (e) => {
     e.preventDefault()
   console.log("test")

@@ -133,7 +133,7 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
                   <td>{i.price}</td>
 
                   <td>
-                    {typeOfUser=="ENTERPRISE"|| typeOfUser=="ADMIN" ? (
+                   
                       <button
                         onClick={() => handlePackageSelected(i.id)}
                         type="button"
@@ -141,9 +141,9 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
                       >
                         <i className="bi bi-gear-fill" />
                       </button>
-                    ) : null}
+                   
 
-                    {typeOfUser=="ENTERPRISE"|| typeOfUser=="ADMIN" ? (
+                    
                       <button
                         onClick={() => handleDeletePackage(i.id)}
                         type="button"
@@ -151,7 +151,7 @@ const TablePackage = ({ packages, update: { update, setUpdate } }) => {
                       >
                         <i className="bi bi-trash"></i>
                       </button>
-                    ) : null}
+                    
                   </td>
                 </tr>
               ))}
