@@ -5,38 +5,47 @@ import React, { useState, useEffect, useContext } from "react";
 
 const CriarPacote = () => {
   const[token,setToken]=useState("")
-  const[username,setUsername]=useState()
+  
   const {
-   
+    globalState:{username},
     urlPackage: { url },
   } = useContext(GlobalContext);
   const [newPackage, setNewPackage] = useState({
-    destino: "",
-    descricao: "",
-    duracaoEmDias: "",
-    preco: "",
-    categoria: "",
-    imagem: "",
+    destiny: "",
+    description: "",
+    category: "",
+    days: "",
+    image: "",
+    price: "",
     enterprise: {
       user: {
         email: username,
       },
     },
   });
+  console.log(newPackage)
   const router = useRouter();
   const handleInputChange = (e) => {
     setNewPackage({ ...newPackage, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    const storedToken = window.localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+  
   const handleAddPackage = () => {
-    setToken(window.localStorage.getItem("token"))
     axios
-      .post(`${url}`, newPackage, {
+      .post(url, newPackage, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
+        console.log("response",response.status)
         router.push("/destinos/lista");
+      })
+      .catch((error)=>{
+        console.error("erro",error)
       });
   };
 

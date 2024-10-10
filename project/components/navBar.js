@@ -6,33 +6,33 @@ import Image from "next/image";
 
 import { GlobalContext } from "@/contexts/appContext";
 const NavBar = () => {
-  const[typeOfUser,setTypeOfUser]=useState("")
+  
   const [hidden, setHidden] = useState(true);
-  const [hideManagementButton, setHideManagementButton] = useState(true);
+  const[typeOfUser,setTypeOfUser]=useState("")
   const [hideMyReservesButton, setHideMyReservesButton] = useState(true);
-  const {globalState:{type}}=useContext(GlobalContext)
   const router = useRouter();
 
   
   
   useEffect(() => {
-    setTypeOfUser(window.localStorage.getItem("typeOfUser"))
-   
-    if (typeOfUser) {
+    const typeOfUser= window.localStorage.getItem("typeOfUser")
+    if(typeOfUser){
+    setTypeOfUser(typeOfUser)
+  }
+  console.log(typeOfUser)
+    if (typeOfUser ) {
       setHidden(false);
-      if (typeOfUser === "ADMIN" || typeOfUser=="EMPRESA") {
-        setHideManagementButton(false);
+      if (typeOfUser  === "ADMIN" || typeOfUser =="EMPRESA") {
         setHideMyReservesButton(true);
-        setHidden(false);
       } else {
-        setHideMyReservesButton(false); 
+        setHideMyReservesButton(true); 
         setHidden(true);
       }
-    } else if(typeOfUser== "undefined"||typeOfUser==null) {
+    } else  {
       setHideMyReservesButton(true);
       setHidden(true);
     }
-   
+   console.log(typeOfUser)
   }, [typeOfUser]);
 
 
@@ -76,12 +76,12 @@ const NavBar = () => {
           <ul className="col-md-9 justify-content-center text-center navbar-nav">
             <li className="nav-item active">
               <Link href="/" className="nav-link ">
-                Home
+                Início
               </Link>
             </li>
             <li className="nav-item active">
               <Link href={"/destinos"} className="nav-link">
-                Destino
+                Destinos
               </Link>
             </li>
             <li className="nav-item active">
@@ -94,10 +94,18 @@ const NavBar = () => {
                 Sobre Nós
               </Link>
             </li>
+            <li className="nav-item active">
+              <Link href={"/gerenciamento"} className="nav-link">
+                Administração
+              </Link>
+            </li>
             <li  className="nav-item active">
-              <Link hidden={hideMyReservesButton} href={"/reserva/minhasReservas"} className="nav-link">
+            <div hidden={hideMyReservesButton}>
+            <Link  href={"/reserva/minhasReservas"} className="nav-link">
                 Minhas reservas
               </Link>
+            </div>
+              
             </li>
           </ul>
           <div className="col-md-2 ">

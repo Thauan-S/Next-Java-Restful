@@ -7,10 +7,9 @@ import useFindAllPackagesByEnterpriseName from "@/hooks/useFindAllPackagesByEnte
 const ListaDestinos = () => {
   const { travelPackages, setUpdate, update } =
     useFindAllPackagesByEnterpriseName();
-  //falta  recarregar a página quando atualizar
 
   return (
-    <body>
+  
       <div>
         <HeadComponent title={"Lista | Destinos"} />
         <main>
@@ -22,7 +21,7 @@ const ListaDestinos = () => {
           }
         </main>
       </div>
-    </body>
+    
   );
 };
 

@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import styles from "../../styles/gerenciamento.module.css";
 import DropDown from "@/components/dropDown";
 import HeadComponent from "@/components/head";
+import { useRouter } from "next/router";
 const Gerenciamento = () => {
+  const[hidden,setHidden]=useState(false)
+  const router=useRouter()
+  useEffect(() => {
+    const storedUserType=window.localStorage.getItem("typeOfUser")
+    if(storedUserType=="ADMIN"|| storedUserType=="EMPRESA"){
+      setHidden(true)
+    }else{
+      const result =confirm("O usuário não tem permissão para acessar essa página, dejesa voltar ?")
+      router.push("/")
+    }
+  }, []);
   const arrAdmin = [
     {
       title: "Clientes",
@@ -29,7 +41,8 @@ const Gerenciamento = () => {
     },
   ];
   return (
-    <><main>
+    <>
+    {hidden&& <main>
       <HeadComponent title={"Tropical | Admin"} />
       <div className={`${styles.min} text-center`}>
         <h1 className={`${styles.titulo}`}>Administração</h1>
@@ -76,7 +89,7 @@ const Gerenciamento = () => {
           </div>
         </div>
       </div>
-      </main>
+      </main>}
     </>
   );
 };

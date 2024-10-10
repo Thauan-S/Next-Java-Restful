@@ -27,7 +27,6 @@ const useFindAllPackagesByEnterpriseName = () => {
         },
       })
       .then((response) => {
-        console.log(response.data)
         setTravelPackages(response.data)});
       }
   }, [token,username,update]);
