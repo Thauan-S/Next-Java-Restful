@@ -70,5 +70,7 @@ tropical api:
 email ms:
 [![Docker Hub Repo](https://img.shields.io/docker/pulls/thauans/email.svg)](https://hub.docker.com/repository/docker/thauans/email)
 
-Contribuições e Feedbacks
+##
+Contribuições e Feedbacks:
+
 Caso encontrem melhorias a serem feitas, sintam-se à vontade para abrir uma issue! :)
