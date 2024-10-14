@@ -1,5 +1,6 @@
 import { GlobalContext } from "@/contexts/appContext";
 import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
@@ -8,6 +9,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
     urlPackage: { url },
     globalState: { token, username },
   } = useContext(GlobalContext);
+  const router=useRouter()
   const [packageDb, setPackageDb] = useState({
     id: "",
     destiny: "",
@@ -38,7 +40,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
         console.error(error);
       });
   }, [packageId,url,token]);
-  //console.log("teste",packageDb);
+
   const handleCreateReserve=()=>{
     axios
     .post(urlReserve,reserve,{
@@ -50,6 +52,7 @@ const CreateReserveModal = ({ packageId, modal: { modal, setModal } }) => {
       console.log(  res.data)
         if(res.status==200){
             setHidden(false)
+            router.push("/reserva/minhasReservas")
         }
        
     }).catch((error)=>{

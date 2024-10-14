@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import styles from "../styles/createClient.module.css"
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const CreateClient = () => {
     const [client, setClient] = useState({
@@ -13,6 +14,7 @@ const CreateClient = () => {
           password: "",
         },
       });
+      const router=useRouter()
       const handleInputClientChange = (e) => {
         console.log(e.target)
         if (e.target.name === "email") {
@@ -28,7 +30,8 @@ const CreateClient = () => {
           .post("https://next-java-restful-tropical-back-end.onrender.com/register/client", client)
           .then((response) => {
             console.log(response.status)
-            //router.push("/login");
+            if(response.status==200)
+            router.push("/login");
             
           })
           .catch((error) => {

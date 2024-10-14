@@ -13,12 +13,21 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate,update 
     price:"",
     days:""
   });
-  const{globalState:{token},urlPackage:{url}}=useContext(GlobalContext)
-  // verificar por que está re-renderizando
-  //console.log("RENDERIZOU : EditPackageModal")
-  //console.log("UPDATE ANTES DE ATUALIZAR",update)
+  const{urlPackage:{url}}=useContext(GlobalContext)
+  const[token,setToken]=useState("")
   
+useEffect(() => {
+  const storedToken=window.localStorage.getItem("token")
+  if(storedToken){
+    setToken(storedToken)
+    console.log(url)
+  }else{
+    console.log("não foi possivel obter o token")
+  }
+  
+}, []);
   useEffect(()=>{
+    
     
     axios
     .get(`${url}/`+idPackage,{
@@ -31,6 +40,7 @@ const EditPackageModal = ({ idPackage, setModal, modal,update:{setUpdate,update 
     }).catch((error)=>{
       console.error(error)
     })
+   
   },[idPackage,token,url])
   const handleInputChange = (e) => {
     setPackageEdited({...packageEdited, [e.target.name]: e.target.value})

@@ -14,6 +14,7 @@ const DeleteModal = ({ idReserve, destiny, setHiddenDelete,setUpdate }) => {
     }).then((res)=>{
         if(res.status==204){
             setUpdate((prevUpdate)=>!prevUpdate)
+            alert("a reserva foi deletada com sucesso")
         }
         
     })
