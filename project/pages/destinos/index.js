@@ -20,7 +20,7 @@ const Destinos = () => {
         <div className="container-fluid">
           <Card pacotesNacionais={pacotesNacionais} />
         </div>
-        <h1 className="text-center text-info">Internacionais</h1>
+        <h1 className="text-center text-info mt-3">Internacionais</h1>
         <div className={`container-fluid`}>
           <Card pacotesInternacionais={pacotesInternacionais} />
         </div>

@@ -57,10 +57,8 @@ const Card = ({
                   className="card-img-top"
                   alt="teste"
                   layout="responsive"
-                  placeholder="blur"  // Para adicionar um efeito de blur até a imagem carregar
-                  loading="lazy"      // Carrega as imagens de forma preguiçosa
-                  width={800}
-                  height={600}
+                  width={800}  
+                  height={600} 
                 />
                 <div className="card-body">
                   <h5 className="card-title">{i.destiny}</h5>
